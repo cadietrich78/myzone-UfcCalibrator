@@ -69,6 +69,61 @@ OBJECT_TYPE CExtrinsicCalibrationTab::GetType() const
 // INITIALIZE WIDGET FROM FOOTAGE
 void CExtrinsicCalibrationTab::Initialize()
 {
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (!ufcCalibratorModel)
+        return /*true*/;
+
+    boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+
+    // BUG: (22-Nov-2016) IT MAY BE CALLED WHEN NO FOOTAGE IS SET
+    if (!footage)
+        return /*true*/;
+
+    boost::shared_ptr<CMediaPlayerInterface> mediaPlayerInterface = footage->GetMediaPlayerInterface();
+
+    if (!mediaPlayerInterface)
+        return /*true*/;
+
+    // (BEGIN OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
+    std::string presetsDirectoryName = "./data/camera/";
+
+    HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
+    HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
+
+    std::list<boost::filesystem::path> presetFileNameArray;
+
+    try
+    {
+        std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
+    }
+    catch (...)
+    {
+        LOG_ERROR();
+    }
+
+    boost::shared_ptr<CMarkerGroup> extrinsicCalibrationMarkerGroup = footage->GetExtrinsicCalibrationMarkerGroup();
+
+    for (const auto& presetFileName : presetFileNameArray)
+    {
+        try
+        {
+            boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+
+            if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
+            {
+                // BUG: (29-Sep-2022) VIEWPORTS!
+                presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+
+                m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
+            }
+        }
+        catch (std::exception& e)
+        {
+            LOG_MESSAGE(e.what());
+        }
+    }
+    // (END OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
     // BUG: (30-Mar-2017) THE TABS ARE RE-INITIALIZED FOR EACH PLAY. THE WIDGETS SHOULD BE CREATED WHEN A VALID PLAY IS AVAILABLE, AND NOT RE-CREATED DURING THE APPLICATION LIFETIME.
     if (m_isInitialized)
         return /*true*/;
@@ -81,17 +136,6 @@ void CExtrinsicCalibrationTab::Initialize()
     setMinimumWidth(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_SETTINGS_DOCK_MINIMUM_SIZE));
     // TESTING: (18-Nov-2015)
     setMinimumHeight(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_SETTINGS_DOCK_MINIMUM_SIZE));
-
-    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
-
-    if (!ufcCalibratorModel)
-        return /*true*/;
-
-    boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
-
-    // BUG: (22-Nov-2016) IT MAY BE CALLED WHEN NO FOOTAGE IS SET
-    if (!footage)
-        return /*true*/;
 
     connect(this, SIGNAL(visibilityChanged(bool)), this, SLOT(SettingsChanged(bool)));
 
@@ -166,41 +210,6 @@ void CExtrinsicCalibrationTab::Initialize()
     scrollArea->setWidget(emptyWidgetAsLayout);
 
     setWidget(scrollArea);
-
-    // (BEGIN OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
-    std::string presetsDirectoryName = "./data/camera/";
-
-    HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
-    HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
-
-    std::list<boost::filesystem::path> presetFileNameArray;
-
-    try
-    {
-        std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
-    }
-    catch (...)
-    {
-        LOG_ERROR();
-    }
-
-    boost::shared_ptr<CMarkerGroup> extrinsicCalibrationMarkerGroup = footage->GetExtrinsicCalibrationMarkerGroup();
-
-    for (const auto& presetFileName : presetFileNameArray)
-    {
-        try
-        {
-            boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
-
-            if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
-                m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
-        }
-        catch (std::exception& e)
-        {
-            LOG_MESSAGE(e.what());
-        }
-    }
-    // (END OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
 
     // BUG: (30-Mar-2017) THE TABS ARE RE-INITIALIZED FOR EACH PLAY. THE WIDGETS SHOULD BE CREATED WHEN A VALID PLAY IS AVAILABLE, AND NOT RE-CREATED DURING THE APPLICATION LIFETIME.
     m_isInitialized = true;

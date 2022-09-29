@@ -363,9 +363,8 @@ void MainWindow::SaveFightFlowCalibration()
 
     QFileDialog fileExportDialog;
 
-    QString nameFilter = tr(UFC_STRING_RESOURCE_0016) + tr(";;");
-
-    QString cameraFileName = fileExportDialog.getSaveFileName(this, UFC_STRING_RESOURCE_0020, UFC_STRING_RESOURCE_0022, nameFilter);
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0016) + tr(";;"),
+        cameraFileName = fileExportDialog.getSaveFileName(this, UFC_STRING_RESOURCE_0020, (my::AddTrailingSlash(GetCurrentDirectory().toStdString()) + UFC_STRING_RESOURCE_0022).c_str(), nameFilter);
 
     if (cameraFileName.isEmpty())
         return /*true*/;

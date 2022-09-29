@@ -119,6 +119,12 @@ bool CFootage::OpenUrl(std::string url)
 
             return false;
         }
+
+        // (BEGIN OF) BUG: (29-Sep-2022) MAKE SURE THE TEXTURE IS UPDATED!
+        m_frameTexture.reset();
+
+        m_currentPositionInMilliseconds = my::Null<my::int64>();
+        // (END OF) BUG: (29-Sep-2022) MAKE SURE THE TEXTURE IS UPDATED!
     }
     else
     {
