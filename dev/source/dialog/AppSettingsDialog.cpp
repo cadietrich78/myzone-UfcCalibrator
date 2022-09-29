@@ -157,8 +157,6 @@ void CAppSettingsDialog::SaveSettings()
 
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_TEXT_SIZE_ITEM, guiTextSize);
 
-        CUfcCalibratorViewModel::Instance().SetAttribute(GUI_INFORMATION_TEXT_SIZE_ITEM, m_appGuiSettingsGroupDialog->GetGuiInformationTextSize());
-        
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_PLAY_KEY, m_appGuiSettingsGroupDialog->GetPlayKey());
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_PREVIOUS_FRAME_KEY, m_appGuiSettingsGroupDialog->GetPreviousFrameKey());
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_NEXT_FRAME_KEY, m_appGuiSettingsGroupDialog->GetNextFrameKey());

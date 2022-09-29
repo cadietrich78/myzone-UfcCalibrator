@@ -70,8 +70,6 @@ public:
 
     int GetGuiFieldLayoutLineThickness() const;
 
-    int GetGuiInformationTextSize() const;
-
     int GetPlayKey() const;
     int GetPreviousFrameKey() const;
     int GetNextFrameKey() const;
@@ -99,9 +97,8 @@ protected slots:
 protected:
     QCheckBox* m_windowExpertModeCheckBox;
 
-    QSpinBox *m_guiTextSizeSpinBox;
+    QComboBox*m_guiTextSizeComboBox;
     QSpinBox *m_guiFieldLayoutLineThicknessSpinBox;
-    QSpinBox *m_guiInformationTextSizeSpinBox;
 
     QComboBox *m_playKeyComboBox;
     QComboBox *m_previousFrameKeyComboBox;

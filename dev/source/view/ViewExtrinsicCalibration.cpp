@@ -46,7 +46,19 @@
 
 #if !defined(__glee_h_)
 #include <GL/glew.h>
+
+#if defined(_WIN32)
+#include <GL/wglew.h>
+#else // defined(_WIN32)
+#include <GL/glxew.h>
+#endif // defined(_WIN32)
 #endif // !defined(__glee_h_)
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
 
 #include <SelectionMechanism.h>
 #include <SelectableObject.h>
@@ -477,7 +489,7 @@ void CViewExtrinsicCalibration::DrawFieldLayout()
 
     glEnable(GL_LINE_SMOOTH);
 
-    glLineWidth(3.0f);
+    glLineWidth((float)CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_FIELD_LAYOUT_LINE_THICKNESS_ITEM));
 
     glColor3ub(255, 255, 0);
 
@@ -559,18 +571,52 @@ void CViewExtrinsicCalibration::DrawString(float x, float y, const std::string& 
     if (text.empty())
         return /*false*/;
 
-    int width = ((QGLWidget*)m_renderingContext)->width(),
-        height = ((QGLWidget*)m_renderingContext)->height();
+    GlHelper::PUSH_MATRIX_HELPER pushMatrixHelper(true);
 
-    QFont titleFont;
+    // (BEGIN OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
+    //GLint currentUnpackAlignment = 4;
 
-    titleFont.setFamily(titleFont.defaultFamily());
-    titleFont.setWeight(80);
+    //glGetIntegerv(GL_UNPACK_ALIGNMENT, &currentUnpackAlignment);    
 
-    GLdouble winX = 0.5f * (x + 1.0f) * width,
-        winY = 0.5f * (y + 1.0f) * height;
+    //glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
-    ((QGLWidget*)m_renderingContext)->renderText((int)winX, height - (int)winY, text.c_str(), titleFont);
+    //int width = ((QGLWidget*)m_renderingContext)->width(),
+    //    height = ((QGLWidget*)m_renderingContext)->height();
+
+    //QFont titleFont;
+
+    //titleFont.setFamily(titleFont.defaultFamily());
+    //titleFont.setWeight(80);
+
+    //double winX = 0.5 * (x + 1.0) * width,
+    //    winY = 0.5 * (y + 1.0) * height;
+
+    //((QGLWidget*)m_renderingContext)->renderText((int)winX, height - (int)winY, text.c_str(), titleFont);
+
+    //glPixelStorei(GL_UNPACK_ALIGNMENT, currentUnpackAlignment);
+
+    //GlHelper::DrawText(x, y, 15, 0.0, GLUT_STROKE_ROMAN, text);
+
+    int guiTextSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_TEXT_SIZE_ITEM);
+
+    void* glutFont = GLUT_BITMAP_HELVETICA_10;
+
+    switch (guiTextSize) {
+    case 10:
+        glutFont = GLUT_BITMAP_HELVETICA_10;
+        break;
+    case 12:
+        glutFont = GLUT_BITMAP_HELVETICA_12;
+        break;
+    case 18:
+        glutFont = GLUT_BITMAP_HELVETICA_18;
+        break;
+    default:
+        LOG_ERROR();
+    }
+
+    GlHelper::DrawString(glutFont, x, y, 0.0, text);
+    // (END OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
 }
 
 /**
@@ -579,4 +625,14 @@ void CViewExtrinsicCalibration::Create()
 {
     m_currentVenueId = my::Null<int>();
     m_fieldLayout.reset();
+
+    // (BEGIN OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
+    int argc = 0;
+
+    char** argv = 0;
+
+    glutInit(&argc, argv);
+
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_ALPHA | GLUT_MULTISAMPLE);
+    // (END OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
 }

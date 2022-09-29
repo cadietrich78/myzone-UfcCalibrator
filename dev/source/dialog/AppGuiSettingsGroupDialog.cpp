@@ -75,17 +75,18 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
 
         // TEXT SIZE
 
-        m_guiTextSizeSpinBox = new QSpinBox;
+        m_guiTextSizeComboBox = new QComboBox();
 
-        m_guiTextSizeSpinBox->setRange(6, 32);
-        m_guiTextSizeSpinBox->setSingleStep(2);
+        m_guiTextSizeComboBox->addItem("10", QVariant(10));
+        m_guiTextSizeComboBox->addItem("12", QVariant(12));
+        m_guiTextSizeComboBox->addItem("18", QVariant(18));
 
-        int guiTextSize = CUfcCalibratorViewModel::Instance().GetAttributeAsInt32(GUI_TEXT_SIZE_ITEM);
+        int guiTextSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_TEXT_SIZE_ITEM);
 
         if (my::IsNull(guiTextSize))
-            guiTextSize = 14;
+            guiTextSize = 10;
 
-        m_guiTextSizeSpinBox->setValue(guiTextSize);
+        m_guiTextSizeComboBox->setCurrentText(std::to_string(guiTextSize).c_str());
 
         // FIELD LAYOUT LINE THICKNESS
 
@@ -100,20 +101,6 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
             fieldLayoutLineThickness = 1;
 
         m_guiFieldLayoutLineThicknessSpinBox->setValue(fieldLayoutLineThickness);
-
-        // INFORMATION TEXT SIZE
-
-        m_guiInformationTextSizeSpinBox = new QSpinBox;
-
-        m_guiInformationTextSizeSpinBox->setRange(6, 32);
-        m_guiInformationTextSizeSpinBox->setSingleStep(2);
-
-        int guiInformationTextSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_INFORMATION_TEXT_SIZE_ITEM);
-
-        if (my::IsNull(guiInformationTextSize))
-            guiInformationTextSize = 12;
-
-        m_guiInformationTextSizeSpinBox->setValue(guiInformationTextSize);
 
         QGridLayout* windowSettingsLayout = new QGridLayout;
 
@@ -130,11 +117,9 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
         QGridLayout *guiSettingsLayout = new QGridLayout;
 
         guiSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0142) + tr(":")), 0, 0);
-        guiSettingsLayout->addWidget(m_guiTextSizeSpinBox, 0, 1, Qt::AlignRight);
+        guiSettingsLayout->addWidget(m_guiTextSizeComboBox, 0, 1, Qt::AlignRight);
         guiSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0193) + tr(":")), 1, 0);
         guiSettingsLayout->addWidget(m_guiFieldLayoutLineThicknessSpinBox, 1, 1, Qt::AlignRight);
-        guiSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0204) + tr(":")), 2, 0);
-        guiSettingsLayout->addWidget(m_guiInformationTextSizeSpinBox, 2, 1, Qt::AlignRight);
 
         guiSettingsGroup->setLayout(guiSettingsLayout);
 
@@ -198,9 +183,8 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
 
         DELETE_WIDGET(m_windowExpertModeCheckBox);
         DELETE_WIDGET(m_octagonSizeComboBox);
-        DELETE_WIDGET(m_guiTextSizeSpinBox);
+        DELETE_WIDGET(m_guiTextSizeComboBox);
         DELETE_WIDGET(m_guiFieldLayoutLineThicknessSpinBox);
-        DELETE_WIDGET(m_guiInformationTextSizeSpinBox);
         DELETE_WIDGET(m_playKeyComboBox);
         DELETE_WIDGET(m_previousFrameKeyComboBox);
         DELETE_WIDGET(m_nextFrameKeyComboBox);
@@ -241,16 +225,16 @@ bool CAppGuiSettingsGroupDialog::IsExpertModeEnabled() const
 
 int CAppGuiSettingsGroupDialog::GetGuiTextSize() const
 {
-    HEALTH_CHECK(!m_guiTextSizeSpinBox, my::Null<int>());
+    HEALTH_CHECK(!m_guiTextSizeComboBox, my::Null<int>());
 
-    return m_guiTextSizeSpinBox->value();
+    return m_guiTextSizeComboBox->currentData().toInt();
 }
 
 void CAppGuiSettingsGroupDialog::SetGuiTextSize(int guiTextSize)
 {
-    HEALTH_CHECK(!m_guiTextSizeSpinBox, /*false*/);
+    HEALTH_CHECK(!m_guiTextSizeComboBox, /*false*/);
 
-    m_guiTextSizeSpinBox->setValue(guiTextSize);
+    m_guiTextSizeComboBox->setCurrentText(std::to_string(guiTextSize).c_str());
 }
 
 int CAppGuiSettingsGroupDialog::GetGuiFieldLayoutLineThickness() const
@@ -258,13 +242,6 @@ int CAppGuiSettingsGroupDialog::GetGuiFieldLayoutLineThickness() const
     HEALTH_CHECK(!m_guiFieldLayoutLineThicknessSpinBox, my::Null<int>());
 
     return m_guiFieldLayoutLineThicknessSpinBox->value();
-}
-
-int CAppGuiSettingsGroupDialog::GetGuiInformationTextSize() const
-{
-    HEALTH_CHECK(!m_guiInformationTextSizeSpinBox, my::Null<int>());
-
-    return m_guiInformationTextSizeSpinBox->value();
 }
 
 int CAppGuiSettingsGroupDialog::GetPlayKey() const
@@ -420,11 +397,8 @@ QComboBox* CAppGuiSettingsGroupDialog::CreateOctagonSizeComboBox() const
 
 void CAppGuiSettingsGroupDialog::Create()
 {
-    // STRIKE ZONE GROUP
-    m_guiTextSizeSpinBox = 0;
+    m_guiTextSizeComboBox = 0;
     m_guiFieldLayoutLineThicknessSpinBox = 0;
-    m_guiInformationTextSizeSpinBox = 0;
-    // Data from GDX
     m_playKeyComboBox = 0;
     m_previousFrameKeyComboBox = 0;
     m_nextFrameKeyComboBox = 0;

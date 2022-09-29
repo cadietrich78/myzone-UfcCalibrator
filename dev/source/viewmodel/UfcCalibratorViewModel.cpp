@@ -105,7 +105,6 @@ int CUfcCalibratorViewModel::GetAttribute(OBJECT_TYPE objectType) const
     switch (objectType) {
     case GUI_FIELD_LAYOUT_LINE_THICKNESS_ITEM:
     case GUI_LABEL_POSITION_ITEM:
-    case GUI_INFORMATION_TEXT_SIZE_ITEM:
     case GUI_REFRESH_RATE:
     case GUI_CONTENTS_REFRESH_RATE:
     case GUI_SETTINGS_DOCK_MINIMUM_SIZE:
@@ -113,6 +112,7 @@ int CUfcCalibratorViewModel::GetAttribute(OBJECT_TYPE objectType) const
     case GUI_PREVIOUS_FRAME_KEY:
     case GUI_NEXT_FRAME_KEY:
     case GUI_OCTAGON_SIZE:
+    case GUI_TEXT_SIZE_ITEM:
     {
         std::map<int, boost::any>::const_iterator objectTypeToValueIterator = m_objectTypeToValueMap.find(objectType);
 
@@ -250,7 +250,7 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
             return false;
         }
 
-        // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT STRIKE ZONE CAMERA?
+        // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
         boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
 
         HEALTH_CHECK(!pinholeCamera, false);
@@ -261,7 +261,7 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
 
         // TRICKY: (21-Nov-2015) IS THERE A WAY TO GET THE VIEWPORT PARAMETERS?
         pinholeCamera->Create(opticalCenter, center, up, 2.0, 1.0, 1000.0, 1280, 720);
-        // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT STRIKE ZONE CAMERA?
+        // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
 
         boost::shared_ptr<CFootage> footage = m_ufcCalibratorModel->GetFootage();
 
@@ -309,28 +309,6 @@ bool CUfcCalibratorViewModel::ClosePlay()
     m_ufcCalibratorModel->Clear();
 
     return true;
-}
-
-int CUfcCalibratorViewModel::GetAttributeAsInt32(OBJECT_TYPE objectType) const
-{
-    int attribute = my::Null<int>();
-
-    std::map<int, boost::any>::const_iterator objectTypeToValueIterator = m_objectTypeToValueMap.find(objectType);
-
-    if (objectTypeToValueIterator == m_objectTypeToValueMap.end())
-        return my::Null<int>();
-
-    switch (objectType) {
-    case GUI_TEXT_SIZE_ITEM:
-        HEALTH_CHECK(objectTypeToValueIterator->second.type() != typeid(int), my::Null<int>());
-        
-        attribute = boost::any_cast<int>(objectTypeToValueIterator->second);
-        break;
-    default:
-        LOG_ERROR();
-    }
-
-    return attribute;
 }
 
 void CUfcCalibratorViewModel::SetAttribute(OBJECT_TYPE objectType, boost::any value)
@@ -1236,12 +1214,6 @@ bool CUfcCalibratorViewModel::OpenUserSettings(std::string userSettingsJsonStrin
             SetAttribute(GUI_LABEL_POSITION_ITEM, guiHandle["gui_label_position"].GetInt());
         }
 
-        if (guiHandle.HasMember("gui_information_text_size") &&
-            guiHandle["gui_information_text_size"].IsNumber())
-        {
-            SetAttribute(GUI_INFORMATION_TEXT_SIZE_ITEM, guiHandle["gui_information_text_size"].GetInt());
-        }
-
         if (guiHandle.HasMember("tracking_data_tab_item") &&
             guiHandle["tracking_data_tab_item"].IsBool())
         {
@@ -1331,7 +1303,7 @@ bool CUfcCalibratorViewModel::SaveUserSettings() const
 
     jsonWriter.StartObject();
 
-    int guiTextSize = GetAttributeAsInt32(GUI_TEXT_SIZE_ITEM);
+    int guiTextSize = GetAttribute<int>(GUI_TEXT_SIZE_ITEM);
 
     if (!my::IsNull(guiTextSize))
     {
@@ -1349,9 +1321,6 @@ bool CUfcCalibratorViewModel::SaveUserSettings() const
 
     jsonWriter.String("gui_label_position");
     jsonWriter.Int(GetAttribute<int>(GUI_LABEL_POSITION_ITEM));
-
-    jsonWriter.String("gui_information_text_size");
-    jsonWriter.Int(GetAttribute<int>(GUI_INFORMATION_TEXT_SIZE_ITEM));
 
     jsonWriter.String("tracking_data_tab_item");
     jsonWriter.Bool(GetAttribute<bool>(TRACKING_DATA_TAB_ITEM));

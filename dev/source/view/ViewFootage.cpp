@@ -173,7 +173,7 @@ void CViewFootage::DrawElapsedTime() const
                 + my::NumberToString(durationInSeconds, 3)
                 + " seconds";
 
-            int textSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_INFORMATION_TEXT_SIZE_ITEM);
+            int textSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_TEXT_SIZE_ITEM);
 
             HEALTH_CHECK(my::IsNull(textSize), /*false*/);
 

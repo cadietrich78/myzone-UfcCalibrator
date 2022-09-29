@@ -593,6 +593,9 @@ void CExtrinsicCalibrationTab::UpdateExtrinsicCalibration()
 
         UpdateViewFromModel();
     }
+
+    // TRICKY: (28-Sep-2022) A DUMB WAY TO MAKE SURE (?) THE MAIN WINDOW WILL BE REFRESHED AFTER AN UPDATING OF THE UNDERLYING DATA! THE MAIN WINDOW IS WAITING FOR THIS NULL EVENT.
+    parent()->eventFilter(0, 0);
 }
 
 QGroupBox* CExtrinsicCalibrationTab::CreateMarkerWidget()

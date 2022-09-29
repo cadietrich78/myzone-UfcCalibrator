@@ -132,7 +132,15 @@ void MainWindow::Refresh()
 // The QObject::installEventFilter() function enables this by setting up an event filter, causing a nominated filter object to receive the events for a target object in its QObject::eventFilter() function. An event filter gets to process events before the target object does, allowing it to inspect and discard the events as required. An existing event filter can be removed using the QObject::removeEventFilter() function.
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type() == QEvent::KeyRelease)
+    // TRICKY: (28-Sep-2022) A DUMB WAY TO MAKE SURE (?) THE MAIN WINDOW WILL BE REFRESHED AFTER AN UPDATING OF THE UNDERLYING DATA!
+    if (!obj &&
+        !event)
+    {
+        Repaint();
+
+        return true;
+    }
+    else if (event->type() == QEvent::KeyRelease)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 

@@ -72,7 +72,6 @@ public:
 
     bool ClosePlay();
 
-    int GetAttributeAsInt32(OBJECT_TYPE objectType) const;
     template < typename T >
     T GetAttribute(OBJECT_TYPE objectType) const;
     void SetAttribute(OBJECT_TYPE objectType, boost::any value);
