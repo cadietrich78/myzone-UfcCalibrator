@@ -24,5 +24,6 @@
     <file>images/save.png</file>
     <file>images/settings.png</file>
     <file>images/setting_tools.png</file>
+    <file>images/stat_o_rama_icon.png</file>
   </qresource>
 </RCC>

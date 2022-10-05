@@ -354,6 +354,9 @@ void CViewExtrinsicCalibration::DrawMarker(boost::shared_ptr<my::video::CMarker>
         else if (errorInInches < 12.0)
             errorInPct = 0.0 + ((errorInInches - 12.0) / (1.0 - 12.0)) * 90.0;
 
+        // BUG: (04-Oct-2022)
+        errorInPct = std::max(0.0, errorInPct);
+
         std::string errorAsString = std::to_string((int)errorInPct) + "%";
 
         //// (BEGIN OF) ERROR IN PIXELS! (WINDOW COORD)
@@ -533,6 +536,9 @@ void CViewExtrinsicCalibration::DrawCalibrationQuality()
         fitnessInPct = 90.0 + ((fitness - 0.2) / (0.0 - 0.2)) * 10.0;
     else if (fitness < 12.0)
         fitnessInPct = 0.0 + ((fitness - 1.0) / (0.2 - 1.0)) * 90.0;
+
+    // BUG: (04-Oct-2022)
+    fitnessInPct = std::max(0.0, fitnessInPct);
 
     std::string calibrationQualityAsString = std::to_string((int)fitnessInPct) + "%",
         octagonSizeAsString = std::to_string(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE));

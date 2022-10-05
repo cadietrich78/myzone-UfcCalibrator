@@ -352,6 +352,22 @@ bool CFootage::AddUserDefinedMarker(boost::shared_ptr<my::video::CMarker> marker
     return true;
 }
 
+bool CFootage::Reset()
+{
+    try
+    {
+        m_extrinsicCalibrationMarkerGroup.reset(new CUfcMarkerArray);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return false;
+    }
+
+    return true;
+}
+
 std::vector<boost::shared_ptr<my::video::CMarker> > CFootage::GetExtrinsicCalibrationMarkerArray() const
 {
     HEALTH_CHECK(!m_extrinsicCalibrationMarkerGroup, std::vector<boost::shared_ptr<my::video::CMarker> >());
@@ -536,22 +552,6 @@ bool CFootage::UpdateTexture(boost::shared_ptr<CTexture>& texture, int width, in
     return true;
 }
 
-bool CFootage::InitializeExtrinsicCalibrationMarkers()
-{
-    try
-    {
-        m_extrinsicCalibrationMarkerGroup.reset(new CUfcMarkerArray);
-    }
-    catch (std::exception& e)
-    {
-        LOG_MESSAGE(e.what());
-
-        return false;
-    }
-
-	return true;
-}
-
 /**
 */
 void CFootage::Create()
@@ -565,7 +565,7 @@ void CFootage::Create()
     m_frameTexture.reset();
     m_pinholeCamera.reset();
 
-    if (!InitializeExtrinsicCalibrationMarkers())
+    if (!Reset())
     {
         LOG_ERROR();
 

@@ -75,6 +75,7 @@
 #define UFC_STRING_RESOURCE_0027 "Failed to export camera settings!"
 #define UFC_STRING_RESOURCE_0028 "Octagon size"
 #define UFC_STRING_RESOURCE_0029 "All markers"
+#define UFC_STRING_RESOURCE_0030 "Clear"
 #define UFC_STRING_RESOURCE_0061 "All Supported Formats (*.png; *.jpg)"
 #define UFC_STRING_RESOURCE_0087 "Edit"
 #define UFC_STRING_RESOURCE_0089 "PNG file (*.png)"

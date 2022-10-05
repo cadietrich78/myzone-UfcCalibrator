@@ -70,6 +70,7 @@ public:
     boost::shared_ptr<CPinholeCamera2> GetPinholeCamera() const;
 
     void SaveFrame(std::string fileName);
+    bool UploadFrame(int cameraIndex);
 
 protected slots:
 

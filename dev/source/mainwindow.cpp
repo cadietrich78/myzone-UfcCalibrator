@@ -79,7 +79,8 @@ MainWindow::MainWindow()
     CreateCentralWidget();
 
     setWindowTitle(tr(UFC_STRING_RESOURCE_0001));
-    setWindowIcon(QIcon(":/images/mlbam_fb_logo.png"));
+
+    setWindowIcon(QIcon(":/images/stat_o_rama_icon.png"));
 
     // If set to true, then the top toolbar area is replaced with a Carbon HIToolbar or a Cocoa NSToolbar (depending on whether Qt was built with Carbon or Cocoa). All toolbars in the top toolbar area and any toolbars added afterwards are moved to that. (http://doc.qt.io/qt-4.8/qmainwindow.html#unifiedTitleAndToolBarOnMac-prop)
     setUnifiedTitleAndToolBarOnMac(true);
@@ -369,9 +370,7 @@ void MainWindow::SaveFightFlowCalibration()
     if (cameraFileName.isEmpty())
         return /*true*/;
 
-    int cameraIndex = pinholeCamera->GetIndex();
-
-    if (my::IsNull(cameraIndex))
+    if (my::IsNull(pinholeCamera->GetIndex()))
     {
         bool isValidInput;
 
@@ -394,6 +393,12 @@ void MainWindow::SaveFightFlowCalibration()
         LOG_ERROR();
     }
 
+    //if (!m_glWidget ||
+    //    !m_glWidget->UploadFrame(pinholeCamera->GetIndex()))
+    //{
+    //    LOG_ERROR();
+    //}
+
     statusBar()->showMessage(feedbackMessage.c_str(), 9000);
 }
 
@@ -410,6 +415,30 @@ void MainWindow::EditSettings()
     CAppSettingsDialog appSettingsDialog(this);
 
     appSettingsDialog.exec();
+}
+
+void MainWindow::ClearCalibration()
+{
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (!ufcCalibratorModel)
+        return /*true*/;
+
+    if (!ufcCalibratorModel->Reset())
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    for (std::vector<CTabInterface*>::const_iterator tabInterfaceIterator = m_tabInterfaceArray.begin(); tabInterfaceIterator != m_tabInterfaceArray.end(); ++tabInterfaceIterator)
+    {
+        CUfcCalibratorViewModel::Instance().SetAttribute((*tabInterfaceIterator)->GetType(), IsTabVisible(*tabInterfaceIterator));
+
+        (*tabInterfaceIterator)->UpdateViewFromModel();
+    }
+
+    Repaint();
 }
 
 // TESTING: (24-Feb-2016) PLAYBACK CONTROL - WORKS FOR BOTH 3D AND FOOTAGE VIEW
@@ -760,6 +789,19 @@ void MainWindow::CreateActions()
     }
 
     connect(m_saveFightFlowCalibrationAction, SIGNAL(triggered()), this, SLOT(SaveFightFlowCalibration()));
+
+    try
+    {
+        m_clearCalibrationAction = new QAction(tr(UFC_STRING_RESOURCE_0030), this);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return /*false*/;
+    }
+
+    connect(m_clearCalibrationAction, SIGNAL(triggered()), this, SLOT(ClearCalibration()));
 }
 
 void MainWindow::CreateMenus()
@@ -820,6 +862,10 @@ void MainWindow::CreateMenus()
     m_editMenu = menuBar()->addMenu(tr(UFC_STRING_RESOURCE_0087));
 
     m_editMenu->addAction(m_settingsAction);
+
+    m_editMenu->addSeparator();
+
+    m_editMenu->addAction(m_clearCalibrationAction);
 
     // HELP
 
@@ -1177,6 +1223,8 @@ void MainWindow::Create()
     m_fileToolBar = 0;
     // DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
     m_openVideoFrameAction = 0;
+    m_saveFightFlowCalibrationAction = 0;
+    m_clearCalibrationAction = 0;
     m_exitAction = 0;
     m_settingsAction = 0;
     m_showCheatSheetAction = 0;

@@ -121,6 +121,8 @@ private slots:
 
     void EditSettings();
 
+    void ClearCalibration();
+
     void PlaybackPreviousFrame();
     void PlaybackPlayButton();
     void PlaybackNextFrameButton();
@@ -179,6 +181,8 @@ protected:
 
     QAction* m_openVideoFrameAction;
     QAction* m_saveFightFlowCalibrationAction;
+
+    QAction* m_clearCalibrationAction;
 
     QAction *m_exitAction;
 

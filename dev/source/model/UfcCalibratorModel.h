@@ -68,6 +68,11 @@ public:
     
     boost::shared_ptr<my::CSceneryLayout> GetSceneryLayout();
 
+    /// <summary>
+    /// CALIBRATION!
+    /// </summary>
+    bool Reset();
+
     void Clear();
 
     bool IsValid() const;

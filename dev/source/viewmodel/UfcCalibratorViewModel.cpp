@@ -60,7 +60,6 @@
 #include <FileHelper.h>
 #include <UnitConversion.h>
 #include <PngWrapper.h>
-#include <CurveResampling.h>
 
 #include "../StringResource.h"
 #include "../ObjectType.h"

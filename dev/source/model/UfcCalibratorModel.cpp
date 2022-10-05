@@ -80,6 +80,30 @@ bool CUfcCalibratorModel::SetFootage(std::string url)
         return false;
     }
 
+    Reset();
+
+    SetAuditingId(my::GetFileName(url));
+
+    return true;
+}
+
+std::string CUfcCalibratorModel::GetAuditingId() const
+{
+    return m_auditingId;
+}
+
+void CUfcCalibratorModel::SetAuditingId(std::string auditingId)
+{
+    m_auditingId = auditingId;
+}
+
+boost::shared_ptr<my::CSceneryLayout> CUfcCalibratorModel::GetSceneryLayout()
+{
+    return m_sceneryLayout;
+}
+
+bool CUfcCalibratorModel::Reset()
+{
     // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT STRIKE ZONE CAMERA?
     boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
 
@@ -101,24 +125,14 @@ bool CUfcCalibratorModel::SetFootage(std::string url)
     m_footage->SetPinholeCamera(pinholeCamera);
     // (END OF) DEBUG ONLY! (20-Nov-2015) STRIKE ZONE CAMERA?
 
-    SetAuditingId(my::GetFileName(url));
+    if (!m_footage->Reset())
+    {
+        LOG_ERROR();
+
+        return false;
+    }
 
     return true;
-}
-
-std::string CUfcCalibratorModel::GetAuditingId() const
-{
-    return m_auditingId;
-}
-
-void CUfcCalibratorModel::SetAuditingId(std::string auditingId)
-{
-    m_auditingId = auditingId;
-}
-
-boost::shared_ptr<my::CSceneryLayout> CUfcCalibratorModel::GetSceneryLayout()
-{
-    return m_sceneryLayout;
 }
 
 void CUfcCalibratorModel::Clear()

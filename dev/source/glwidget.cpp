@@ -47,10 +47,11 @@
 #if !defined(__glee_h_)
 #include <GL/glew.h>
 #endif // !defined(__glee_h_)
+#include <boost/thread/scoped_thread.hpp>
 
-#include <Compass.h>
 #include <SelectableObject.h>
 #include <SelectionMechanism.h>
+#include <FileHelper.h>
 // TODO: (26-Oct-2015) DEPRECATED
 #include <BoundingBox.h>
 
@@ -215,6 +216,17 @@ void GLWidget::SaveFrame(std::string fileName)
 
         return /*false*/;
     }
+}
+
+bool GLWidget::UploadFrame(int cameraIndex)
+{
+    std::string frameFileName = "data/temporary/camera_" + std::to_string(cameraIndex) + ".png";
+
+    SaveFrame(frameFileName);
+
+    boost::scoped_thread<> asyncUploadingThread{ boost::thread{&my::file::UploadToFtp, frameFileName, "ftp://ftp.cadietrich.net/calibration/", "mma_monitoring@cadietrich.net", "pwFs%A&[TfGs", 16 } };
+
+    return true;
 }
 
 /**
@@ -398,14 +410,6 @@ void GLWidget::paintGL()
 
     glLoadMatrixT(pinholeCamera->GetViewMatrix());
     // (END OF) TESTING: (18-Sep-2019) APPLY TRANSFORM!
-
-    CCompass background;
-
-    background.SetGroundColor(60.0f/255.0f, 100.0f/255.0f, 40.0f/255.0f);
-    //background.SetHorizonColor(0.75f*(165.0f/255.0f), 0.75f*(191.0f/255.0f), 0.75f*(221.0f/255.0f));
-    //background.SetSkyColor(0.15f*(165.0f/255.0f), 0.15f*(191.0f/255.0f), 0.15f*(221.0f/255.0f));
-
-    //background.Draw(pinholeCamera);    
 
     m_footageViewer.Draw(0);
     m_extrinsicCalibrationViewer.Draw(0);

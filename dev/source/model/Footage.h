@@ -90,6 +90,11 @@ public:
 
     bool AddUserDefinedMarker(boost::shared_ptr<my::video::CMarker> marker);
 
+    /// <summary>
+    /// CALIBRATION!
+    /// </summary>
+    bool Reset();
+
     std::vector<boost::shared_ptr<my::video::CMarker> > GetExtrinsicCalibrationMarkerArray() const;
     std::vector<boost::shared_ptr<my::video::CMarker> > GetUserDefinedMarkerArray() const;
 
@@ -104,8 +109,6 @@ private:
     bool UpdateFrameTexture();
 
     bool UpdateTexture(boost::shared_ptr<CTexture>& texture, int width, int height, unsigned int format, unsigned int type, boost::shared_array<unsigned char> buffer) const;
-
-    bool InitializeExtrinsicCalibrationMarkers();
 
     void Create();
     void Destroy();
