@@ -56,7 +56,7 @@ boost::shared_ptr<CFootage> CUfcCalibratorModel::GetFootage()
     return m_footage;
 }
 
-bool CUfcCalibratorModel::SetFootage(std::string url)
+bool CUfcCalibratorModel::SetFootage(std::string url, int mode)
 {
     //TRACE_FUNCTION(my::CTrace::MUST_HAVE, "(url): %s", url.empty() ? "" : url.c_str());
 
@@ -80,7 +80,12 @@ bool CUfcCalibratorModel::SetFootage(std::string url)
         return false;
     }
 
-    Reset();
+    if (!SetMode(mode))
+    {
+        LOG_ERROR();
+
+        return false;
+    }
 
     SetAuditingId(my::GetFileName(url));
 
@@ -102,34 +107,44 @@ boost::shared_ptr<my::CSceneryLayout> CUfcCalibratorModel::GetSceneryLayout()
     return m_sceneryLayout;
 }
 
-bool CUfcCalibratorModel::Reset()
+bool CUfcCalibratorModel::SetMode(int mode)
 {
-    // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT STRIKE ZONE CAMERA?
+    HEALTH_CHECK(!m_footage, false);
+
+    // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
     boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
 
     HEALTH_CHECK(!pinholeCamera, false);
 
-    // CENTER FIELD CAMERA!
-    //double opticalCenter[3] = { 0.0, 400.0, 30.0 },
     // FIGHTFLOW CAMERA!
     double opticalCenter[3] = { 19.928911271784585, 42.006903157967180, 23.005910657377818 },
         center[3] = { 0, 0, 0 },
         up[3] = { 0.0, 0.0, 1.0 };
 
-    // TRICKY: (21-Nov-2015) VIEWPORT PARAMETERS?
-    // CENTER FIELD CAMERA!
-    //pinholeCamera->Create(opticalCenter, center, up, 2.0, 1.0, 1000.0, 1280, 720);
     // FIGHTFLOW CAMERA!
     pinholeCamera->Create(opticalCenter, center, up, 23.0, 1.0, 1000.0, 1280, 720);
 
     m_footage->SetPinholeCamera(pinholeCamera);
-    // (END OF) DEBUG ONLY! (20-Nov-2015) STRIKE ZONE CAMERA?
+    // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
 
-    if (!m_footage->Reset())
+    if (!m_footage->SetMode(mode))
     {
         LOG_ERROR();
 
         return false;
+    }
+
+    try
+    {
+        m_sceneryLayout.reset(new my::sport::CUfcSceneryLayout());
+
+        m_sceneryLayout->SetMode(mode);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return false ;
     }
 
     return true;

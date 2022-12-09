@@ -242,31 +242,12 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
             return false;
         }
 
-        if (!m_ufcCalibratorModel->SetFootage(url))
+        if (!m_ufcCalibratorModel->SetFootage(url, GetAttribute<int>(GUI_OCTAGON_SIZE)))
         {
             LOG_ERROR();
 
             return false;
         }
-
-        // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
-        boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
-
-        HEALTH_CHECK(!pinholeCamera, false);
-
-        double opticalCenter[3] = { 0.0, 400.0, 30.0 },
-            center[3] = { 0, 0, 0 },
-            up[3] = { 0.0, 0.0, 1.0 };
-
-        // TRICKY: (21-Nov-2015) IS THERE A WAY TO GET THE VIEWPORT PARAMETERS?
-        pinholeCamera->Create(opticalCenter, center, up, 2.0, 1.0, 1000.0, 1280, 720);
-        // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
-
-        boost::shared_ptr<CFootage> footage = m_ufcCalibratorModel->GetFootage();
-
-        HEALTH_CHECK(!footage, false);
-
-        footage->SetPinholeCamera(pinholeCamera);
 
         std::vector<std::string> directoryNameArray = my::GetDirectoryNameArray(url);
 
@@ -1393,10 +1374,5 @@ void CUfcCalibratorViewModel::Create()
 
     if (!OpenUserSettings())
         LOG_ERROR();
-
-    boost::shared_ptr<my::CSceneryLayout> sceneryLayout = m_ufcCalibratorModel->GetSceneryLayout();
-
-    if (sceneryLayout)
-        sceneryLayout->SetMode(GetAttribute<int>(GUI_OCTAGON_SIZE));
 }
 

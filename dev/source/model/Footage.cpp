@@ -352,11 +352,11 @@ bool CFootage::AddUserDefinedMarker(boost::shared_ptr<my::video::CMarker> marker
     return true;
 }
 
-bool CFootage::Reset()
+bool CFootage::SetMode(int mode)
 {
     try
     {
-        m_extrinsicCalibrationMarkerGroup.reset(new CUfcMarkerArray);
+        m_extrinsicCalibrationMarkerGroup.reset(new CUfcMarkerArray(mode));
     }
     catch (std::exception& e)
     {
@@ -565,7 +565,7 @@ void CFootage::Create()
     m_frameTexture.reset();
     m_pinholeCamera.reset();
 
-    if (!Reset())
+    if (!SetMode())
     {
         LOG_ERROR();
 

@@ -424,7 +424,7 @@ void MainWindow::ClearCalibration()
     if (!ufcCalibratorModel)
         return /*true*/;
 
-    if (!ufcCalibratorModel->Reset())
+    if (!ufcCalibratorModel->SetMode(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE)))
     {
         LOG_ERROR();
 

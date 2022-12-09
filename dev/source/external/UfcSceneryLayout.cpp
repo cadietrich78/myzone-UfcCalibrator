@@ -63,99 +63,99 @@ my::CVector3<double> my::sport::CUfcSceneryLayout::GetItemPosition(my::int64 ite
         position.Set(0, 0, 0);
         break;
     case _0TH_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_0TH_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_0TH_30_OCTAGON_VERTEX_ITEM);
         break;
     case _1ST_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_1ST_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_1ST_30_OCTAGON_VERTEX_ITEM);
         break;
     case _2ND_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_2ND_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_2ND_30_OCTAGON_VERTEX_ITEM);
         break;
     case _3RD_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_3RD_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_3RD_30_OCTAGON_VERTEX_ITEM);
         break;
     case _4TH_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_4TH_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_4TH_30_OCTAGON_VERTEX_ITEM);
         break;
     case _5TH_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_5TH_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_5TH_30_OCTAGON_VERTEX_ITEM);
         break;
     case _6TH_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_6TH_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_6TH_30_OCTAGON_VERTEX_ITEM);
         break;
     case _7TH_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_7TH_25_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_7TH_30_OCTAGON_VERTEX_ITEM);
         break;
     case _0TH_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_0TH_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_0TH_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _1ST_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_1ST_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_1ST_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _2ND_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_2ND_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_2ND_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _3RD_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_3RD_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_3RD_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _4TH_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_4TH_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_4TH_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _5TH_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_5TH_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_5TH_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _6TH_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_6TH_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_6TH_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _7TH_INNER_OCTAGON_VERTEX_ITEM:
-        if (m_mode == 25)
+        if (m_mode == _25_FEET_OCTAGON)
             return GetItemPosition(_7TH_25_INNER_OCTAGON_VERTEX_ITEM);
-        else if (m_mode == 30)
+        else if (m_mode == _30_FEET_OCTAGON)
             return GetItemPosition(_7TH_30_INNER_OCTAGON_VERTEX_ITEM);
         break;
     case _0TH_25_OCTAGON_VERTEX_ITEM:
@@ -389,22 +389,27 @@ boost::shared_ptr<CVertexPool> my::sport::CUfcSceneryLayout::GetLayoutMesh()
         // 'M'
 
         std::vector<my::CVector3<double> > monsterVertexArray = {
-            { -3.28664, 3.11314, 0.0 },
-            { -2.28748, 3.01117, 0.0 },
-            { -1.38749, -2.98952, 0.0 },
-            { -1.25254, 3.26487, 0.0 },
-            { -0.679347, 3.19027, 0.0 },
-            { -0.206619, -3.56642, 0.0 },
-            { 0.323262, 2.91753, 0.0 },
-            { 1.23514, 2.92939, 0.0 },
-            { 1.42536, -2.58327, 0.0 },
-            { 2.12788, 3.19285, 0.0 },
-            { 1.46186, 3.78328, 0.0 },
-            { 0.696361, 3.43021, 0.0 },
-            { -0.0149442, 3.95161, 0.0 },
-            { -1.16323, 3.55305, 0.0 },
-            { -2.02073, 3.79695, 0.0 }
+            { -2.89664, 2.91314, 0.0 }, 
+            { -1.89748, 2.81117, 0.0 }, 
+            { -0.99749, -3.18952, 0.0 }, 
+            { -0.86254, 3.06487, 0.0 }, 
+            { -0.289347, 2.99027, 0.0 }, 
+            { 0.183381, -3.76642, 0.0 }, 
+            { 0.713262, 2.71753, 0.0 }, 
+            { 1.62514, 2.72939, 0.0 }, 
+            { 1.81536, -2.78327, 0.0 }, 
+            { 2.51788, 2.99285, 0.0 }, 
+            { 1.85186, 3.58328, 0.0 }, 
+            { 1.086361, 3.23021, 0.0 }, 
+            { 0.3750558, 3.75161, 0.0 }, 
+            { -0.77323, 3.35305, 0.0 }, 
+            { -1.63073, 3.59695, 0.0 }
         };
+
+        if (m_mode == _30_FEET_OCTAGON)
+        {
+            std::transform(monsterVertexArray.cbegin(), monsterVertexArray.cend(), monsterVertexArray.begin(), [](const my::CVector3<double>& monsterVertex) { return monsterVertex * 1.3; });
+        }
 
         std::vector<my::CVector3<double> >::const_iterator monsterVertexIterator = monsterVertexArray.begin();
 
@@ -418,9 +423,9 @@ boost::shared_ptr<CVertexPool> my::sport::CUfcSceneryLayout::GetLayoutMesh()
                 nextMonsterVertexIterator = monsterVertexArray.begin();
 
             m_layoutMesh->AddColor(0.0, 1.0, 0.0, 1.0);
-            m_layoutMesh->AddVertex(monsterVertexIterator->x() + 0.41, monsterVertexIterator->y() - 0.2, monsterVertexIterator->z());
+            m_layoutMesh->AddVertex(monsterVertexIterator->x(), monsterVertexIterator->y(), monsterVertexIterator->z());
             m_layoutMesh->AddColor(0.0, 1.0, 0.0, 1.0);
-            m_layoutMesh->AddVertex(nextMonsterVertexIterator->x() + 0.41, nextMonsterVertexIterator->y() - 0.2, nextMonsterVertexIterator->z());
+            m_layoutMesh->AddVertex(nextMonsterVertexIterator->x(), nextMonsterVertexIterator->y(), nextMonsterVertexIterator->z());
             ADD_LINE;
 
             ++monsterVertexIterator;
@@ -434,10 +439,9 @@ bool my::sport::CUfcSceneryLayout::SetMode(int mode)
 {
     HEALTH_CHECK((mode != 25) && (mode != 30), false);
 
-    if (m_mode != mode)
-        m_layoutMesh.reset();
-
     m_mode = mode;
+
+    m_layoutMesh.reset();
 
     return true;
 }

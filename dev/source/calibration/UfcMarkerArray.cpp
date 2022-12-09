@@ -51,15 +51,17 @@
 
 #include "UfcMarkerArray.h"
 
-CUfcMarkerArray::CUfcMarkerArray()
-: CMarkerGroup()
+CUfcMarkerArray::CUfcMarkerArray(int mode)
+    : CMarkerGroup(),
+    m_mode(mode),
+    m_pointMarkerArray()
 {
-	if (!Initialize())
-	{
-		LOG_ERROR();
+    if (!Initialize())
+    {
+        LOG_ERROR();
 
-		return /*false*/;
-	}
+        return /*false*/;
+    }
 }
 
 double CUfcMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
@@ -175,6 +177,8 @@ bool CUfcMarkerArray::Initialize()
 }
 
     my::sport::CUfcSceneryLayout ufcSceneryLayout;
+
+    ufcSceneryLayout.SetMode(m_mode);
 
     double screeCoord[2] = { 0 };
 

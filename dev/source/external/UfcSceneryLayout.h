@@ -57,6 +57,11 @@ namespace my {
             public boost::noncopyable
         {
         public:
+            enum OCTAGON_TYPE {
+                _25_FEET_OCTAGON = 25,
+                _30_FEET_OCTAGON = 30
+            };
+
             enum UFC_ITEM {
                 CENTRE_ITEM,
                 _0TH_OCTAGON_VERTEX_ITEM,

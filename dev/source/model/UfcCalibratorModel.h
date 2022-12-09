@@ -49,7 +49,7 @@
 #include <vector>
 #include <string>
 
-#include <SceneryLayout.h>
+#include <UfcSceneryLayout.h>
 
 #include "Footage.h"
 
@@ -61,7 +61,12 @@ public:
     CUfcCalibratorModel();
 
     boost::shared_ptr<CFootage> GetFootage();
-    bool SetFootage(std::string url);
+    /// <summary>
+    /// _25_FEET_OCTAGON or _30_FEET_OCTAGON
+    /// </summary>
+    /// <param name="mode"></param>
+    /// <returns></returns>
+    bool SetFootage(std::string url, int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
     
     std::string GetAuditingId() const;
     void SetAuditingId(std::string auditingId);
@@ -69,9 +74,11 @@ public:
     boost::shared_ptr<my::CSceneryLayout> GetSceneryLayout();
 
     /// <summary>
-    /// CALIBRATION!
+    /// _25_FEET_OCTAGON or _30_FEET_OCTAGON
     /// </summary>
-    bool Reset();
+    /// <param name="mode"></param>
+    /// <returns></returns>
+    bool SetMode(int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
 
     void Clear();
 
