@@ -242,7 +242,7 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
             return false;
         }
 
-        if (!m_ufcCalibratorModel->SetFootage(url, GetAttribute<int>(GUI_OCTAGON_SIZE)))
+        if (!m_ufcCalibratorModel->SetFootage(url))
         {
             LOG_ERROR();
 

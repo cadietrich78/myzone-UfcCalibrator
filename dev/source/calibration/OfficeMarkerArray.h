@@ -50,21 +50,17 @@
 
 #include <PinholeCamera2.h>
 #include <Marker.h>
-#include <UfcSceneryLayout.h>
+#include <OfficeSceneryLayout.h>
 
 #include "MarkerGroup.h"
 
-class CUfcMarkerArray
+class COfficeMarkerArray
 	: public CMarkerGroup,
 	public boost::noncopyable
 {
 public:
-	/// <summary>
-	/// _25_FEET_OCTAGON or _30_FEET_OCTAGON
-	/// </summary>
-	/// <param name="mode"></param>
 	/// <returns></returns>
-	CUfcMarkerArray(int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
+	COfficeMarkerArray();
 
 	double GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
@@ -78,13 +74,6 @@ private:
 	bool Initialize();
 
 protected:
-	/// <summary>
-	/// _25_FEET_OCTAGON or _30_FEET_OCTAGON
-	/// </summary>
-	/// <param name="mode"></param>
-	/// <returns></returns>
-	int m_mode;
-
 	std::vector<boost::shared_ptr<my::video::CMarker> > m_pointMarkerArray;
 };
 

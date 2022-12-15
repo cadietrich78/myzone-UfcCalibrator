@@ -50,10 +50,15 @@
 #include <boost/filesystem.hpp>
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/document.h>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/calib3d.hpp>
 
 #include <Logger.h>
 #include <FileHelper.h>
 #include <UnitConversion.h>
+#include <CalibratedPinholeCamera.h>
 
 #include "StringResource.h"
 #include "ObjectType.h"
@@ -248,7 +253,6 @@ void MainWindow::RefreshContents()
     //UpdateDatabaseActions();
 }
 
-// DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
 void MainWindow::OpenVideoFrame()
 {
     QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
@@ -345,6 +349,153 @@ void MainWindow::OpenVideoFrame()
     QApplication::restoreOverrideCursor();
 }
 
+void MainWindow::OpenWebcamFrame()
+{
+    bool isValidInput = false;
+
+    int webcamIndex = QInputDialog::getInt(this, UFC_STRING_RESOURCE_0024, UFC_STRING_RESOURCE_0025, 0, 0, 8, 1, &isValidInput);
+
+    if (!isValidInput)
+        return /*true*/;
+
+    cv::VideoCapture videoCapture;
+
+    videoCapture.open(webcamIndex, cv::CAP_DSHOW);
+
+    if (!videoCapture.isOpened())
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    if (!videoCapture.set(cv::CAP_PROP_FRAME_WIDTH, 640) ||
+        !videoCapture.set(cv::CAP_PROP_FRAME_HEIGHT, 480))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    cv::Mat frame;
+
+    std::string frameUrl = "data/temporary/webcam_" + std::to_string(webcamIndex) + ".png";
+
+    if (videoCapture.read(frame))
+    {
+        if (frame.empty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+    }
+
+    QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
+
+    fileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
+
+    fileOpenDialog.setNameFilter(nameFilter);
+    fileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    if (!fileOpenDialog.exec())
+        return /*false*/;
+
+    QStringList fileNameArray = fileOpenDialog.selectedFiles();
+
+    std::vector<std::string> formattedFileNameArray;
+
+    for (int fileNameIndex = 0; fileNameIndex < fileNameArray.size(); ++fileNameIndex)
+    {
+        if (fileNameArray.at(fileNameIndex).isEmpty() ||
+            fileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        std::string formattedFileName = fileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+        formattedFileNameArray.push_back(formattedFileName);
+    }
+
+    if (formattedFileNameArray.size() != 1)
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    m_intrinsicCalibrationFileName = formattedFileNameArray.front();
+
+    CCalibratedPinholeCamera calibratedPinholeCamera;
+
+    if (!calibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    cv::Mat frameToBeDisplayed(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
+
+    cv::undistort(frame, frameToBeDisplayed, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+
+    if (!cv::imwrite(frameUrl, frameToBeDisplayed))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    if (videoCapture.isOpened())
+        videoCapture.release();
+
+    bool createPlay = true;
+
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (ufcCalibratorModel)
+    {
+        boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+
+        if (footage)
+        {
+            int reply = QMessageBox::warning(this, UFC_STRING_RESOURCE_0013, UFC_STRING_RESOURCE_0014, QMessageBox::Yes, QMessageBox::No);
+
+            createPlay = reply == QMessageBox::No;
+        }
+    }
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(frameUrl, createPlay))
+    {
+        statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
+
+        QApplication::restoreOverrideCursor();
+
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    UpdatePlaybackWidget();
+
+    InitializeTabs();
+
+    Repaint();
+
+    statusBar()->showMessage(UFC_STRING_RESOURCE_0149, 9000);
+
+    UpdateActions();
+
+    QApplication::restoreOverrideCursor();
+}
+
 void MainWindow::SaveFightFlowCalibration()
 {
     boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
@@ -364,40 +515,32 @@ void MainWindow::SaveFightFlowCalibration()
 
     QFileDialog fileExportDialog;
 
-    QString nameFilter = tr(UFC_STRING_RESOURCE_0016) + tr(";;"),
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0032) + tr(";;"),
         cameraFileName = fileExportDialog.getSaveFileName(this, UFC_STRING_RESOURCE_0020, (my::AddTrailingSlash(GetCurrentDirectory().toStdString()) + UFC_STRING_RESOURCE_0022).c_str(), nameFilter);
 
     if (cameraFileName.isEmpty())
         return /*true*/;
 
-    if (my::IsNull(pinholeCamera->GetIndex()))
-    {
-        bool isValidInput;
-
-        int cameraIndex = QInputDialog::getInt(this, UFC_STRING_RESOURCE_0024, UFC_STRING_RESOURCE_0025, 1, 1, 8, 1, &isValidInput);
-
-        if (!isValidInput)
-            return /*true*/;
-
-        pinholeCamera->SetIndex(cameraIndex);
-    }
-
     std::string feedbackMessage = UFC_STRING_RESOURCE_0026;
 
-    if (!CUfcCalibratorViewModel::Instance().SaveCameraSettings(cameraFileName.toStdString()))
+    // INTERNAL CALIBRAITON ONLY!
+    CCalibratedPinholeCamera partiallyCalibratedPinholeCamera;
+
+    if (!partiallyCalibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
     {
-        feedbackMessage = UFC_STRING_RESOURCE_0027;
-
-        QMessageBox::warning(this, UFC_STRING_RESOURCE_0024, feedbackMessage.c_str(), QMessageBox::Yes, QMessageBox::Yes);
-
         LOG_ERROR();
+
+        return /*false*/;
     }
 
-    //if (!m_glWidget ||
-    //    !m_glWidget->UploadFrame(pinholeCamera->GetIndex()))
-    //{
-    //    LOG_ERROR();
-    //}
+    CCalibratedPinholeCamera calibratedPinholeCamera(*pinholeCamera, partiallyCalibratedPinholeCamera.GetCameraMatrix(), partiallyCalibratedPinholeCamera.GetDistortionCoefficientArray());
+
+    if (!calibratedPinholeCamera.ToPinholeCameraFile(cameraFileName.toStdString()))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
 
     statusBar()->showMessage(feedbackMessage.c_str(), 9000);
 }
@@ -423,13 +566,6 @@ void MainWindow::ClearCalibration()
 
     if (!ufcCalibratorModel)
         return /*true*/;
-
-    if (!ufcCalibratorModel->SetMode(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE)))
-    {
-        LOG_ERROR();
-
-        return /*false*/;
-    }
 
     for (std::vector<CTabInterface*>::const_iterator tabInterfaceIterator = m_tabInterfaceArray.begin(); tabInterfaceIterator != m_tabInterfaceArray.end(); ++tabInterfaceIterator)
     {
@@ -763,7 +899,6 @@ void MainWindow::CreateActions()
 
     // IO
 
-    // DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
     try
     {
         m_openVideoFrameAction = new QAction(tr(UFC_STRING_RESOURCE_0311), this);
@@ -776,6 +911,19 @@ void MainWindow::CreateActions()
     }
 
     connect(m_openVideoFrameAction, SIGNAL(triggered()), this, SLOT(OpenVideoFrame()));
+
+    try
+    {
+        m_openWebcamFrameAction = new QAction(tr(UFC_STRING_RESOURCE_0314), this);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return /*false*/;
+    }
+
+    connect(m_openWebcamFrameAction, SIGNAL(triggered()), this, SLOT(OpenWebcamFrame()));
 
     try
     {
@@ -832,8 +980,8 @@ void MainWindow::CreateMenus()
         return /*false*/;
     }
 
-    // DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
     fileOpenMenu->addAction(m_openVideoFrameAction);
+    fileOpenMenu->addAction(m_openWebcamFrameAction);
 
     m_fileMenu->addSeparator();
 
@@ -850,7 +998,6 @@ void MainWindow::CreateMenus()
         return /*false*/;
     }
 
-    // DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
     fileExportMenu->addAction(m_saveFightFlowCalibrationAction);
 
     m_fileMenu->addSeparator();
@@ -1221,8 +1368,8 @@ void MainWindow::Create()
     m_auditingMenu = 0;
     m_helpMenu = 0;
     m_fileToolBar = 0;
-    // DEBUG ONLY! (01-Dec-2016) OPEN FROM IMAGE, IMAGE SEQUENCE OR VIDEO
     m_openVideoFrameAction = 0;
+    m_openWebcamFrameAction = 0;
     m_saveFightFlowCalibrationAction = 0;
     m_clearCalibrationAction = 0;
     m_exitAction = 0;
@@ -1246,10 +1393,8 @@ void MainWindow::Create()
     }
 
     // m_helpScreen
-
     // m_guiRefreshTimer
-
-    m_playContextMenu = 0;
+    m_intrinsicCalibrationFileName = my::Null<std::string>();
 
     // DEPRECATED: (23-Oct-2016) REPLACE BY DEPENDENCY INJECTION
     CUfcCalibratorViewModel::Instance().SetMessageQueue(m_messageQueue);

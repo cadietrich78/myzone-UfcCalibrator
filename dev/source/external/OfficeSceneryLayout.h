@@ -41,8 +41,8 @@
  * But it's a process. We'll make it less shitty. Just watch!"
  */
 
-#ifndef UFC_SCENERY_LAYOUT_INCLUDED
-#define UFC_SCENERY_LAYOUT_INCLUDED
+#ifndef OFFICE_SCENERY_LAYOUT_INCLUDED
+#define OFFICE_SCENERY_LAYOUT_INCLUDED
 
 #include <boost/utility.hpp>
 
@@ -52,70 +52,22 @@
 
 namespace my {
     namespace sport {
-        class CUfcSceneryLayout
+        class COfficeSceneryLayout
             : public my::CSceneryLayout,
             public boost::noncopyable
         {
         public:
-            enum OCTAGON_TYPE {
-                _25_FEET_OCTAGON = 25,
-                _30_FEET_OCTAGON = 30
-            };
-
-            enum UFC_ITEM {
-                CENTRE_ITEM,
-                _0TH_OCTAGON_VERTEX_ITEM,
-                _1ST_OCTAGON_VERTEX_ITEM,
-                _2ND_OCTAGON_VERTEX_ITEM,
-                _3RD_OCTAGON_VERTEX_ITEM,
-                _4TH_OCTAGON_VERTEX_ITEM,
-                _5TH_OCTAGON_VERTEX_ITEM,
-                _6TH_OCTAGON_VERTEX_ITEM,
-                _7TH_OCTAGON_VERTEX_ITEM,
-                _0TH_INNER_OCTAGON_VERTEX_ITEM,
-                _1ST_INNER_OCTAGON_VERTEX_ITEM,
-                _2ND_INNER_OCTAGON_VERTEX_ITEM,
-                _3RD_INNER_OCTAGON_VERTEX_ITEM,
-                _4TH_INNER_OCTAGON_VERTEX_ITEM,
-                _5TH_INNER_OCTAGON_VERTEX_ITEM,
-                _6TH_INNER_OCTAGON_VERTEX_ITEM,
-                _7TH_INNER_OCTAGON_VERTEX_ITEM,
-                _0TH_25_OCTAGON_VERTEX_ITEM,
-                _1ST_25_OCTAGON_VERTEX_ITEM,
-                _2ND_25_OCTAGON_VERTEX_ITEM,
-                _3RD_25_OCTAGON_VERTEX_ITEM,
-                _4TH_25_OCTAGON_VERTEX_ITEM,
-                _5TH_25_OCTAGON_VERTEX_ITEM,
-                _6TH_25_OCTAGON_VERTEX_ITEM,
-                _7TH_25_OCTAGON_VERTEX_ITEM,
-                _0TH_25_INNER_OCTAGON_VERTEX_ITEM,
-                _1ST_25_INNER_OCTAGON_VERTEX_ITEM,
-                _2ND_25_INNER_OCTAGON_VERTEX_ITEM,
-                _3RD_25_INNER_OCTAGON_VERTEX_ITEM,
-                _4TH_25_INNER_OCTAGON_VERTEX_ITEM,
-                _5TH_25_INNER_OCTAGON_VERTEX_ITEM,
-                _6TH_25_INNER_OCTAGON_VERTEX_ITEM,
-                _7TH_25_INNER_OCTAGON_VERTEX_ITEM,
-                _0TH_30_OCTAGON_VERTEX_ITEM,
-                _1ST_30_OCTAGON_VERTEX_ITEM,
-                _2ND_30_OCTAGON_VERTEX_ITEM,
-                _3RD_30_OCTAGON_VERTEX_ITEM,
-                _4TH_30_OCTAGON_VERTEX_ITEM,
-                _5TH_30_OCTAGON_VERTEX_ITEM,
-                _6TH_30_OCTAGON_VERTEX_ITEM,
-                _7TH_30_OCTAGON_VERTEX_ITEM,
-                _0TH_30_INNER_OCTAGON_VERTEX_ITEM,
-                _1ST_30_INNER_OCTAGON_VERTEX_ITEM,
-                _2ND_30_INNER_OCTAGON_VERTEX_ITEM,
-                _3RD_30_INNER_OCTAGON_VERTEX_ITEM,
-                _4TH_30_INNER_OCTAGON_VERTEX_ITEM,
-                _5TH_30_INNER_OCTAGON_VERTEX_ITEM,
-                _6TH_30_INNER_OCTAGON_VERTEX_ITEM,
-                _7TH_30_INNER_OCTAGON_VERTEX_ITEM,
+            enum OFFICE_ITEM {
+                LEFT_TOP_VERTEX_ITEM,
+                LEFT_CENTER_VERTEX_ITEM,
+                LEFT_BOTTOM_VERTEX_ITEM,
+                RIGHT_TOP_VERTEX_ITEM,
+                RIGHT_CENTER_VERTEX_ITEM,
+                RIGHT_BOTTOM_VERTEX_ITEM,
                 LAST_ITEM
             };
 
-            CUfcSceneryLayout();
+            COfficeSceneryLayout();
 
             my::CVector3<double> GetItemPosition(my::int64 item, int venueId = my::Null<int>()) const;
 
@@ -131,13 +83,6 @@ namespace my {
 
             boost::shared_ptr<CVertexPool> GetLayoutMesh();
 
-            /// <summary>
-            /// 25 or 30
-            /// </summary>
-            /// <param name="mode"></param>
-            /// <returns></returns>
-            bool SetMode(int mode);
-
         protected:
             int m_mode;
 
@@ -146,11 +91,11 @@ namespace my {
     }; // sport
 
     template <>
-    inline sport::CUfcSceneryLayout::UFC_ITEM Null()
+    inline sport::COfficeSceneryLayout::OFFICE_ITEM Null()
     {
-        return sport::CUfcSceneryLayout::UFC_ITEM::LAST_ITEM;
+        return sport::COfficeSceneryLayout::OFFICE_ITEM::LAST_ITEM;
     }
 }; // my
 
-#endif // UFC_SCENERY_LAYOUT_INCLUDED
+#endif // OFFICE_SCENERY_LAYOUT_INCLUDED
 

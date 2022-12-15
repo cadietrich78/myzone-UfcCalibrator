@@ -49,7 +49,7 @@
 #include <vector>
 #include <string>
 
-#include <UfcSceneryLayout.h>
+#include <OfficeSceneryLayout.h>
 
 #include "Footage.h"
 
@@ -66,19 +66,12 @@ public:
     /// </summary>
     /// <param name="mode"></param>
     /// <returns></returns>
-    bool SetFootage(std::string url, int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
+    bool SetFootage(std::string url);
     
     std::string GetAuditingId() const;
     void SetAuditingId(std::string auditingId);
     
     boost::shared_ptr<my::CSceneryLayout> GetSceneryLayout();
-
-    /// <summary>
-    /// _25_FEET_OCTAGON or _30_FEET_OCTAGON
-    /// </summary>
-    /// <param name="mode"></param>
-    /// <returns></returns>
-    bool SetMode(int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
 
     void Clear();
 

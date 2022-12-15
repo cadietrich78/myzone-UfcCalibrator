@@ -49,7 +49,7 @@
 #include <Texture.h>
 #include <Image.h>
 #include <Timestamp.h>
-#include <UfcSceneryLayout.h>
+#include <OfficeSceneryLayout.h>
 
 #include "../calibration/PinholeCameraCalibration.h"
 #include "../video/MediaPlayerInterface.h"
@@ -90,13 +90,6 @@ public:
     bool AddExtrinsicCalibrationPointMarker(std::string name, std::string icon, my::CVector3<double> worldCoord, my::CVector2<double> screenCoord, my::video::CMarker::CONSTRAINT constraint = my::video::CMarker::UNCONSTRAINED, bool isEnabled = true);
 
     bool AddUserDefinedMarker(boost::shared_ptr<my::video::CMarker> marker);
-
-    /// <summary>
-    /// _25_FEET_OCTAGON or _30_FEET_OCTAGON
-    /// </summary>
-    /// <param name="mode"></param>
-    /// <returns></returns>
-    bool SetMode(int mode = my::sport::CUfcSceneryLayout::_25_FEET_OCTAGON);
 
     std::vector<boost::shared_ptr<my::video::CMarker> > GetExtrinsicCalibrationMarkerArray() const;
     std::vector<boost::shared_ptr<my::video::CMarker> > GetUserDefinedMarkerArray() const;

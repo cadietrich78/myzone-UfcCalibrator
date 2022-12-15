@@ -115,6 +115,8 @@ private slots:
     void RefreshContents();
     
     void OpenVideoFrame();
+    void OpenWebcamFrame();
+
     void SaveFightFlowCalibration();
 
     void CloseGameCallback();
@@ -180,6 +182,8 @@ protected:
     QToolBar *m_fileToolBar;
 
     QAction* m_openVideoFrameAction;
+    QAction* m_openWebcamFrameAction;
+
     QAction* m_saveFightFlowCalibrationAction;
 
     QAction* m_clearCalibrationAction;
@@ -211,7 +215,7 @@ protected:
 
     boost::shared_ptr<QSound> m_messageSoundEffect;
 
-    QMenu *m_playContextMenu;
+    std::string m_intrinsicCalibrationFileName;
 };
 
 #endif //#if !defined(MAIN_WINDOW_INCLUDED)

@@ -86,41 +86,80 @@ void CExtrinsicCalibrationTab::Initialize()
         return /*true*/;
 
     // (BEGIN OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
-    std::string presetsDirectoryName = "./data/camera/";
-
-    HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
-    HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
-
-    std::list<boost::filesystem::path> presetFileNameArray;
-
-    try
-    {
-        std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
-    }
-    catch (...)
-    {
-        LOG_ERROR();
-    }
-
     boost::shared_ptr<CMarkerGroup> extrinsicCalibrationMarkerGroup = footage->GetExtrinsicCalibrationMarkerGroup();
 
-    for (const auto& presetFileName : presetFileNameArray)
+    //std::string presetsDirectoryName = "./data/camera/";
+
+    //HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
+    //HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
+
+    //std::list<boost::filesystem::path> presetFileNameArray;
+
+    //try
+    //{
+    //    std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
+    //}
+    //catch (...)
+    //{
+    //    LOG_ERROR();
+    //}
+
+    //for (const auto& presetFileName : presetFileNameArray)
+    //{
+    //    if (boost::filesystem::extension(presetFileName) == ".json")
+    //    {
+    //        try
+    //        {
+    //            boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+
+    //            if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
+    //            {
+    //                // BUG: (29-Sep-2022) VIEWPORTS!
+    //                presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+
+    //                m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
+    //            }
+    //        }
+    //        catch (std::exception& e)
+    //        {
+    //            LOG_MESSAGE(e.what());
+    //        }
+    //    }
+    //}
+    for (int angleInDegrees = 0; angleInDegrees <= 360; angleInDegrees += 15)
     {
-        try
-        {
-            boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+        double angleInRadians = MyMath::DegreesToRadians((double)angleInDegrees);
 
-            if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
+        for (int distanceInFeet = 3; distanceInFeet <= 15; distanceInFeet += 3)
+        {
+            double x = cos(angleInRadians) * distanceInFeet,
+                y = sin(angleInRadians) * distanceInFeet;
+
+            for (int heightInFeet = 1; heightInFeet < 6; ++heightInFeet)
             {
-                // BUG: (29-Sep-2022) VIEWPORTS!
-                presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+                for (int fieldOfView = 20; fieldOfView <= 80; fieldOfView += 5)
+                {
+                    try
+                    {
 
-                m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
+                        boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+
+                        double opticalCenter[3] = { x, y, (double)heightInFeet },
+                            center[3] = { 0, 0, 0 },
+                            up[3] = { 0.0, 0.0, 1.0 };
+
+                        if (!presetPinholeCamera->Create(opticalCenter, center, up, fieldOfView, 1.0, 1000.0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight()) ||
+                            !m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup))
+                        {
+                            LOG_ERROR();
+                        }
+                    }
+                    catch (std::exception& e)
+                    {
+                        LOG_MESSAGE(e.what());
+                    }
+                }
             }
-        }
-        catch (std::exception& e)
-        {
-            LOG_MESSAGE(e.what());
         }
     }
     // (END OF) TESTING: (23-Aug-2022) INITIAL POPULATION!

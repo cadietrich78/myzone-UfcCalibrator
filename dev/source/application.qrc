@@ -25,5 +25,11 @@
     <file>images/settings.png</file>
     <file>images/setting_tools.png</file>
     <file>images/stat_o_rama_icon.png</file>
+    <file>images/officeLeftTopVertex.png</file>
+    <file>images/officeLeftCenterVertex.png</file>
+    <file>images/officeLeftBottomVertex.png</file>
+    <file>images/officeRightTopVertex.png</file>
+    <file>images/officeRightCenterVertex.png</file>
+    <file>images/officeRightBottomVertex.png</file>
   </qresource>
 </RCC>

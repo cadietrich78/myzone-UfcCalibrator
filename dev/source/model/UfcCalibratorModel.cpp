@@ -42,7 +42,6 @@
 */
 
 #include <UnitConversion.h>
-#include <UfcSceneryLayout.h>
 
 #include "UfcCalibratorModel.h"
 
@@ -56,7 +55,7 @@ boost::shared_ptr<CFootage> CUfcCalibratorModel::GetFootage()
     return m_footage;
 }
 
-bool CUfcCalibratorModel::SetFootage(std::string url, int mode)
+bool CUfcCalibratorModel::SetFootage(std::string url)
 {
     //TRACE_FUNCTION(my::CTrace::MUST_HAVE, "(url): %s", url.empty() ? "" : url.c_str());
 
@@ -80,9 +79,29 @@ bool CUfcCalibratorModel::SetFootage(std::string url, int mode)
         return false;
     }
 
-    if (!SetMode(mode))
+    // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
+    boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
+
+    HEALTH_CHECK(!pinholeCamera, false);
+
+    // FIGHTFLOW CAMERA!
+    double opticalCenter[3] = { 0.0, -6.0, 3.0 },
+        center[3] = { 0, 0, 0 },
+        up[3] = { 0.0, 0.0, 1.0 };
+
+    // FIGHTFLOW CAMERA!
+    pinholeCamera->Create(opticalCenter, center, up, 23.0, 1.0, 1000.0, 1280, 720);
+
+    m_footage->SetPinholeCamera(pinholeCamera);
+    // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
+
+    try
     {
-        LOG_ERROR();
+        m_sceneryLayout.reset(new my::sport::COfficeSceneryLayout());
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
 
         return false;
     }
@@ -107,49 +126,6 @@ boost::shared_ptr<my::CSceneryLayout> CUfcCalibratorModel::GetSceneryLayout()
     return m_sceneryLayout;
 }
 
-bool CUfcCalibratorModel::SetMode(int mode)
-{
-    HEALTH_CHECK(!m_footage, false);
-
-    // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
-    boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
-
-    HEALTH_CHECK(!pinholeCamera, false);
-
-    // FIGHTFLOW CAMERA!
-    double opticalCenter[3] = { 19.928911271784585, 42.006903157967180, 23.005910657377818 },
-        center[3] = { 0, 0, 0 },
-        up[3] = { 0.0, 0.0, 1.0 };
-
-    // FIGHTFLOW CAMERA!
-    pinholeCamera->Create(opticalCenter, center, up, 23.0, 1.0, 1000.0, 1280, 720);
-
-    m_footage->SetPinholeCamera(pinholeCamera);
-    // (END OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
-
-    if (!m_footage->SetMode(mode))
-    {
-        LOG_ERROR();
-
-        return false;
-    }
-
-    try
-    {
-        m_sceneryLayout.reset(new my::sport::CUfcSceneryLayout());
-
-        m_sceneryLayout->SetMode(mode);
-    }
-    catch (std::exception& e)
-    {
-        LOG_MESSAGE(e.what());
-
-        return false ;
-    }
-
-    return true;
-}
-
 void CUfcCalibratorModel::Clear()
 {
     // TRICKY: (09-Jun-20165) SHOULD WE KEEP THE MODE?
@@ -172,7 +148,7 @@ void CUfcCalibratorModel::Create()
 
     try
     {
-        m_sceneryLayout.reset(new my::sport::CUfcSceneryLayout());
+        m_sceneryLayout.reset(new my::sport::COfficeSceneryLayout());
     }
     catch (std::exception& e)
     {
@@ -181,4 +157,3 @@ void CUfcCalibratorModel::Create()
         return /*false*/;
     }
 }
-

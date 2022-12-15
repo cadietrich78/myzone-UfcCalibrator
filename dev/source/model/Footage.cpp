@@ -75,7 +75,7 @@
 #include <GLHelper.h>
 
 #include "../video/ImageMediaPlayer.h"
-#include "../calibration/UfcMarkerArray.h"
+#include "../calibration/OfficeMarkerArray.h"
 
 #include "Footage.h"
 
@@ -352,22 +352,6 @@ bool CFootage::AddUserDefinedMarker(boost::shared_ptr<my::video::CMarker> marker
     return true;
 }
 
-bool CFootage::SetMode(int mode)
-{
-    try
-    {
-        m_extrinsicCalibrationMarkerGroup.reset(new CUfcMarkerArray(mode));
-    }
-    catch (std::exception& e)
-    {
-        LOG_MESSAGE(e.what());
-
-        return false;
-    }
-
-    return true;
-}
-
 std::vector<boost::shared_ptr<my::video::CMarker> > CFootage::GetExtrinsicCalibrationMarkerArray() const
 {
     HEALTH_CHECK(!m_extrinsicCalibrationMarkerGroup, std::vector<boost::shared_ptr<my::video::CMarker> >());
@@ -565,13 +549,6 @@ void CFootage::Create()
     m_frameTexture.reset();
     m_pinholeCamera.reset();
 
-    if (!SetMode())
-    {
-        LOG_ERROR();
-
-        return /*false*/;
-    }
-
     if (!InitializeStandByFrameTexture())
     {
         LOG_ERROR();
@@ -579,9 +556,17 @@ void CFootage::Create()
         return /*false*/;
     }
 
+    try
+    {
+        m_extrinsicCalibrationMarkerGroup.reset(new COfficeMarkerArray);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+    }
+
     m_userDefinedMarkerArray.clear();
     m_currentPositionInMilliseconds = my::Null<my::int64>();
-
     m_isValid = true;
 }
 
