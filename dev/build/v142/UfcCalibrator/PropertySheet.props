@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <QtDir>C:\Qt\Qt5.13.0\5.13.0\msvc2017_64</QtDir>
+    <BoostDir>C:\My Files\Documentos\projects\shared\lib\boost_1_72_0</BoostDir>
+    <GlewDir>C:\My Files\Documentos\projects\shared\lib\glew-2.1.0</GlewDir>
+    <PngDir>C:\My Files\Documentos\projects\shared\lib\libpng_x64-windows</PngDir>
+    <RapidJsonDir>C:\My Files\Documentos\projects\shared\lib\rapidjson</RapidJsonDir>
+    <CurlCppDir>C:\My Files\Documentos\projects\shared\lib\curlcpp-master</CurlCppDir>
+    <FreeGlutDir>C:\My Files\Documentos\projects\shared\lib\freeglut</FreeGlutDir>
+    <CurlDir>C:\My Files\Documentos\projects\shared\lib\curl-7.46.0-win64</CurlDir>
+    <OpenCvDir>C:\My Files\Documentos\projects\shared\lib\opencv-4.5.4</OpenCvDir>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="QtDir">
+      <Value>$(QtDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BoostDir">
+      <Value>$(BoostDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlewDir">
+      <Value>$(GlewDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PngDir">
+      <Value>$(PngDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="RapidJsonDir">
+      <Value>$(RapidJsonDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CurlCppDir">
+      <Value>$(CurlCppDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FreeGlutDir">
+      <Value>$(FreeGlutDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CurlDir">
+      <Value>$(CurlDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpenCvDir">
+      <Value>$(OpenCvDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

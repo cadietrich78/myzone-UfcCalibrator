@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\calibration">
+      <UniqueIdentifier>{b0d2ebc5-c524-4f65-99bd-3efea4056bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dialog">
+      <UniqueIdentifier>{c09de2d9-f367-472a-bb28-35788ec536eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\calibration">
+      <UniqueIdentifier>{5fb07d16-2d59-47a5-aeda-38b84608a816}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dialog">
+      <UniqueIdentifier>{b20acc8c-5804-48da-bcb2-df361788be54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\model">
+      <UniqueIdentifier>{3748336a-0c2d-4925-bdbf-7b21b36a5238}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\model">
+      <UniqueIdentifier>{87985396-8ea7-41f2-a4f5-6392d14c5c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\tab">
+      <UniqueIdentifier>{5ccee5dc-f954-461a-b6d6-1b68b0dbe475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tab">
+      <UniqueIdentifier>{c85b7191-814d-4187-ab30-259f52fd8a46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\video">
+      <UniqueIdentifier>{c6216d2d-ebfe-41ad-9525-fa7eff212bf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\video">
+      <UniqueIdentifier>{9d659ad2-8155-4a88-a023-c4fde8e8bff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\view">
+      <UniqueIdentifier>{54efeee0-da88-4744-b272-f79759389542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\view">
+      <UniqueIdentifier>{d2b63207-0412-4e88-a1c7-9491b819f765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\viewmodel">
+      <UniqueIdentifier>{6a6be638-1f5a-49cd-b7f3-1b2d2189b7cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\viewmodel">
+      <UniqueIdentifier>{8c17f622-8141-4e68-9d8a-865778072532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{b069dc56-4b5d-4c64-9356-9b6950188e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external">
+      <UniqueIdentifier>{40b11c89-5084-458d-8bee-f7aa7cd675b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\external">
+      <UniqueIdentifier>{c1693ac5-c89b-4baf-9246-52e348f1046d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\source\ObjectType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\StringResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\UfcCalibratorConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\calibration\MarkerGroup.h">
+      <Filter>Header Files\calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\calibration\PointMarker.h">
+      <Filter>Header Files\calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\calibration\PinholeCameraCalibration.h">
+      <Filter>Header Files\calibration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\model\PlayerInterface.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\model\UfcCalibratorModel.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\model\Footage.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\viewmodel\UfcCalibratorViewModel.h">
+      <Filter>Header Files\viewmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\viewmodel\MessageQueue.h">
+      <Filter>Header Files\viewmodel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\video\MediaPlayerInterface.h">
+      <Filter>Header Files\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\video\ImageMediaPlayer.h">
+      <Filter>Header Files\video</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\view\ViewLandingPage.h">
+      <Filter>Header Files\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\view\ViewExtrinsicCalibration.h">
+      <Filter>Header Files\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\view\ViewFootage.h">
+      <Filter>Header Files\view</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Common.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Logger.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\UnitConversion.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\PinholeCamera2.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\MyMath.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Vector3.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Marker.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Vector2.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Texture.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Distance.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Object.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\JournalObject.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\PropertyObject.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\SceneryLayout.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Journal.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Timestamp.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\BoundingBox.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\PngWrapper.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\VertexPool.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Color.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\ViewObject.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\GlHelper.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\Compass.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\FileHelper.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\SelectableObject.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\SelectionMechanism.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\OfficeSceneryLayout.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\calibration\OfficeMarkerArray.h">
+      <Filter>Header Files\calibration</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\source\MyQTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\glwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\mainwindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp">
+      <Filter>Source Files\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp">
+      <Filter>Source Files\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\dialog\AppSettingsGroupDialog.cpp">
+      <Filter>Source Files\dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.cpp">
+      <Filter>Source Files\dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\dialog\AppSettingsDialog.cpp">
+      <Filter>Source Files\dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\model\PlayerInterface.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\model\UfcCalibratorModel.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\model\Footage.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\tab\TabInterface.cpp">
+      <Filter>Source Files\tab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\tab\ExtrinsicCalibrationTab.cpp">
+      <Filter>Source Files\tab</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\viewmodel\UfcCalibratorViewModel.cpp">
+      <Filter>Source Files\viewmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\viewmodel\MessageQueue.cpp">
+      <Filter>Source Files\viewmodel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\video\MediaPlayerInterface.cpp">
+      <Filter>Source Files\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\video\ImageMediaPlayer.cpp">
+      <Filter>Source Files\video</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\view\ViewLandingPage.cpp">
+      <Filter>Source Files\view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\view\ViewExtrinsicCalibration.cpp">
+      <Filter>Source Files\view</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\view\ViewFootage.cpp">
+      <Filter>Source Files\view</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_glwidget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_mainwindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_MyQTimer.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_TabInterface.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\qrc_application.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_AppGuiSettingsGroupDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_AppSettingsDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_AppSettingsGroupDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qt\moc_ExtrinsicCalibrationTab.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\UnitConversion.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Logger.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\PinholeCamera2.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Marker.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Texture.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Object.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\JournalObject.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\PropertyObject.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Journal.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Timestamp.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\BoundingBox.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Color.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\PngWrapper.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\VertexPool.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\ViewObject.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\Compass.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\FileHelper.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\GlHelper.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\SelectableObject.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\SelectionMechanism.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp">
+      <Filter>Source Files\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\calibration\OfficeMarkerArray.cpp">
+      <Filter>Source Files\calibration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\OfficeSceneryLayout.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.h">
+      <Filter>Header Files\dialog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\dialog\AppSettingsDialog.h">
+      <Filter>Header Files\dialog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\dialog\AppSettingsGroupDialog.h">
+      <Filter>Header Files\dialog</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\tab\ExtrinsicCalibrationTab.h">
+      <Filter>Header Files\tab</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\glwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\mainwindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\MyQTimer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\tab\TabInterface.h">
+      <Filter>Header Files\tab</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\source\application.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BoxingAnnotation.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
