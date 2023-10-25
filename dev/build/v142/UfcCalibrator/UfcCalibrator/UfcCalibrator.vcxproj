@@ -56,15 +56,15 @@
     <OutDir>..\..\..\..\..\..\..\..\..\..\..\My Files\Documentos\projects\$(SolutionName)\dev\bin\$(PlatformToolset)\$(Platform)\</OutDir>
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)D</TargetName>
-    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\include;C:\My Files\Documentos\projects\shared\lib\freeglut\libs\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\lib\Release\$(Platform);C:\My Files\Documentos\projects\shared\lib\freeglut\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\..\..\..\..\..\..\..\..\..\My Files\Documentos\projects\$(SolutionName)\dev\bin\$(PlatformToolset)\$(Platform)\</OutDir>
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\include;C:\My Files\Documentos\projects\shared\lib\freeglut\libs\freeglut\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\lib\Release\$(Platform);C:\My Files\Documentos\projects\shared\lib\freeglut\$(Platform);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -77,7 +77,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -96,7 +96,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
