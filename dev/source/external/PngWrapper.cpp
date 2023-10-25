@@ -348,22 +348,6 @@ bool CPngWrapper::Save(std::string fileName, unsigned int width, unsigned int he
     return true;
 }
 
-/**
-*/
-bool CPngWrapper::Save(std::string fileName, boost::shared_ptr<my::image::CImage> image) const
-{
-    HEALTH_CHECK(!image->IsValid(), false);
-
-    if (!Save(fileName, image->GetWidth(), image->GetHeight(), image->GetBuffer().get()))
-    {
-        LOG_ERROR();
-
-        return false;
-    }
-
-    return true;
-}
-
 // HELPER FOR CPngWrapper::Encode
 void EncodeWriteCallback(png_structp  png_ptr, png_bytep data, png_size_t length)
 {

@@ -50,7 +50,6 @@
 #include <boost/shared_array.hpp>
 
 #include <Common.h>
-#include <Image.h>
 
 class CPngWrapper
     : boost::noncopyable
@@ -61,7 +60,6 @@ public:
     bool Open(const std::string& fileName);
 
     bool Save(std::string fileName, unsigned int width, unsigned int height, unsigned char *rgbArray) const;
-    bool Save(std::string fileName, boost::shared_ptr<my::image::CImage> image) const;
 
     bool Encode(my::int32 width, my::int32 height, int channelCount, const unsigned char *rgbArray, std::vector<unsigned char> *byteArray) const;
 

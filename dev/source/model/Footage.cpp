@@ -176,14 +176,14 @@ boost::shared_ptr<CTexture> CFootage::GetFrameAsTexture()
 }
 
 // BUG: (21-Feb-2017) THIS METHOD MAKES CALLS TO THE GRAPHICS LIBRARY - IT CAN BE CALLED ONLY BY THE MAIN THREAD
-boost::shared_ptr<my::image::CImage> CFootage::GetFrameImage()
+cv::Mat CFootage::GetFrame()
 {
-    boost::shared_ptr<my::image::CImage> emptyObject;
+    cv::Mat emptyObject;
 
-    if (!m_frameImage)
+    if (m_frame.empty())
         return emptyObject;
 
-    return m_frameImage;
+    return m_frame;
 }
 
 boost::shared_ptr<CPinholeCamera2> CFootage::GetPinholeCamera()
@@ -461,29 +461,16 @@ bool CFootage::UpdateFrameTexture()
 		return false;
 	}
 
-    if (!m_frameImage)
-    {
-        m_frameImage.reset(new my::image::CImage);
+    m_frame = cv::imread(m_url);
 
-        HEALTH_CHECK(!m_frameImage, false);
-    }
-
-    int channelCount = 0;
-
-    if (format == CTexture::RGB)
-        channelCount = 3;
-    else if (format == CTexture::RGBA)
-        channelCount = 4;
-
-    // UPDATE ACTIVE MARKERS
-    if (!m_frameImage->Set(width, height, channelCount, fileBuffer))
+    if (m_frame.empty())
     {
         LOG_ERROR();
 
         return false;
     }
 
-    m_extrinsicCalibrationMarkerGroup->SetImage(m_frameImage);
+    m_extrinsicCalibrationMarkerGroup->SetImage(m_frame);
 
     return true;
 }
@@ -580,7 +567,7 @@ void CFootage::Destroy()
     m_mediaPlayerInterface.reset();
     m_frameTexture.reset();
     m_standByFrameTexture.reset();
-    m_frameImage.reset();
+    //m_frame
     m_pinholeCamera.reset();
     m_extrinsicCalibrationMarkerGroup.reset();
     m_userDefinedMarkerArray.clear();

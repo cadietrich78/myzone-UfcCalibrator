@@ -50,7 +50,6 @@
 my::sport::COfficeSceneryLayout::COfficeSceneryLayout()
     : CSceneryLayout()
 {
-    m_mode = 25;
     m_layoutMesh.reset();
 }
 
@@ -76,6 +75,33 @@ my::CVector3<double> my::sport::COfficeSceneryLayout::GetItemPosition(my::int64 
         break;
     case RIGHT_BOTTOM_VERTEX_ITEM:
         position.Set(0.66273, 4.970472, 0.0);
+        break;
+    case BIG_CHESSBOARD_MARKER_0:
+        position.Set(0.0, 0.0, 0.0);
+        break;
+    case BIG_CHESSBOARD_MARKER_5:
+        position.Set(UnitConversion::Centimeters2Feet(-51.2), UnitConversion::Centimeters2Feet(-20.65), 0.0);
+        break;
+    case BIG_CHESSBOARD_MARKER_6:
+        position.Set(UnitConversion::Centimeters2Feet(-51.2), UnitConversion::Centimeters2Feet(0.0), 0.0);
+        break;
+    case BIG_CHESSBOARD_MARKER_7:
+        position.Set(UnitConversion::Centimeters2Feet(51.45), UnitConversion::Centimeters2Feet(0.0), 0.0);
+        break;
+    case BIG_CHESSBOARD_MARKER_8:
+        position.Set(UnitConversion::Centimeters2Feet(51.45), UnitConversion::Centimeters2Feet(-20.65), 0.0);
+        break;
+    case SMALL_CHESSBOARD_MARKER_1:
+        position.Set(UnitConversion::Centimeters2Feet(-23.65), UnitConversion::Centimeters2Feet(15.69), 0.0);
+        break;
+    case SMALL_CHESSBOARD_MARKER_2:
+        position.Set(UnitConversion::Centimeters2Feet(-23.65), UnitConversion::Centimeters2Feet(43.15), 0.0);
+        break;
+    case SMALL_CHESSBOARD_MARKER_3:
+        position.Set(UnitConversion::Centimeters2Feet(23.75), UnitConversion::Centimeters2Feet(43.15), 0.0);
+        break;
+    case SMALL_CHESSBOARD_MARKER_4:
+        position.Set(UnitConversion::Centimeters2Feet(23.75), UnitConversion::Centimeters2Feet(15.95), 0.0);
         break;
     }
 
@@ -173,6 +199,57 @@ boost::shared_ptr<CVertexPool> my::sport::COfficeSceneryLayout::GetLayoutMesh()
         m_layoutMesh->AddVertex(leftCenterVertex.x(), leftCenterVertex.y(), leftCenterVertex.z());
         m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
         m_layoutMesh->AddVertex(rightCenterVertex.x(), rightCenterVertex.y(), rightCenterVertex.z());
+        ADD_LINE;
+
+        my::CVector3<double> bigChessboardMarker5thVertex = GetItemPosition(BIG_CHESSBOARD_MARKER_5),
+            bigChessboardMarker6thVertex = GetItemPosition(BIG_CHESSBOARD_MARKER_6),
+            bigChessboardMarker7thVertex = GetItemPosition(BIG_CHESSBOARD_MARKER_7),
+            bigChessboardMarker8thVertex = GetItemPosition(BIG_CHESSBOARD_MARKER_8),
+            smallChessboardMarker1stVertex = GetItemPosition(SMALL_CHESSBOARD_MARKER_1),
+            smallChessboardMarker2ndVertex = GetItemPosition(SMALL_CHESSBOARD_MARKER_2),
+            smallChessboardMarker3rdVertex = GetItemPosition(SMALL_CHESSBOARD_MARKER_3),
+            smallChessboardMarker4thVertex = GetItemPosition(SMALL_CHESSBOARD_MARKER_4);
+
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker5thVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker6thVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker6thVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker7thVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker7thVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker8thVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker8thVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(bigChessboardMarker5thVertex);
+        ADD_LINE;
+
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker1stVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker2ndVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker2ndVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker3rdVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker3rdVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker4thVertex);
+        ADD_LINE;
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker4thVertex);
+        m_layoutMesh->AddColor(1.0, 1.0, 0.0, 1.0);
+        m_layoutMesh->AddVertex(smallChessboardMarker1stVertex);
         ADD_LINE;
     }
 

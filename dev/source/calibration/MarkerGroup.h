@@ -47,10 +47,10 @@
 #include <vector>
 
 #include <boost/shared_ptr.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <PinholeCamera2.h>
 #include <Marker.h>
-#include <Image.h>
 
 class CMarkerGroup
 {
@@ -63,16 +63,16 @@ public:
 
     std::vector<boost::shared_ptr<my::video::CMarker> > GetMarkerArray() const;
 
-    boost::shared_ptr<my::image::CImage> GetImage() const;
+    cv::Mat GetImage() const;
 
-    virtual bool SetImage(boost::shared_ptr<my::image::CImage> image);
+    virtual bool SetImage(cv::Mat image);
 
     boost::shared_ptr<my::video::CMarker> GetMarkerByName(std::string name) const;
 
 protected:
 	std::vector<boost::shared_ptr<my::video::CMarker> > m_markerArray;
 
-    boost::shared_ptr<my::image::CImage> m_image;
+    cv::Mat m_image;
 };
 
 #endif //#if !defined(MARKER_GROUP_INCLUDED)

@@ -45,9 +45,9 @@
 #define FOOTAGE_INCLUDE
 
 #include <boost/utility.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <Texture.h>
-#include <Image.h>
 #include <Timestamp.h>
 #include <OfficeSceneryLayout.h>
 
@@ -75,7 +75,7 @@ public:
 
     boost::shared_ptr<CTexture> GetFrameAsTexture();
 
-    boost::shared_ptr<my::image::CImage> GetFrameImage();
+    cv::Mat GetFrame();
 
     boost::shared_ptr<CPinholeCamera2> GetPinholeCamera();
     bool SetPinholeCamera(boost::shared_ptr<CPinholeCamera2> pinholeCamera);
@@ -120,7 +120,7 @@ protected:
     boost::shared_ptr<CTexture> m_frameTexture;
     boost::shared_ptr<CTexture> m_standByFrameTexture;
 
-    boost::shared_ptr<my::image::CImage> m_frameImage;
+    cv::Mat m_frame;
 
     boost::shared_ptr<CPinholeCamera2> m_pinholeCamera;
 

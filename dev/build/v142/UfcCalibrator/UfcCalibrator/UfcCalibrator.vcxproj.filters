@@ -198,6 +198,9 @@
     <ClInclude Include="..\..\..\..\source\calibration\OfficeMarkerArray.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\source\MyQTimer.cpp">
@@ -357,6 +360,9 @@
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\external\OfficeSceneryLayout.cpp">
+      <Filter>Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\source\external\CalibratedPinholeCamera.cpp">
       <Filter>Source Files\external</Filter>
     </ClCompile>
   </ItemGroup>

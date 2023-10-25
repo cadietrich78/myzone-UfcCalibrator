@@ -54,15 +54,14 @@ std::vector<boost::shared_ptr<my::video::CMarker> > CMarkerGroup::GetMarkerArray
 	return m_markerArray;
 }
 
-boost::shared_ptr<my::image::CImage> CMarkerGroup::GetImage() const
+cv::Mat CMarkerGroup::GetImage() const
 {
     return m_image;
 }
 
-bool CMarkerGroup::SetImage(boost::shared_ptr<my::image::CImage> image)
+bool CMarkerGroup::SetImage(cv::Mat image)
 {
-    HEALTH_CHECK(!image, false);
-    HEALTH_CHECK(!image->IsValid(), false);
+    HEALTH_CHECK(image.empty(), false);
 
     m_image = image;
 

@@ -41,6 +41,8 @@
  * But it's a process. We'll make it less shitty. Just watch!"
  */
 
+#include <fstream>
+
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/error/en.h>

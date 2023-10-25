@@ -82,8 +82,8 @@
 #endif //#if defined(__APPLE__)
 // (END OF) BUG: (02-Dec-2015 Qt5 conflict with X11/Xlib.h
 
-#include <QGLWidget>
-#include <QFont>
+#include <QtOpenGL/QtOpenGL>
+#include <QtGui/QFont>
 
 // (BEGIN OF) BUG: (02-Dec-2015 Qt5 conflict with X11/Xlib.h
 #if defined(__APPLE__)

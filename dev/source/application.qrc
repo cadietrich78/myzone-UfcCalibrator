@@ -31,5 +31,14 @@
     <file>images/marker_officeRightTopVertex.png</file>
     <file>images/marker_officeRightCenterVertex.png</file>
     <file>images/marker_officeRightBottomVertex.png</file>
+    <file>images/marker_officeBigChessCenterVertex.png</file>
+    <file>images/marker_officeBigChessLeftTopVertex.png</file>
+    <file>images/marker_officeBigChessLeftBottomVertex.png</file>
+    <file>images/marker_officeBigChessRightBottomVertex.png</file>
+    <file>images/marker_officeBigChessRightTopVertex.png</file>
+    <file>images/marker_officeSmallChessLeftTopVertex.png</file>
+    <file>images/marker_officeSmallChessLeftBottomVertex.png</file>
+    <file>images/marker_officeSmallChessRightBottomVertex.png</file>
+    <file>images/marker_officeSmallChessRightTopVertex.png</file>
   </qresource>
 </RCC>

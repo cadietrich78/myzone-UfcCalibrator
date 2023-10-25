@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -26,19 +18,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -57,84 +36,48 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\PropertySheet.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.5.4.v14.x64.Debug.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.8.0.v14.x64.Debug.props" />
+    <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Debug.props" />
+    <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\PropertySheet.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.5.4.v14.x64.Release.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.8.0.v14.x64.Release.props" />
+    <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Release.props" />
+    <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\..\..\..\..\..\..\..\..\..\My Files\Documentos\projects\$(SolutionName)\dev\bin\$(PlatformToolset)\$(Platform)\</OutDir>
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)D</TargetName>
-    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(QtDir)\include;$(QtDir)\include\QtCore;$(QtDir)\include\QtMultimedia;$(QtDir)\include\QtWidgets;$(QtDir)\include\QtMultimediaWidgets;$(QtDir)\include\QtOpenGL;$(QtDir)\include\QtGui;$(QtDir)\include\QtNetwork;$(QtDir)\include\QtWebEngineWidgets;$(BoostDir);$(GlewDir)\include;$(PngDir)\include;$(RapidJsonDir)\include;$(CurlDir)\include;$(CurlCppDir)\include;$(FreeGlutDir)\libs\freeglut\include;$(OpenCvDir)\include;$(OpenCvDir)\build-$(PlatformToolset);$(OpenCvDir)\build-$(PlatformToolset)\install\include;$(OpenCvDir)\modules\core\include;$(OpenCvDir)\modules\imgproc\include;$(OpenCvDir)\modules\highgui\include;$(OpenCvDir)\modules\imgcodecs\include;$(OpenCvDir)\modules\videoio\include;$(OpenCvDir)\modules\calib3d\include;$(OpenCvDir)\modules\photo\include;$(OpenCvDir)\modules\video\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(QtDir)\lib;$(BoostDir)\lib\$(PlatformToolset)\$(Platform);$(GlewDir)\lib\Release\$(Platform);$(PngDir)\lib;$(CurlDir)\lib;$(CurlCppDir)\build-$(PlatformToolset)\src\$(Configuration);$(FreeGlutDir)\$(Platform);$(OpenCvDir)\build-$(PlatformToolset)\lib\$(Configuration);$(OpenCvDir)\build-$(PlatformToolset)\3rdparty\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\..\..\..\..\..\..\..\..\..\My Files\Documentos\projects\$(SolutionName)\dev\bin\$(PlatformToolset)\$(Platform)\</OutDir>
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(QtDir)\include;$(QtDir)\include\QtCore;$(QtDir)\include\QtMultimedia;$(QtDir)\include\QtWidgets;$(QtDir)\include\QtMultimediaWidgets;$(QtDir)\include\QtOpenGL;$(QtDir)\include\QtGui;$(QtDir)\include\QtNetwork;$(QtDir)\include\QtWebEngineWidgets;$(BoostDir);$(GlewDir)\include;$(PngDir)\include;$(RapidJsonDir)\include;$(CurlDir)\include;$(CurlCppDir)\include;$(FreeGlutDir)\libs\freeglut\include;$(OpenCvDir)\include;$(OpenCvDir)\build-$(PlatformToolset);$(OpenCvDir)\build-$(PlatformToolset)\install\include;$(OpenCvDir)\modules\core\include;$(OpenCvDir)\modules\imgproc\include;$(OpenCvDir)\modules\highgui\include;$(OpenCvDir)\modules\imgcodecs\include;$(OpenCvDir)\modules\videoio\include;$(OpenCvDir)\modules\calib3d\include;$(OpenCvDir)\modules\photo\include;$(OpenCvDir)\modules\video\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(QtDir)\lib;$(BoostDir)\lib\$(PlatformToolset)\$(Platform);$(GlewDir)\lib\Release\$(Platform);$(PngDir)\lib;$(CurlDir)\lib;$(CurlCppDir)\build-$(PlatformToolset)\src\$(Configuration);$(FreeGlutDir)\$(Platform);$(OpenCvDir)\build-$(PlatformToolset)\lib\$(Configuration);$(OpenCvDir)\build-$(PlatformToolset)\3rdparty\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libcurl.lib
-;curlcpp.lib;libpng16d.lib;glew32.lib;Qt5OpenGLd.lib;Qt5Guid.lib;Qt5Cored.lib;Qt5Multimediad.lib;Qt5Widgetsd.lib;Qt5MultimediaWidgetsd.lib;Qt5Networkd.lib;opencv_videoio454d.lib;opencv_core454d.lib;opencv_imgproc454d.lib;opencv_video454d.lib;opencv_imgcodecs454d.lib;opencv_highgui454d.lib;opencv_calib3d454d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,19 +88,21 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libcurl.lib;
-curlcpp.lib;libpng16.lib;glew32.lib;Qt5OpenGL.lib;Qt5Gui.lib;Qt5Core.lib;Qt5Multimedia.lib;Qt5Widgets.lib;Qt5MultimediaWidgets.lib;Qt5Network.lib;opencv_videoio454.lib;opencv_core454.lib;opencv_imgproc454.lib;opencv_video454.lib;opencv_imgcodecs454.lib;opencv_highgui454.lib;opencv_calib3d454.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\source\calibration\OfficeMarkerArray.h" />
     <ClInclude Include="..\..\..\..\source\external\BoundingBox.h" />
+    <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h" />
     <ClInclude Include="..\..\..\..\source\external\Color.h" />
     <ClInclude Include="..\..\..\..\source\external\Common.h" />
     <ClInclude Include="..\..\..\..\source\external\Compass.h" />
@@ -290,6 +235,7 @@ curlcpp.lib;libpng16.lib;glew32.lib;Qt5OpenGL.lib;Qt5Gui.lib;Qt5Core.lib;Qt5Mult
     <ClCompile Include="..\..\..\..\source\dialog\AppSettingsDialog.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppSettingsGroupDialog.cpp" />
     <ClCompile Include="..\..\..\..\source\external\BoundingBox.cpp" />
+    <ClCompile Include="..\..\..\..\source\external\CalibratedPinholeCamera.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Color.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Compass.cpp" />
     <ClCompile Include="..\..\..\..\source\external\FileHelper.cpp" />

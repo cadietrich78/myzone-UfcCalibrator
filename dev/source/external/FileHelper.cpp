@@ -52,15 +52,7 @@
 #include <boost/algorithm/string.hpp>
 
 #if !defined( MY_NO_CURL )
-#if defined(__APPLE__) && defined(__MACH__)
 #include <curl/curl.h>
-#elif defined(__linux__)
-#include <curl/curl.h>
-#else //#if defined(__APPLE__) && defined(__MACH__)
-#include <curl_easy.h>
-#include <curl_exception.h>
-#include <curl_ios.h>
-#endif //#if defined(__APPLE__) && defined(__MACH__)
 #endif //#if !defined( MY_NO_CURL )
 
 #include <Logger.h>

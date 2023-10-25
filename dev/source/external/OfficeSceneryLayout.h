@@ -64,6 +64,15 @@ namespace my {
                 RIGHT_TOP_VERTEX_ITEM,
                 RIGHT_CENTER_VERTEX_ITEM,
                 RIGHT_BOTTOM_VERTEX_ITEM,
+                BIG_CHESSBOARD_MARKER_0,
+                BIG_CHESSBOARD_MARKER_5,
+                BIG_CHESSBOARD_MARKER_6,
+                BIG_CHESSBOARD_MARKER_7,
+                BIG_CHESSBOARD_MARKER_8,
+                SMALL_CHESSBOARD_MARKER_1,
+                SMALL_CHESSBOARD_MARKER_2,
+                SMALL_CHESSBOARD_MARKER_3,
+                SMALL_CHESSBOARD_MARKER_4,
                 LAST_ITEM
             };
 
@@ -84,8 +93,6 @@ namespace my {
             boost::shared_ptr<CVertexPool> GetLayoutMesh();
 
         protected:
-            int m_mode;
-
             boost::shared_ptr<CVertexPool> m_layoutMesh;
         };
     }; // sport

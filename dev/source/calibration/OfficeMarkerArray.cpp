@@ -178,7 +178,7 @@ bool COfficeMarkerArray::Initialize()
 
     double screenCoord[2] = { 0 };
 
-    // OCTAGON
+    // WHITEBOARD
 
     my::CVector3<double> leftTopVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::LEFT_TOP_VERTEX_ITEM);
 
@@ -238,6 +238,98 @@ bool COfficeMarkerArray::Initialize()
         screenCoord[1] = -0.5;
 
         ADD_MARKER("Right bottom", "officeRightBottomVertex", rightBottomVertex, screenCoord, m_pointMarkerArray, true);
+    }
+
+    // CHESSBOARD MAT
+
+    my::CVector3<double> bigChessboardMarker0thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::BIG_CHESSBOARD_MARKER_0);
+
+    if (bigChessboardMarker0thVertex.IsValid())
+    {
+        screenCoord[0] = 0.0;
+        screenCoord[1] = 0.25;
+
+        ADD_MARKER("(Big chess.) Center", "officeBigChessCenterVertex", bigChessboardMarker0thVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> bigChessboardMarker5thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::BIG_CHESSBOARD_MARKER_5);
+
+    if (bigChessboardMarker5thVertex.IsValid())
+    {
+        screenCoord[0] = -0.75;
+        screenCoord[1] = 0.75;
+
+        ADD_MARKER("(Big chess.) Left-top", "officeBigChessLeftTopVertex", bigChessboardMarker5thVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> bigChessboardMarker6thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::BIG_CHESSBOARD_MARKER_6);
+
+    if (bigChessboardMarker6thVertex.IsValid())
+    {
+        screenCoord[0] = -0.75;
+        screenCoord[1] = 0.25;
+
+        ADD_MARKER("(Big chess.) Left-bottom", "officeBigChessLeftBottomVertex", bigChessboardMarker6thVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> bigChessboardMarker7thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::BIG_CHESSBOARD_MARKER_7);
+
+    if (bigChessboardMarker7thVertex.IsValid())
+    {
+        screenCoord[0] = 0.75;
+        screenCoord[1] = 0.25;
+
+        ADD_MARKER("(Big chess.) Right-bottom", "officeBigChessRightBottomVertex", bigChessboardMarker7thVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> bigChessboardMarker8thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::BIG_CHESSBOARD_MARKER_8);
+
+    if (bigChessboardMarker8thVertex.IsValid())
+    {
+        screenCoord[0] = 0.75;
+        screenCoord[1] = 0.75;
+
+        ADD_MARKER("(Big chess.) Right-top", "officeBigChessRightTopVertex", bigChessboardMarker8thVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> smallChessboardMarker1stVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::SMALL_CHESSBOARD_MARKER_1);
+
+    if (smallChessboardMarker1stVertex.IsValid())
+    {
+        screenCoord[0] = -0.5;
+        screenCoord[1] = -0.25;
+
+        ADD_MARKER("(Small chess.) Left-top", "officeSmallChessLeftTopVertex", smallChessboardMarker1stVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> smallChessboardMarker2ndVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::SMALL_CHESSBOARD_MARKER_2);
+
+    if (smallChessboardMarker2ndVertex.IsValid())
+    {
+        screenCoord[0] = -0.5;
+        screenCoord[1] = -0.75;
+
+        ADD_MARKER("(Small chess.) Left-bottom", "officeSmallChessLeftBottomVertex", smallChessboardMarker2ndVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> smallChessboardMarker3rdVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::SMALL_CHESSBOARD_MARKER_3);
+
+    if (smallChessboardMarker3rdVertex.IsValid())
+    {
+        screenCoord[0] = 0.5;
+        screenCoord[1] = -0.75;
+
+        ADD_MARKER("(Small chess.) Right-bottom", "officeSmallChessRightBottomVertex", smallChessboardMarker3rdVertex, screenCoord, m_pointMarkerArray, false);
+    }
+
+    my::CVector3<double> smallChessboardMarker4thVertex = officeSceneryLayout.GetItemPosition(my::sport::COfficeSceneryLayout::SMALL_CHESSBOARD_MARKER_4);
+
+    if (smallChessboardMarker4thVertex.IsValid())
+    {
+        screenCoord[0] = 0.5;
+        screenCoord[1] = -0.25;
+
+        ADD_MARKER("(Small chess.) Right-top", "officeSmallChessRightTopVertex", smallChessboardMarker4thVertex, screenCoord, m_pointMarkerArray, false);
     }
 
     return true;
