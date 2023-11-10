@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CExtrinsicCalibrationTab_t {
-    QByteArrayData data[5];
-    char stringdata0[94];
+    QByteArrayData data[6];
+    char stringdata0[120];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,11 +36,13 @@ QT_MOC_LITERAL(0, 0, 24), // "CExtrinsicCalibrationTab"
 QT_MOC_LITERAL(1, 25, 24), // "IterationSettingsChanged"
 QT_MOC_LITERAL(2, 50, 0), // ""
 QT_MOC_LITERAL(3, 51, 15), // "SettingsChanged"
-QT_MOC_LITERAL(4, 67, 26) // "UpdateExtrinsicCalibration"
+QT_MOC_LITERAL(4, 67, 25), // "ResetExtrinsicCalibration"
+QT_MOC_LITERAL(5, 93, 26) // "UpdateExtrinsicCalibration"
 
     },
     "CExtrinsicCalibrationTab\0"
     "IterationSettingsChanged\0\0SettingsChanged\0"
+    "ResetExtrinsicCalibration\0"
     "UpdateExtrinsicCalibration"
 };
 #undef QT_MOC_LITERAL
@@ -51,7 +53,7 @@ static const uint qt_meta_data_CExtrinsicCalibrationTab[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -59,12 +61,13 @@ static const uint qt_meta_data_CExtrinsicCalibrationTab[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   44,    2, 0x09 /* Protected */,
-       3,    0,   47,    2, 0x09 /* Protected */,
-       3,    1,   48,    2, 0x09 /* Protected */,
-       3,    1,   51,    2, 0x09 /* Protected */,
-       3,    1,   54,    2, 0x09 /* Protected */,
-       4,    0,   57,    2, 0x09 /* Protected */,
+       1,    1,   49,    2, 0x09 /* Protected */,
+       3,    0,   52,    2, 0x09 /* Protected */,
+       3,    1,   53,    2, 0x09 /* Protected */,
+       3,    1,   56,    2, 0x09 /* Protected */,
+       3,    1,   59,    2, 0x09 /* Protected */,
+       4,    0,   62,    2, 0x09 /* Protected */,
+       5,    0,   63,    2, 0x09 /* Protected */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    2,
@@ -72,6 +75,7 @@ static const uint qt_meta_data_CExtrinsicCalibrationTab[] = {
     QMetaType::Void, QMetaType::Bool,    2,
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void, QMetaType::Double,    2,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -88,7 +92,8 @@ void CExtrinsicCalibrationTab::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 2: _t->SettingsChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 3: _t->SettingsChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 4: _t->SettingsChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
-        case 5: _t->UpdateExtrinsicCalibration(); break;
+        case 5: _t->ResetExtrinsicCalibration(); break;
+        case 6: _t->UpdateExtrinsicCalibration(); break;
         default: ;
         }
     }
@@ -123,13 +128,13 @@ int CExtrinsicCalibrationTab::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 7)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 7)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

@@ -202,6 +202,11 @@ void CPinholeCameraCalibration::SetParameterStep(PINHOLE_CAMERA_PARAMETER camera
     m_parameterToStepMap[cameraParameter] = step;
 }
 
+void CPinholeCameraCalibration::SetParameterMaximum(PINHOLE_CAMERA_PARAMETER cameraParameter, double maximum)
+{
+    m_parameterToMaximumMap[cameraParameter] = maximum;
+}
+
 boost::shared_ptr<CPinholeCamera2> CPinholeCameraCalibration::GetPinholeCamera()
 {
     return m_pinholeCamera;
@@ -211,7 +216,7 @@ void CPinholeCameraCalibration::Clear()
 {
 	m_pinholeCamera.reset();
 	m_markerGroup.reset();
-	//m_candidatePinholeCameraArray.clear();
+	m_candidatePinholeCameraArray.clear();
 }
 
 // THE FIRST APPROACH BASED ON THE FRAIL OPENGL-BASED CAMERA, AND SO FAR, THE ONLY ONE THAT WORKED.
@@ -342,7 +347,12 @@ bool CPinholeCameraCalibration::GeneratePopulation()
             }
         }
 
-        m_candidatePinholeCameraArray.insert(m_candidatePinholeCameraArray.end(), newCandidateSolutionArray.begin(), newCandidateSolutionArray.end());
+        //m_candidatePinholeCameraArray.insert(m_candidatePinholeCameraArray.end(), newCandidateSolutionArray.begin(), newCandidateSolutionArray.end());
+        for (const auto& newCandidateSolution : newCandidateSolutionArray)
+        {
+            if (newCandidateSolution.m_pinholeCamera->GetOpticalCenter().z() < 12.0/*.Length() < m_parameterToMaximumMap[OPTICAL_CENTER_PARAMETER]*/)
+                m_candidatePinholeCameraArray.push_back(newCandidateSolution);
+        }
 
         lastCandidateSolutionArray = newCandidateSolutionArray;
         newCandidateSolutionArray.clear();
@@ -562,17 +572,29 @@ void CPinholeCameraCalibration::Create()
     //m_crossoverThreshold;
     m_maintainingDiversity = true;
     m_parameterToEnabledMap.clear();
-    m_parameterToStepMap.clear();
+
     m_parameterToEnabledMap[OPTICAL_CENTER_PARAMETER] = true;
-    m_parameterToStepMap[OPTICAL_CENTER_PARAMETER] = 5.0;
     m_parameterToEnabledMap[YAW_PARAMETER] = true;
-    m_parameterToStepMap[YAW_PARAMETER] = 1.0;
     m_parameterToEnabledMap[PITCH_PARAMETER] = true;
+    m_parameterToEnabledMap[ROLL_PARAMETER] = true;
+    m_parameterToEnabledMap[FIELD_OF_VIEW_PARAMETER] = true;
+
+    m_parameterToStepMap.clear();
+
+    m_parameterToStepMap[OPTICAL_CENTER_PARAMETER] = 5.0;
+    m_parameterToStepMap[YAW_PARAMETER] = 1.0;
     m_parameterToStepMap[PITCH_PARAMETER] = 1.0;
-    m_parameterToEnabledMap[FIELD_OF_VIEW_PARAMETER] = true;
     m_parameterToStepMap[ROLL_PARAMETER] = 0.1;
-    m_parameterToEnabledMap[FIELD_OF_VIEW_PARAMETER] = true;
     m_parameterToStepMap[FIELD_OF_VIEW_PARAMETER] = 1.0;
+
+    m_parameterToMaximumMap.clear();
+
+    m_parameterToMaximumMap[OPTICAL_CENTER_PARAMETER] = DBL_MAX;
+    m_parameterToMaximumMap[YAW_PARAMETER] = DBL_MAX;
+    m_parameterToMaximumMap[PITCH_PARAMETER] = DBL_MAX;
+    m_parameterToMaximumMap[ROLL_PARAMETER] = DBL_MAX;
+    m_parameterToMaximumMap[FIELD_OF_VIEW_PARAMETER] = DBL_MAX;
+
     m_candidatePinholeCameraArray.clear();
 }
 

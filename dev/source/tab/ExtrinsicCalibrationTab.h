@@ -73,6 +73,7 @@ protected slots:
     void SettingsChanged(int);
     void SettingsChanged(double);
 
+    void ResetExtrinsicCalibration();
     void UpdateExtrinsicCalibration();
 
 private:
@@ -94,7 +95,7 @@ protected:
     QSpinBox *m_selectedIndividualsCountSpinBox;
     QCheckBox *m_maintainingDiversityCheckBox;
     QDoubleSpinBox *m_mutationThresholdSpinBox;
-    QAbstractButton * m_updateExtrinsicCalibrationButton;
+    QAbstractButton* m_updateExtrinsicCalibrationButton;
 
     QDoubleSpinBox *m_opticalCenterStepSpinBox;
     QDoubleSpinBox *m_fieldOfViewStepSpinBox;

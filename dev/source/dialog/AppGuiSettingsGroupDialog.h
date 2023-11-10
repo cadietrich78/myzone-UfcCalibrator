@@ -74,19 +74,22 @@ public:
     int GetPreviousFrameKey() const;
     int GetNextFrameKey() const;
 
-    int GetOctagonSize() const;
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //int GetOctagonSize() const;
 
     bool IsRestartRequired() const;
 
 private:
     QComboBox* CreateKeyAssignmentComboBox(OBJECT_TYPE keyAssignmentId) const;
 
-    QComboBox* CreateOctagonSizeComboBox() const;
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //QComboBox* CreateOctagonSizeComboBox() const;
 
     void Create();
 
 protected slots:
-    void OctagonSizeChanged(const QString&);
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //void OctagonSizeChanged(const QString&);
 
     void ExpertModeChanged(int state);
 
@@ -104,7 +107,8 @@ protected:
     QComboBox *m_previousFrameKeyComboBox;
     QComboBox *m_nextFrameKeyComboBox;
 
-    QComboBox* m_octagonSizeComboBox;
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //QComboBox* m_octagonSizeComboBox;
 
     bool m_isRestartRequired;
 };

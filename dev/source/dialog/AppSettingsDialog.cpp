@@ -161,7 +161,8 @@ void CAppSettingsDialog::SaveSettings()
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_PREVIOUS_FRAME_KEY, m_appGuiSettingsGroupDialog->GetPreviousFrameKey());
         CUfcCalibratorViewModel::Instance().SetAttribute(GUI_NEXT_FRAME_KEY, m_appGuiSettingsGroupDialog->GetNextFrameKey());
 
-        CUfcCalibratorViewModel::Instance().SetAttribute(GUI_OCTAGON_SIZE, m_appGuiSettingsGroupDialog->GetOctagonSize());
+        // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+        //CUfcCalibratorViewModel::Instance().SetAttribute(GUI_OCTAGON_SIZE, m_appGuiSettingsGroupDialog->GetOctagonSize());
 
         isRestartRequired |= m_appGuiSettingsGroupDialog->IsRestartRequired();
     }

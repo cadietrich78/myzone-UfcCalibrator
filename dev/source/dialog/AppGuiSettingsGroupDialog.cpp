@@ -67,7 +67,8 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
         m_windowExpertModeCheckBox->setChecked(CUfcCalibratorViewModel::Instance().GetAttribute<bool>(GUI_EXPERT_MODE));
         connect(m_windowExpertModeCheckBox, SIGNAL(stateChanged(int)), this, SLOT(ExpertModeChanged(int)));
 
-        m_octagonSizeComboBox = CreateOctagonSizeComboBox();
+        // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+        //m_octagonSizeComboBox = CreateOctagonSizeComboBox();
 
         // STRIKE ZONE GROUP //////////////////////////////////////////////////
 
@@ -107,8 +108,9 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
         windowSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0003) + tr(":")), 0, 0);
         windowSettingsLayout->addWidget(m_windowExpertModeCheckBox, 0, 1, Qt::AlignRight);
 
-        windowSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0028) + tr(":")), 1, 0);
-        windowSettingsLayout->addWidget(m_octagonSizeComboBox, 1, 1, Qt::AlignRight);
+        // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+        //windowSettingsLayout->addWidget(new QLabel(tr(UFC_STRING_RESOURCE_0028) + tr(":")), 1, 0);
+        //windowSettingsLayout->addWidget(m_octagonSizeComboBox, 1, 1, Qt::AlignRight);
 
         windowsSettingsGroup->setLayout(windowSettingsLayout);
 
@@ -182,7 +184,8 @@ CAppGuiSettingsGroupDialog::CAppGuiSettingsGroupDialog(QWidget *parent)
         }
 
         DELETE_WIDGET(m_windowExpertModeCheckBox);
-        DELETE_WIDGET(m_octagonSizeComboBox);
+        // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+        //DELETE_WIDGET(m_octagonSizeComboBox);
         DELETE_WIDGET(m_guiTextSizeComboBox);
         DELETE_WIDGET(m_guiFieldLayoutLineThicknessSpinBox);
         DELETE_WIDGET(m_playKeyComboBox);
@@ -265,22 +268,24 @@ int CAppGuiSettingsGroupDialog::GetNextFrameKey() const
     return m_nextFrameKeyComboBox->currentData().toInt();
 }
 
-int CAppGuiSettingsGroupDialog::GetOctagonSize() const
-{
-    HEALTH_CHECK(!m_octagonSizeComboBox, my::Null<int>());
-
-    return m_octagonSizeComboBox->currentData().toInt();
-}
+// DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+//int CAppGuiSettingsGroupDialog::GetOctagonSize() const
+//{
+//    HEALTH_CHECK(!m_octagonSizeComboBox, my::Null<int>());
+//
+//    return m_octagonSizeComboBox->currentData().toInt();
+//}
 
 bool CAppGuiSettingsGroupDialog::IsRestartRequired() const
 {
     return m_isRestartRequired;
 }
 
-void CAppGuiSettingsGroupDialog::OctagonSizeChanged(const QString&)
-{
-    UpdateRestartRequired(true);
-}
+// DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+//void CAppGuiSettingsGroupDialog::OctagonSizeChanged(const QString&)
+//{
+//    UpdateRestartRequired(true);
+//}
 
 void CAppGuiSettingsGroupDialog::ExpertModeChanged(int state)
 {
@@ -379,21 +384,22 @@ QComboBox *CAppGuiSettingsGroupDialog::CreateKeyAssignmentComboBox(OBJECT_TYPE k
     return keyAssignmentComboBox;
 }
 
-QComboBox* CAppGuiSettingsGroupDialog::CreateOctagonSizeComboBox() const
-{
-    QComboBox* octagonSizeComboBox = new QComboBox();
-
-    octagonSizeComboBox->addItem("25", QVariant(25));
-    octagonSizeComboBox->addItem("30", QVariant(30));
-
-    int octagonSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE);
-
-    octagonSizeComboBox->setCurrentText(std::to_string(octagonSize).c_str());
-
-    connect(octagonSizeComboBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(OctagonSizeChanged(const QString&)));
-
-    return octagonSizeComboBox;
-}
+// DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+//QComboBox* CAppGuiSettingsGroupDialog::CreateOctagonSizeComboBox() const
+//{
+//    QComboBox* octagonSizeComboBox = new QComboBox();
+//
+//    octagonSizeComboBox->addItem("25", QVariant(25));
+//    octagonSizeComboBox->addItem("30", QVariant(30));
+//
+//    int octagonSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE);
+//
+//    octagonSizeComboBox->setCurrentText(std::to_string(octagonSize).c_str());
+//
+//    connect(octagonSizeComboBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(OctagonSizeChanged(const QString&)));
+//
+//    return octagonSizeComboBox;
+//}
 
 void CAppGuiSettingsGroupDialog::Create()
 {

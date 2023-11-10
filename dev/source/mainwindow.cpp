@@ -289,7 +289,77 @@ void MainWindow::OpenVideoFrame()
 
     if (formattedFileNameArray.empty())
         return /*false*/;
-    
+
+    std::string frameUrl = formattedFileNameArray[0];
+
+    cv::Mat frame = cv::imread(frameUrl);
+
+    HEALTH_CHECK(frame.empty(), /*false*/);
+
+    // (BEGIN OF) INTRINSIC CALIBRATION?
+    std::string undistortedFrameUrl = frameUrl;
+
+    QFileDialog intrinsicCalibrationFileOpenDialog(this, UFC_STRING_RESOURCE_0033, NULL);
+
+    intrinsicCalibrationFileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    intrinsicCalibrationFileOpenDialog.setNameFilter(QString(tr(UFC_STRING_RESOURCE_0031) + tr(";;")));
+    intrinsicCalibrationFileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    if (intrinsicCalibrationFileOpenDialog.exec())
+    {
+        QStringList fileNameArray = intrinsicCalibrationFileOpenDialog.selectedFiles();
+
+        std::vector<std::string> formattedFileNameArray;
+
+        for (int fileNameIndex = 0; fileNameIndex < fileNameArray.size(); ++fileNameIndex)
+        {
+            if (fileNameArray.at(fileNameIndex).isEmpty() ||
+                fileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+            {
+                LOG_ERROR();
+
+                return /*false*/;
+            }
+
+            std::string formattedFileName = fileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+            formattedFileNameArray.push_back(formattedFileName);
+        }
+
+        if (formattedFileNameArray.size() != 1)
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        m_intrinsicCalibrationFileName = formattedFileNameArray.front();
+
+        CCalibratedPinholeCamera calibratedPinholeCamera;
+
+        if (!calibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        cv::Mat undistortedFrame(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
+
+        cv::undistort(frame, undistortedFrame, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+
+        undistortedFrameUrl = "data/temporary/" + my::GetFileName(frameUrl) + "_UNDISTORTED.png";
+
+        if (!cv::imwrite(undistortedFrameUrl, undistortedFrame))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+    }
+    // (END OF) INTRINSIC CALIBRATION?
+
     statusBar()->showMessage(tr(UFC_STRING_RESOURCE_0148), 9000);
 
     if (formattedFileNameArray.size() == 1)
@@ -312,7 +382,7 @@ void MainWindow::OpenVideoFrame()
 
         QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-        if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(formattedFileNameArray[0], createPlay))
+        if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(undistortedFrameUrl, frameUrl, createPlay))
         {
             LOG_ERROR();
 
@@ -472,7 +542,7 @@ void MainWindow::OpenWebcamFrame()
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(frameUrl, createPlay))
+    if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(frameUrl, frameUrl, createPlay))
     {
         statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
 
@@ -523,7 +593,7 @@ void MainWindow::SaveFightFlowCalibration()
 
     std::string feedbackMessage = UFC_STRING_RESOURCE_0026;
 
-    // INTERNAL CALIBRAITON ONLY!
+    // INTERNAL CALIBRATION ONLY!
     CCalibratedPinholeCamera partiallyCalibratedPinholeCamera;
 
     if (!partiallyCalibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))

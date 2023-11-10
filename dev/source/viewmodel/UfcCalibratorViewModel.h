@@ -68,7 +68,7 @@ public:
 
     boost::shared_ptr<CUfcCalibratorModel> GetUfcCalibratorModel();
 
-    bool OpenFromUrl(std::string url, bool createPlay = true);
+    bool OpenFromUrl(std::string fileName, std::string fileAlias, bool createPlay = true);
 
     bool ClosePlay();
 

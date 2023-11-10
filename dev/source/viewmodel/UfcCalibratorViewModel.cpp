@@ -110,7 +110,8 @@ int CUfcCalibratorViewModel::GetAttribute(OBJECT_TYPE objectType) const
     case GUI_PLAY_KEY:
     case GUI_PREVIOUS_FRAME_KEY:
     case GUI_NEXT_FRAME_KEY:
-    case GUI_OCTAGON_SIZE:
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //case GUI_OCTAGON_SIZE:
     case GUI_TEXT_SIZE_ITEM:
     {
         std::map<int, boost::any>::const_iterator objectTypeToValueIterator = m_objectTypeToValueMap.find(objectType);
@@ -211,14 +212,15 @@ boost::shared_ptr<CUfcCalibratorModel> CUfcCalibratorViewModel::GetUfcCalibrator
 // 3. STOP CONTINUOUS CALIBRATION
 // 4. LOAD VIDEO
 // 5. LOAD CURRENT PLAY SETTINGS
-bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
+bool CUfcCalibratorViewModel::OpenFromUrl(std::string fileName, std::string fileAlias, bool createPlay)
 {
-    HEALTH_CHECK(url.empty(), false);
+    HEALTH_CHECK(fileName.empty(), false);
+    HEALTH_CHECK(fileAlias.empty(), false);
 
     HEALTH_CHECK(!m_ufcCalibratorModel, false);
 
     // DEBUG ONLY! (11-Mar-2015) ERROR REPORTING
-    LOG_MESSAGE("LOADING PLAY: " + url);
+    LOG_MESSAGE("LOADING PLAY: " + fileAlias);
 
     if (!createPlay)
     {
@@ -226,7 +228,7 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
 
         HEALTH_CHECK(!footage, false);
 
-        if (!footage->OpenUrl(url))
+        if (!footage->OpenUrl(fileName))
         {
             LOG_ERROR();
 
@@ -242,21 +244,21 @@ bool CUfcCalibratorViewModel::OpenFromUrl(std::string url, bool createPlay)
             return false;
         }
 
-        if (!m_ufcCalibratorModel->SetFootage(url))
+        if (!m_ufcCalibratorModel->SetFootage(fileName))
         {
             LOG_ERROR();
 
             return false;
         }
 
-        std::vector<std::string> directoryNameArray = my::GetDirectoryNameArray(url);
+        std::vector<std::string> directoryNameArray = my::GetDirectoryNameArray(fileAlias);
 
         std::string auditingId;
 
         for (auto directoryName : directoryNameArray)
             auditingId += directoryName + "_";
 
-        auditingId += my::GetFileName(url);
+        auditingId += my::GetFileName(fileAlias);
 
         auditingId = my::ReplaceKeyword(auditingId, ":", "_");
 
@@ -1242,11 +1244,12 @@ bool CUfcCalibratorViewModel::OpenUserSettings(std::string userSettingsJsonStrin
             SetAttribute(GUI_EXPERT_MODE, guiHandle["gui_expert_mode"].GetBool());
         }
 
-        if (guiHandle.HasMember("gui_octagon_size") &&
-            guiHandle["gui_octagon_size"].IsInt())
-        {
-            SetAttribute(GUI_OCTAGON_SIZE, guiHandle["gui_octagon_size"].GetInt());
-        }
+        // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+        //if (guiHandle.HasMember("gui_octagon_size") &&
+        //    guiHandle["gui_octagon_size"].IsInt())
+        //{
+        //    SetAttribute(GUI_OCTAGON_SIZE, guiHandle["gui_octagon_size"].GetInt());
+        //}
     }
     // (END OF) GUI
 
@@ -1326,8 +1329,9 @@ bool CUfcCalibratorViewModel::SaveUserSettings() const
     jsonWriter.String("gui_expert_mode");
     jsonWriter.Bool(GetAttribute<bool>(GUI_EXPERT_MODE));
 
-    jsonWriter.String("gui_octagon_size");
-    jsonWriter.Int(GetAttribute<int>(GUI_OCTAGON_SIZE));
+    // DOMAIN-SPECIFIC SETTING PLACEHOLDER!
+    //jsonWriter.String("gui_octagon_size");
+    //jsonWriter.Int(GetAttribute<int>(GUI_OCTAGON_SIZE));
 
     jsonWriter.EndObject();
     // (END OF) GUI

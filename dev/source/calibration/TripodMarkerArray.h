@@ -50,17 +50,17 @@
 
 #include <PinholeCamera2.h>
 #include <Marker.h>
-#include <OfficeSceneryLayout.h>
+#include <TripodSceneryLayout.h>
 
 #include "MarkerGroup.h"
 
-class COfficeMarkerArray
+class CTripodMarkerArray
 	: public CMarkerGroup,
 	public boost::noncopyable
 {
 public:
 	/// <returns></returns>
-	COfficeMarkerArray();
+	CTripodMarkerArray();
 
 	double GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 

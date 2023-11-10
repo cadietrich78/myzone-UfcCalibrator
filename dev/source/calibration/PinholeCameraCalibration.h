@@ -149,6 +149,9 @@ public:
     // ROLL_PARAMETER (DEGREES)
     void SetParameterStep(PINHOLE_CAMERA_PARAMETER cameraParameter, double step);
 
+    // OPTICAL_CENTER_PARAMETER (FEET)
+    void SetParameterMaximum(PINHOLE_CAMERA_PARAMETER cameraParameter, double maximum);
+
     boost::shared_ptr<CPinholeCamera2> GetPinholeCamera();
     
     void Clear();
@@ -181,6 +184,7 @@ protected:
 
     std::map<PINHOLE_CAMERA_PARAMETER, bool> m_parameterToEnabledMap;
     std::map<PINHOLE_CAMERA_PARAMETER, double> m_parameterToStepMap;
+    std::map<PINHOLE_CAMERA_PARAMETER, double> m_parameterToMaximumMap;
 
     std::vector<CANDIDATE_PINHOLE_CAMERA> m_candidatePinholeCameraArray;
 };

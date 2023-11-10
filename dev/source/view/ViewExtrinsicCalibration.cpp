@@ -540,8 +540,7 @@ void CViewExtrinsicCalibration::DrawCalibrationQuality()
     // BUG: (04-Oct-2022)
     fitnessInPct = std::max(0.0, fitnessInPct);
 
-    std::string calibrationQualityAsString = std::to_string((int)fitnessInPct) + "%",
-        octagonSizeAsString = std::to_string(CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_OCTAGON_SIZE));
+    std::string calibrationQualityAsString = std::to_string((int)fitnessInPct) + "%";
 
     int viewport[4] = { 0 };
 
@@ -563,7 +562,7 @@ void CViewExtrinsicCalibration::DrawCalibrationQuality()
 
     glColor3d(1.0, 1.0, 1.0);
 
-    DrawString(-0.975f, 0.95f, std::string(UFC_STRING_RESOURCE_0002) + ": " + calibrationQualityAsString + " (" + octagonSizeAsString + "' octagon)");
+    DrawString(-0.975f, 0.95f, std::string(UFC_STRING_RESOURCE_0002) + ": " + calibrationQualityAsString);
 
     glDisable(GL_LINE_SMOOTH);
 

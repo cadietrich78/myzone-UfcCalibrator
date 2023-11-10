@@ -75,7 +75,7 @@
 #include <GLHelper.h>
 
 #include "../video/ImageMediaPlayer.h"
-#include "../calibration/OfficeMarkerArray.h"
+#include "../calibration/TripodMarkerArray.h"
 
 #include "Footage.h"
 
@@ -545,7 +545,7 @@ void CFootage::Create()
 
     try
     {
-        m_extrinsicCalibrationMarkerGroup.reset(new COfficeMarkerArray);
+        m_extrinsicCalibrationMarkerGroup.reset(new CTripodMarkerArray);
     }
     catch (std::exception& e)
     {

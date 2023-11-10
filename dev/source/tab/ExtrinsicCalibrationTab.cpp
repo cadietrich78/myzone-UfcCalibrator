@@ -88,60 +88,63 @@ void CExtrinsicCalibrationTab::Initialize()
     // (BEGIN OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
     boost::shared_ptr<CMarkerGroup> extrinsicCalibrationMarkerGroup = footage->GetExtrinsicCalibrationMarkerGroup();
 
-    //std::string presetsDirectoryName = "./data/camera/";
+    // (BEGIN OF) READ STORED CAMERAS!
+    std::string presetsDirectoryName = "data/camera/";
 
-    //HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
-    //HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
+    HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
+    HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
 
-    //std::list<boost::filesystem::path> presetFileNameArray;
+    std::list<boost::filesystem::path> presetFileNameArray;
 
-    //try
-    //{
-    //    std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
-    //}
-    //catch (...)
-    //{
-    //    LOG_ERROR();
-    //}
+    try
+    {
+        std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
+    }
+    catch (...)
+    {
+        LOG_ERROR();
+    }
 
-    //for (const auto& presetFileName : presetFileNameArray)
-    //{
-    //    if (boost::filesystem::extension(presetFileName) == ".json")
-    //    {
-    //        try
-    //        {
-    //            boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+    for (const auto& presetFileName : presetFileNameArray)
+    {
+        if (boost::filesystem::extension(presetFileName) == ".json")
+        {
+            try
+            {
+                boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
 
-    //            if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
-    //            {
-    //                // BUG: (29-Sep-2022) VIEWPORTS!
-    //                presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+                if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
+                {
+                    // BUG: (29-Sep-2022) VIEWPORTS!
+                    presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
 
-    //                m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
-    //            }
-    //        }
-    //        catch (std::exception& e)
-    //        {
-    //            LOG_MESSAGE(e.what());
-    //        }
-    //    }
-    //}
+                    m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
+                }
+            }
+            catch (std::exception& e)
+            {
+                LOG_MESSAGE(e.what());
+            }
+        }
+    }
+    // (END OF) READ STORED CAMERAS!
+
+    // (BEGIN OF) GENERATE CAMERAS PROCEDURALLY!
     for (int angleInDegrees = 0; angleInDegrees <= 360; angleInDegrees += 15)
     {
         double angleInRadians = MyMath::DegreesToRadians((double)angleInDegrees);
 
-        for (int distanceInFeet = 3; distanceInFeet <= 15; distanceInFeet += 3)
+        for (int distanceInFeet = 3; distanceInFeet <= 60; distanceInFeet += 3)
         {
             double x = cos(angleInRadians) * distanceInFeet,
                 y = sin(angleInRadians) * distanceInFeet;
 
             for (int heightInFeet = 1; heightInFeet < 6; ++heightInFeet)
             {
-                for (int fieldOfView = 20; fieldOfView <= 80; fieldOfView += 5)
+                for (int fieldOfView = 20; fieldOfView <= 100; fieldOfView += 5)
                 {
                     try
                     {
-
                         boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
 
                         double opticalCenter[3] = { x, y, (double)heightInFeet },
@@ -162,7 +165,9 @@ void CExtrinsicCalibrationTab::Initialize()
             }
         }
     }
+    // (END OF) GENERATE CAMERAS PROCEDURALLY!
     // (END OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
+
     // BUG: (30-Mar-2017) THE TABS ARE RE-INITIALIZED FOR EACH PLAY. THE WIDGETS SHOULD BE CREATED WHEN A VALID PLAY IS AVAILABLE, AND NOT RE-CREATED DURING THE APPLICATION LIFETIME.
     if (m_isInitialized)
         return /*true*/;
@@ -550,6 +555,135 @@ void CExtrinsicCalibrationTab::SettingsChanged(double)
     SettingsChanged();
 }
 
+void CExtrinsicCalibrationTab::ResetExtrinsicCalibration()
+{
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (!ufcCalibratorModel)
+        return /*true*/;
+
+    boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+
+    // BUG: (22-Nov-2016) IT MAY BE CALLED WHEN NO FOOTAGE IS SET
+    if (!footage)
+        return /*true*/;
+
+    boost::shared_ptr<CMediaPlayerInterface> mediaPlayerInterface = footage->GetMediaPlayerInterface();
+
+    if (!mediaPlayerInterface)
+        return /*true*/;
+
+    m_cameraCalibration.Clear();
+
+    // (BEGIN OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
+    boost::shared_ptr<CMarkerGroup> extrinsicCalibrationMarkerGroup = footage->GetExtrinsicCalibrationMarkerGroup();
+
+    // (BEGIN OF) READ STORED CAMERAS!
+    std::string presetsDirectoryName = "data/camera/";
+
+    HEALTH_CHECK(!boost::filesystem::exists(presetsDirectoryName), /*false*/);
+    HEALTH_CHECK(!boost::filesystem::is_directory(presetsDirectoryName), /*false*/);
+
+    std::list<boost::filesystem::path> presetFileNameArray;
+
+    try
+    {
+        std::copy(boost::filesystem::directory_iterator(presetsDirectoryName), boost::filesystem::directory_iterator(), back_inserter(presetFileNameArray));
+    }
+    catch (...)
+    {
+        LOG_ERROR();
+    }
+
+    for (const auto& presetFileName : presetFileNameArray)
+    {
+        if (boost::filesystem::extension(presetFileName) == ".json")
+        {
+            try
+            {
+                boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+
+                if (presetPinholeCamera->FromFile(presetFileName.generic_string()))
+                {
+                    // BUG: (29-Sep-2022) UPDATE VIEWPORT!
+                    presetPinholeCamera->SetViewport(0, 0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+
+                    m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup);
+                }
+            }
+            catch (std::exception& e)
+            {
+                LOG_MESSAGE(e.what());
+            }
+        }
+    }
+    // (END OF) READ STORED CAMERAS!
+
+    // (BEGIN OF) GENERATE CAMERAS PROCEDURALLY!
+    for (int angleInDegrees = 0; angleInDegrees <= 360; angleInDegrees += 15)
+    {
+        double angleInRadians = MyMath::DegreesToRadians((double)angleInDegrees);
+
+        for (int distanceInFeet = 3; distanceInFeet <= 60; distanceInFeet += 3)
+        {
+            double x = cos(angleInRadians) * distanceInFeet,
+                y = sin(angleInRadians) * distanceInFeet;
+
+            for (int heightInFeet = 1; heightInFeet < 6; ++heightInFeet)
+            {
+                for (int fieldOfView = 20; fieldOfView <= 100; fieldOfView += 5)
+                {
+                    try
+                    {
+                        boost::shared_ptr<CPinholeCamera2> presetPinholeCamera(new CPinholeCamera2);
+
+                        double opticalCenter[3] = { x, y, (double)heightInFeet },
+                            center[3] = { 0, 0, 0 },
+                            up[3] = { 0.0, 0.0, 1.0 };
+
+                        if (!presetPinholeCamera->Create(opticalCenter, center, up, fieldOfView, 1.0, 1000.0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight()) ||
+                            !m_cameraCalibration.AddCandidate(presetPinholeCamera, extrinsicCalibrationMarkerGroup))
+                        {
+                            LOG_ERROR();
+                        }
+                    }
+                    catch (std::exception& e)
+                    {
+                        LOG_MESSAGE(e.what());
+                    }
+                }
+            }
+        }
+    }
+    // (END OF) GENERATE CAMERAS PROCEDURALLY!
+    // (END OF) TESTING: (23-Aug-2022) INITIAL POPULATION!
+
+    // (BEGIN OF) DEBUG ONLY! (20-Nov-2015) DEFAULT CAMERA?
+    boost::shared_ptr<CPinholeCamera2> pinholeCamera(new CPinholeCamera2);
+
+    HEALTH_CHECK(!pinholeCamera, /*false*/);
+
+    // FIGHTFLOW CAMERA!
+    double opticalCenter[3] = { 0.0, -6.0, 3.0 },
+        center[3] = { 0, 0, 0 },
+        up[3] = { 0.0, 0.0, 1.0 };
+
+    // FIGHTFLOW CAMERA!
+    pinholeCamera->Create(opticalCenter, center, up, 23.0, 1.0, 1000.0, mediaPlayerInterface->GetWidth(), mediaPlayerInterface->GetHeight());
+
+    if (!footage->SetPinholeCamera(m_cameraCalibration.GetPinholeCamera()))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    UpdateViewFromModel();
+
+    //// TRICKY: (28-Sep-2022) A DUMB WAY TO MAKE SURE (?) THE MAIN WINDOW WILL BE REFRESHED AFTER AN UPDATING OF THE UNDERLYING DATA! THE MAIN WINDOW IS WAITING FOR THIS NULL EVENT.
+    //parent()->eventFilter(0, 0);
+}
+
 void CExtrinsicCalibrationTab::UpdateExtrinsicCalibration()
 {
     // OPIMIZATION SETTINGS
@@ -606,6 +740,9 @@ void CExtrinsicCalibrationTab::UpdateExtrinsicCalibration()
         m_cameraCalibration.SetParameterEnabled(CPinholeCameraCalibration::ROLL_PARAMETER, !MyMath::IsZero(rollStep));
         m_cameraCalibration.SetParameterStep(CPinholeCameraCalibration::ROLL_PARAMETER, rollStep);
     }
+
+    // TESTING: (01-Nov-2023)
+    m_cameraCalibration.SetParameterMaximum(CPinholeCameraCalibration::OPTICAL_CENTER_PARAMETER, 50.0);
 
     boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
 
@@ -686,7 +823,7 @@ QGroupBox* CExtrinsicCalibrationTab::CreateMarkerWidget()
         columnCount = 7;
     }
 
-    for (std::vector<boost::shared_ptr<my::video::CMarker> >::iterator markerIterator = markerArray.begin(); markerIterator != markerArray.end(); ++markerIterator)
+    for (const auto& marker : markerArray)
     {
         QAbstractButton * markerButton = 0;
 
@@ -703,8 +840,8 @@ QGroupBox* CExtrinsicCalibrationTab::CreateMarkerWidget()
 
         markerButton->setCheckable(true);
 
-        std::string name = (*markerIterator)->GetName(),
-            icon = (*markerIterator)->GetIcon();
+        std::string name = marker->GetName(),
+            icon = marker->GetIcon();
 
         // TRICKY: (18-Nov-2015)
         markerButton->setProperty("name", name.c_str());
