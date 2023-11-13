@@ -52,23 +52,21 @@
 
 namespace my {
     namespace sport {
-        class CTripodSceneryLayout
+        class CEgymSceneryLayout
             : public my::CSceneryLayout,
             public boost::noncopyable
         {
         public:
-            enum OFFICE_ITEM {
-                RED_LEG_BOTTOM_ITEM,
-                RED_LEG_MIDDLE_ITEM,
-                GREEN_LEG_BOTTOM_ITEM,
-                GREEN_LEG_MIDDLE_ITEM,
-                BLUE_LEG_BOTTOM_ITEM,
-                BLUE_LEG_MIDDLE_ITEM,
-                BALL_ON_TOP_ITEM,
+            enum EGYM_ITEM {
+                CUSTOM_0_ITEM,
+                CUSTOM_1_ITEM,
+                CUSTOM_2_ITEM,
+                CUSTOM_3_ITEM,
+                CUSTOM_4_ITEM,
                 LAST_ITEM
             };
 
-            CTripodSceneryLayout();
+            CEgymSceneryLayout();
 
             my::CVector3<double> GetItemPosition(my::int64 item, int venueId = my::Null<int>()) const;
 
@@ -90,9 +88,9 @@ namespace my {
     }; // sport
 
     template <>
-    inline sport::CTripodSceneryLayout::OFFICE_ITEM Null()
+    inline sport::CEgymSceneryLayout::EGYM_ITEM Null()
     {
-        return sport::CTripodSceneryLayout::OFFICE_ITEM::LAST_ITEM;
+        return sport::CEgymSceneryLayout::EGYM_ITEM::LAST_ITEM;
     }
 }; // my
 

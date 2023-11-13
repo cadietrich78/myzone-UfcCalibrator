@@ -192,10 +192,10 @@
     <ClInclude Include="..\..\..\..\source\external\SelectionMechanism.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\external\TripodSceneryLayout.h">
+    <ClInclude Include="..\..\..\..\source\external\EgymSceneryLayout.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\calibration\TripodMarkerArray.h">
+    <ClInclude Include="..\..\..\..\source\calibration\EgymMarkerArray.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h">
@@ -356,10 +356,10 @@
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\calibration\TripodMarkerArray.cpp">
+    <ClCompile Include="..\..\..\..\source\calibration\EgymMarkerArray.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\external\TripodSceneryLayout.cpp">
+    <ClCompile Include="..\..\..\..\source\external\EgymSceneryLayout.cpp">
       <Filter>Source Files\external</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\external\CalibratedPinholeCamera.cpp">

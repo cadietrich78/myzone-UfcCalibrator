@@ -48,9 +48,9 @@
 #include "../model/Footage.h"
 #include "../StringResource.h"
 
-#include "TripodMarkerArray.h"
+#include "EgymMarkerArray.h"
 
-CTripodMarkerArray::CTripodMarkerArray()
+CEgymMarkerArray::CEgymMarkerArray()
     : CMarkerGroup(),
     m_pointMarkerArray()
 {
@@ -62,7 +62,7 @@ CTripodMarkerArray::CTripodMarkerArray()
     }
 }
 
-double CTripodMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+double CEgymMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
 	double fitness = 0;
 
@@ -71,7 +71,7 @@ double CTripodMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinhol
 	return fitness;
 }
 
-double CTripodMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+double CEgymMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
 	const int *viewport = pinholeCamera->GetViewport();
 
@@ -143,12 +143,12 @@ double CTripodMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& p
 	return fitness;
 }
 
-void CTripodMarkerArray::SetError(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+void CEgymMarkerArray::SetError(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
     GetFitness(pinholeCamera);
 }
 
-boost::shared_ptr<my::video::CMarker> CTripodMarkerArray::GetMarker(const std::string& markerName) const
+boost::shared_ptr<my::video::CMarker> CEgymMarkerArray::GetMarker(const std::string& markerName) const
 {
 	for (const auto& marker : m_markerArray)
 	{
@@ -159,7 +159,7 @@ boost::shared_ptr<my::video::CMarker> CTripodMarkerArray::GetMarker(const std::s
 	return boost::shared_ptr<my::video::CMarker>();
 }
 
-bool CTripodMarkerArray::Initialize()
+bool CEgymMarkerArray::Initialize()
 {
     // Helper
 #define ADD_MARKER(MARKER_NAME, MARKER_ICON, WORLD_COORD, SCREEN_COORD, LOCAL_ARRAY, IS_ENABLED) { \
@@ -174,86 +174,68 @@ bool CTripodMarkerArray::Initialize()
 	LOCAL_ARRAY.push_back(marker); \
 }
 
-    my::sport::CTripodSceneryLayout tripodSceneryLayout;
+    my::sport::CEgymSceneryLayout egymSceneryLayout;
 
     double screenCoord[2] = { 0 };
 
-    // RED LEG
+    // CUSTOM 0TH
 
-    my::CVector3<double> redLegBottomVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::RED_LEG_BOTTOM_ITEM);
+    my::CVector3<double> custom0thVertex = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUSTOM_0_ITEM);
 
-    if (redLegBottomVertex.IsValid())
+    if (custom0thVertex.IsValid())
     {
         screenCoord[0] = -0.75;
         screenCoord[1] = -0.5;
 
-        ADD_MARKER("Red bottom", "RedLegBottom", redLegBottomVertex, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Custom 0th", "custom_0", custom0thVertex, screenCoord, m_pointMarkerArray, true);
     }
 
-    my::CVector3<double> redLegMiddleVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::RED_LEG_MIDDLE_ITEM);
+    // CUSTOM 1ST
 
-    if (redLegMiddleVertex.IsValid())
+    my::CVector3<double> custom1stVertex = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUSTOM_1_ITEM);
+
+    if (custom1stVertex.IsValid())
     {
         screenCoord[0] = 0.0;
         screenCoord[1] = -0.5;
 
-        ADD_MARKER("Red middle", "RedLegMiddle", redLegMiddleVertex, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Custom 1st", "custom_1", custom1stVertex, screenCoord, m_pointMarkerArray, true);
     }
 
-    // GREEN LEG
+    // CUSTOM 2ND
 
-    my::CVector3<double> greenLegBottomVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::GREEN_LEG_BOTTOM_ITEM);
+    my::CVector3<double> custom2ndVertex = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUSTOM_2_ITEM);
 
-    if (greenLegBottomVertex.IsValid())
+    if (custom2ndVertex.IsValid())
     {
         screenCoord[0] = 0.25;
         screenCoord[1] = -0.25;
 
-        ADD_MARKER("Green bottom", "GreenLegBottom", greenLegBottomVertex, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Custom 2nd", "custom_2", custom2ndVertex, screenCoord, m_pointMarkerArray, true);
     }
 
-    my::CVector3<double> greenLegMiddleVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::GREEN_LEG_MIDDLE_ITEM);
+    // CUSTOM 3RD
 
-    if (greenLegMiddleVertex.IsValid())
+    my::CVector3<double> custom3rdVertex = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUSTOM_3_ITEM);
+
+    if (custom3rdVertex.IsValid())
     {
         screenCoord[0] = 0.25;
         screenCoord[1] = 0.25;
 
-        ADD_MARKER("Green middle", "GreenLegMiddle", greenLegMiddleVertex, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Custom 3rd", "custom_3", custom3rdVertex, screenCoord, m_pointMarkerArray, true);
     }
 
-    // BLUE LEG
+    // CUSTOM 4TH
 
-    my::CVector3<double> blueLegBottomVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::BLUE_LEG_BOTTOM_ITEM);
+    my::CVector3<double> custom4thVertex = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUSTOM_4_ITEM);
 
-    if (blueLegBottomVertex.IsValid())
+    if (custom4thVertex.IsValid())
     {
         screenCoord[0] = 0.5;
         screenCoord[1] = -0.25;
 
-        ADD_MARKER("Blue bottom", "BlueLegBottom", blueLegBottomVertex, screenCoord, m_pointMarkerArray, true);
-    }
-
-    my::CVector3<double> blueLegMiddleVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::BLUE_LEG_MIDDLE_ITEM);
-
-    if (blueLegMiddleVertex.IsValid())
-    {
-        screenCoord[0] = -0.75;
-        screenCoord[1] = -0.75;
-
-        ADD_MARKER("Blue middle", "BlueLegMiddle", blueLegMiddleVertex, screenCoord, m_pointMarkerArray, true);
-    }
-
-    // BALL AT THE TOP
-
-    my::CVector3<double> ballOnTopVertex = tripodSceneryLayout.GetItemPosition(my::sport::CTripodSceneryLayout::BALL_ON_TOP_ITEM);
-
-    if (ballOnTopVertex.IsValid())
-    {
-        screenCoord[0] = 0.75;
-        screenCoord[1] = 0.0;
-
-        ADD_MARKER("Ball", "BallOnTop", ballOnTopVertex, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Custom 4th", "custom_4", custom4thVertex, screenCoord, m_pointMarkerArray, true);
     }
 
     return true;
