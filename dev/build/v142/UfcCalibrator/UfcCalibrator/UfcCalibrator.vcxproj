@@ -65,6 +65,7 @@
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\include;C:\My Files\Documentos\projects\shared\lib\freeglut\libs\freeglut\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\lib\Release\$(Platform);C:\My Files\Documentos\projects\shared\lib\freeglut\$(Platform);$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)2</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

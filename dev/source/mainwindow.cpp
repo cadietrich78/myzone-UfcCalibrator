@@ -348,6 +348,7 @@ void MainWindow::OpenVideoFrame()
         cv::Mat undistortedFrame(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
 
         cv::undistort(frame, undistortedFrame, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+        //cv::fisheye::undistortImage(frame, undistortedFrame, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray()(cv::Rect(0, 0, 4, 1)));
 
         undistortedFrameUrl = "data/temporary/" + my::GetFileName(frameUrl) + "_UNDISTORTED.png";
 
