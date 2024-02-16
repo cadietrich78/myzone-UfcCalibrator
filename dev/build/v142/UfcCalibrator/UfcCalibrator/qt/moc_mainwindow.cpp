@@ -93,7 +93,7 @@ int QResizeableTreeView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[22];
-    char stringdata0[336];
+    char stringdata0[343];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -107,27 +107,27 @@ QT_MOC_LITERAL(1, 11, 7), // "Repaint"
 QT_MOC_LITERAL(2, 19, 0), // ""
 QT_MOC_LITERAL(3, 20, 7), // "Refresh"
 QT_MOC_LITERAL(4, 28, 15), // "RefreshContents"
-QT_MOC_LITERAL(5, 44, 14), // "OpenVideoFrame"
-QT_MOC_LITERAL(6, 59, 15), // "OpenWebcamFrame"
-QT_MOC_LITERAL(7, 75, 24), // "SaveFightFlowCalibration"
-QT_MOC_LITERAL(8, 100, 17), // "CloseGameCallback"
-QT_MOC_LITERAL(9, 118, 12), // "EditSettings"
-QT_MOC_LITERAL(10, 131, 16), // "ClearCalibration"
-QT_MOC_LITERAL(11, 148, 21), // "PlaybackPreviousFrame"
-QT_MOC_LITERAL(12, 170, 18), // "PlaybackPlayButton"
-QT_MOC_LITERAL(13, 189, 23), // "PlaybackNextFrameButton"
-QT_MOC_LITERAL(14, 213, 22), // "PlaybackPositionSlider"
-QT_MOC_LITERAL(15, 236, 8), // "position"
-QT_MOC_LITERAL(16, 245, 15), // "PlaybackRefresh"
-QT_MOC_LITERAL(17, 261, 12), // "IdleCallback"
-QT_MOC_LITERAL(18, 274, 20), // "BackFromIdleCallback"
-QT_MOC_LITERAL(19, 295, 14), // "ShowCheatSheet"
-QT_MOC_LITERAL(20, 310, 7), // "ShowLog"
-QT_MOC_LITERAL(21, 318, 17) // "CurrentTabChanged"
+QT_MOC_LITERAL(5, 44, 17), // "OpenFrameFromDisk"
+QT_MOC_LITERAL(6, 62, 19), // "OpenFrameFromWebcam"
+QT_MOC_LITERAL(7, 82, 24), // "SaveFightFlowCalibration"
+QT_MOC_LITERAL(8, 107, 17), // "CloseGameCallback"
+QT_MOC_LITERAL(9, 125, 12), // "EditSettings"
+QT_MOC_LITERAL(10, 138, 16), // "ClearCalibration"
+QT_MOC_LITERAL(11, 155, 21), // "PlaybackPreviousFrame"
+QT_MOC_LITERAL(12, 177, 18), // "PlaybackPlayButton"
+QT_MOC_LITERAL(13, 196, 23), // "PlaybackNextFrameButton"
+QT_MOC_LITERAL(14, 220, 22), // "PlaybackPositionSlider"
+QT_MOC_LITERAL(15, 243, 8), // "position"
+QT_MOC_LITERAL(16, 252, 15), // "PlaybackRefresh"
+QT_MOC_LITERAL(17, 268, 12), // "IdleCallback"
+QT_MOC_LITERAL(18, 281, 20), // "BackFromIdleCallback"
+QT_MOC_LITERAL(19, 302, 14), // "ShowCheatSheet"
+QT_MOC_LITERAL(20, 317, 7), // "ShowLog"
+QT_MOC_LITERAL(21, 325, 17) // "CurrentTabChanged"
 
     },
     "MainWindow\0Repaint\0\0Refresh\0RefreshContents\0"
-    "OpenVideoFrame\0OpenWebcamFrame\0"
+    "OpenFrameFromDisk\0OpenFrameFromWebcam\0"
     "SaveFightFlowCalibration\0CloseGameCallback\0"
     "EditSettings\0ClearCalibration\0"
     "PlaybackPreviousFrame\0PlaybackPlayButton\0"
@@ -207,8 +207,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->Repaint(); break;
         case 1: _t->Refresh(); break;
         case 2: _t->RefreshContents(); break;
-        case 3: _t->OpenVideoFrame(); break;
-        case 4: _t->OpenWebcamFrame(); break;
+        case 3: _t->OpenFrameFromDisk(); break;
+        case 4: _t->OpenFrameFromWebcam(); break;
         case 5: _t->SaveFightFlowCalibration(); break;
         case 6: _t->CloseGameCallback(); break;
         case 7: _t->EditSettings(); break;

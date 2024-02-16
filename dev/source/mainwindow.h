@@ -114,8 +114,8 @@ protected:
 private slots:
     void RefreshContents();
     
-    void OpenVideoFrame();
-    void OpenWebcamFrame();
+    void OpenFrameFromDisk();
+    void OpenFrameFromWebcam();
 
     void SaveFightFlowCalibration();
 
@@ -181,8 +181,8 @@ protected:
 
     QToolBar *m_fileToolBar;
 
-    QAction* m_openVideoFrameAction;
-    QAction* m_openWebcamFrameAction;
+    QAction* m_openFrameFromDiskAction;
+    QAction* m_openFrameFromWebcamAction;
 
     QAction* m_saveFightFlowCalibrationAction;
 

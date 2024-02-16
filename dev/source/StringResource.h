@@ -134,7 +134,7 @@
 #define UFC_STRING_RESOURCE_0307 "User-defined"
 #define UFC_STRING_RESOURCE_0308 "Preset"
 #define UFC_STRING_RESOURCE_0310 "Open"
-#define UFC_STRING_RESOURCE_0311 "Frame from camera..."
+#define UFC_STRING_RESOURCE_0311 "Frame from disk..."
 #define UFC_STRING_RESOURCE_0312 "Open file"
 #define UFC_STRING_RESOURCE_0313 "Failed to open file"
 #define UFC_STRING_RESOURCE_0314 "Frame from Webcam..."
@@ -204,6 +204,7 @@
 #define UFC_STRING_RESOURCE_0541 "Previous frame"
 #define UFC_STRING_RESOURCE_0542 "Next frame"
 #define UFC_STRING_RESOURCE_0553 "="
+#define UFC_STRING_RESOURCE_0554 "Open INTRINSIC calibration file"
 
 #endif // #if !defined(STRING_RESOURCE_INCLUDED)
 

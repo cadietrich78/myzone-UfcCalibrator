@@ -253,83 +253,45 @@ void MainWindow::RefreshContents()
     //UpdateDatabaseActions();
 }
 
-void MainWindow::OpenVideoFrame()
+void MainWindow::OpenFrameFromDisk()
 {
-    QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
+    QFileDialog frameFileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
 
-    fileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+    frameFileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
 
-    QString nameFilter = tr(UFC_STRING_RESOURCE_0061) + tr(";;") 
+    QString frameNameFilter = tr(UFC_STRING_RESOURCE_0061) + tr(";;")
         + UFC_STRING_RESOURCE_0089 + tr(";;");
 
-    fileOpenDialog.setNameFilter(nameFilter);
-    fileOpenDialog.setDirectory(GetCurrentDirectory());
+    frameFileOpenDialog.setNameFilter(frameNameFilter);
+    frameFileOpenDialog.setDirectory(GetCurrentDirectory());
 
-    if (!fileOpenDialog.exec())
-        return /*false*/;
-
-    QStringList fileNameArray = fileOpenDialog.selectedFiles();
-
-    std::vector<std::string> formattedFileNameArray;
-
-    for (int fileNameIndex = 0; fileNameIndex < fileNameArray.size(); ++fileNameIndex)
+    if (!frameFileOpenDialog.exec())
     {
-        if (fileNameArray.at(fileNameIndex).isEmpty() ||
-            fileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    QStringList frameFileNameArray = frameFileOpenDialog.selectedFiles();
+
+    std::vector<std::string> frameFormattedFileNameArray;
+
+    for (int fileNameIndex = 0; fileNameIndex < frameFileNameArray.size(); ++fileNameIndex)
+    {
+        if (frameFileNameArray.at(fileNameIndex).isEmpty() ||
+            frameFileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
         {
             LOG_ERROR();
 
             return /*false*/;
         }
 
-        std::string formattedFileName = fileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+        std::string formattedFileName = frameFileNameArray.at(fileNameIndex).toLocal8Bit().constData();
 
-        formattedFileNameArray.push_back(formattedFileName);
+        frameFormattedFileNameArray.push_back(formattedFileName);
     }
 
-    if (formattedFileNameArray.empty())
-        return /*false*/;
-    
-    statusBar()->showMessage(tr(UFC_STRING_RESOURCE_0148), 9000);
-
-    if (formattedFileNameArray.size() == 1)
-    {
-        bool createPlay = true;
-
-        boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
-
-        if (ufcCalibratorModel)
-        {
-            boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
-
-            if (footage)
-            {
-                int reply = QMessageBox::warning(this, UFC_STRING_RESOURCE_0013, UFC_STRING_RESOURCE_0014, QMessageBox::Yes, QMessageBox::No);
-
-                createPlay = reply == QMessageBox::No;
-            }
-        }
-
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-        if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(formattedFileNameArray[0], createPlay))
-        {
-            LOG_ERROR();
-
-            statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
-
-            QApplication::restoreOverrideCursor();
-
-            return /*false*/;
-        }
-
-        UpdatePlaybackWidget();
-
-        InitializeTabs();
-
-        SetCurrentDirectory(my::GetDirectory(formattedFileNameArray[0]).c_str());
-    }
-    else
+    if (frameFormattedFileNameArray.size() != 1)
     {
         LOG_ERROR();
 
@@ -340,6 +302,118 @@ void MainWindow::OpenVideoFrame()
         return /*false*/;
     }
 
+    std::string frameUrl = frameFormattedFileNameArray[0];
+
+    statusBar()->showMessage(tr(UFC_STRING_RESOURCE_0148), 9000);
+
+    // (BEGIN OF) REMOVE DISTORTION!
+    QFileDialog calibrationFileOpenDialog(this, UFC_STRING_RESOURCE_0554, NULL);
+
+    calibrationFileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    QString calibrationNameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
+
+    calibrationFileOpenDialog.setNameFilter(calibrationNameFilter);
+    calibrationFileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    if (!calibrationFileOpenDialog.exec())
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    QStringList calibrationFileNameArray = calibrationFileOpenDialog.selectedFiles();
+
+    std::vector<std::string> calibrationFormattedFileNameArray;
+
+    for (int fileNameIndex = 0; fileNameIndex < calibrationFileNameArray.size(); ++fileNameIndex)
+    {
+        if (calibrationFileNameArray.at(fileNameIndex).isEmpty() ||
+            calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        std::string formattedFileName = calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+        calibrationFormattedFileNameArray.push_back(formattedFileName);
+    }
+
+    if (calibrationFormattedFileNameArray.size() == 1)
+    {
+        m_intrinsicCalibrationFileName = calibrationFormattedFileNameArray.front();
+
+        CCalibratedPinholeCamera calibratedPinholeCamera;
+
+        if (!calibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        cv::Mat frame = cv::imread(frameUrl);
+
+        if (frame.empty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        cv::Mat frameToBeDisplayed(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
+
+        cv::undistort(frame, frameToBeDisplayed, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+
+        frameUrl = "data/temporary/" + my::GetFileName(frameUrl) + ".UNDISTORTED.png";
+
+        if (!cv::imwrite(frameUrl, frameToBeDisplayed))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+    }
+    // (END OF) REMOVE DISTORTION!
+
+    bool createPlay = true;
+
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (ufcCalibratorModel)
+    {
+        boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+
+        if (footage)
+        {
+            int reply = QMessageBox::warning(this, UFC_STRING_RESOURCE_0013, UFC_STRING_RESOURCE_0014, QMessageBox::Yes, QMessageBox::No);
+
+            createPlay = reply == QMessageBox::No;
+        }
+    }
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (!CUfcCalibratorViewModel::Instance().OpenFromUrl(frameUrl, createPlay))
+    {
+        LOG_ERROR();
+
+        statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
+
+        QApplication::restoreOverrideCursor();
+
+        return /*false*/;
+    }
+
+    UpdatePlaybackWidget();
+
+    InitializeTabs();
+
+    SetCurrentDirectory(my::GetDirectory(frameFormattedFileNameArray[0]).c_str());
+
     Repaint();
 
     statusBar()->showMessage(UFC_STRING_RESOURCE_0149, 9000);
@@ -349,7 +423,7 @@ void MainWindow::OpenVideoFrame()
     QApplication::restoreOverrideCursor();
 }
 
-void MainWindow::OpenWebcamFrame()
+void MainWindow::OpenFrameFromWebcam()
 {
     bool isValidInput = false;
 
@@ -391,6 +465,7 @@ void MainWindow::OpenWebcamFrame()
         }
     }
 
+    // (BEGIN OF) REMOVE DISTORTION!
     QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
 
     fileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
@@ -453,6 +528,7 @@ void MainWindow::OpenWebcamFrame()
 
     if (videoCapture.isOpened())
         videoCapture.release();
+    // (END OF) REMOVE DISTORTION!
 
     bool createPlay = true;
 
@@ -901,7 +977,7 @@ void MainWindow::CreateActions()
 
     try
     {
-        m_openVideoFrameAction = new QAction(tr(UFC_STRING_RESOURCE_0311), this);
+        m_openFrameFromDiskAction = new QAction(tr(UFC_STRING_RESOURCE_0311), this);
     }
     catch (std::exception& e)
     {
@@ -910,11 +986,11 @@ void MainWindow::CreateActions()
         return /*false*/;
     }
 
-    connect(m_openVideoFrameAction, SIGNAL(triggered()), this, SLOT(OpenVideoFrame()));
+    connect(m_openFrameFromDiskAction, SIGNAL(triggered()), this, SLOT(OpenFrameFromDisk()));
 
     try
     {
-        m_openWebcamFrameAction = new QAction(tr(UFC_STRING_RESOURCE_0314), this);
+        m_openFrameFromWebcamAction = new QAction(tr(UFC_STRING_RESOURCE_0314), this);
     }
     catch (std::exception& e)
     {
@@ -923,7 +999,7 @@ void MainWindow::CreateActions()
         return /*false*/;
     }
 
-    connect(m_openWebcamFrameAction, SIGNAL(triggered()), this, SLOT(OpenWebcamFrame()));
+    connect(m_openFrameFromWebcamAction, SIGNAL(triggered()), this, SLOT(OpenFrameFromWebcam()));
 
     try
     {
@@ -980,8 +1056,8 @@ void MainWindow::CreateMenus()
         return /*false*/;
     }
 
-    fileOpenMenu->addAction(m_openVideoFrameAction);
-    fileOpenMenu->addAction(m_openWebcamFrameAction);
+    fileOpenMenu->addAction(m_openFrameFromDiskAction);
+    fileOpenMenu->addAction(m_openFrameFromWebcamAction);
 
     m_fileMenu->addSeparator();
 
@@ -1368,8 +1444,8 @@ void MainWindow::Create()
     m_auditingMenu = 0;
     m_helpMenu = 0;
     m_fileToolBar = 0;
-    m_openVideoFrameAction = 0;
-    m_openWebcamFrameAction = 0;
+    m_openFrameFromDiskAction = 0;
+    m_openFrameFromWebcamAction = 0;
     m_saveFightFlowCalibrationAction = 0;
     m_clearCalibrationAction = 0;
     m_exitAction = 0;
