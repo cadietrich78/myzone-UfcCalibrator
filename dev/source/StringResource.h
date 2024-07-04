@@ -78,6 +78,8 @@
 #define UFC_STRING_RESOURCE_0030 "Clear"
 #define UFC_STRING_RESOURCE_0031 "JSON file (*.json)"
 #define UFC_STRING_RESOURCE_0032 "Pinhole camera file (*.pinholeCamera)"
+#define UFC_STRING_RESOURCE_0033 "Failed to load camera settings"
+#define UFC_STRING_RESOURCE_0034 "Failed to load settings"
 #define UFC_STRING_RESOURCE_0061 "All Supported Formats (*.png; *.jpg)"
 #define UFC_STRING_RESOURCE_0087 "Edit"
 #define UFC_STRING_RESOURCE_0089 "PNG file (*.png)"

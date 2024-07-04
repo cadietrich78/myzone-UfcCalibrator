@@ -49,7 +49,7 @@
 
 #include <Texture.h>
 #include <Timestamp.h>
-#include <OfficeSceneryLayout.h>
+#include <EgymSceneryLayout.h>
 
 #include "../calibration/PinholeCameraCalibration.h"
 #include "../video/MediaPlayerInterface.h"

@@ -618,6 +618,8 @@ void MainWindow::SaveFightFlowCalibration()
         return /*false*/;
     }
 
+    m_glWidget->SaveFrame(my::GetDirectory(cameraFileName.toStdString()) + "calibrator_view.png");
+
     statusBar()->showMessage(feedbackMessage.c_str(), 9000);
 }
 

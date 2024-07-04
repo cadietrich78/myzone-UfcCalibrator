@@ -49,7 +49,7 @@
 #include <vector>
 #include <string>
 
-#include <OfficeSceneryLayout.h>
+#include <EgymSceneryLayout.h>
 
 #include "Footage.h"
 

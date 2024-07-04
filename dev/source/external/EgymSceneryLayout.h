@@ -52,31 +52,24 @@
 
 namespace my {
     namespace sport {
-        class COfficeSceneryLayout
+        class CEgymSceneryLayout
             : public my::CSceneryLayout,
             public boost::noncopyable
         {
         public:
             enum OFFICE_ITEM {
-                LEFT_TOP_VERTEX_ITEM,
-                LEFT_CENTER_VERTEX_ITEM,
-                LEFT_BOTTOM_VERTEX_ITEM,
-                RIGHT_TOP_VERTEX_ITEM,
-                RIGHT_CENTER_VERTEX_ITEM,
-                RIGHT_BOTTOM_VERTEX_ITEM,
-                BIG_CHESSBOARD_MARKER_0,
-                BIG_CHESSBOARD_MARKER_5,
-                BIG_CHESSBOARD_MARKER_6,
-                BIG_CHESSBOARD_MARKER_7,
-                BIG_CHESSBOARD_MARKER_8,
-                SMALL_CHESSBOARD_MARKER_1,
-                SMALL_CHESSBOARD_MARKER_2,
-                SMALL_CHESSBOARD_MARKER_3,
-                SMALL_CHESSBOARD_MARKER_4,
+                CUBE_000_VERTEX_ITEM,
+                CUBE_X00_VERTEX_ITEM,
+                CUBE_XY0_VERTEX_ITEM,
+                CUBE_0Y0_VERTEX_ITEM,
+                CUBE_00Z_VERTEX_ITEM,
+                CUBE_X0Z_VERTEX_ITEM,
+                CUBE_XYZ_VERTEX_ITEM,
+                CUBE_0YZ_VERTEX_ITEM,
                 LAST_ITEM
             };
 
-            COfficeSceneryLayout();
+            CEgymSceneryLayout();
 
             my::CVector3<double> GetItemPosition(my::int64 item, int venueId = my::Null<int>()) const;
 
@@ -98,9 +91,9 @@ namespace my {
     }; // sport
 
     template <>
-    inline sport::COfficeSceneryLayout::OFFICE_ITEM Null()
+    inline sport::CEgymSceneryLayout::OFFICE_ITEM Null()
     {
-        return sport::COfficeSceneryLayout::OFFICE_ITEM::LAST_ITEM;
+        return sport::CEgymSceneryLayout::OFFICE_ITEM::LAST_ITEM;
     }
 }; // my
 

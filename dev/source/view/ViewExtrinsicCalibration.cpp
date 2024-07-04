@@ -563,7 +563,7 @@ void CViewExtrinsicCalibration::DrawCalibrationQuality()
 
     glColor3d(1.0, 1.0, 1.0);
 
-    DrawString(-0.975f, 0.95f, std::string(UFC_STRING_RESOURCE_0002) + ": " + calibrationQualityAsString + " (" + octagonSizeAsString + "' octagon)");
+    DrawString(-0.975f, 0.95f, std::string(UFC_STRING_RESOURCE_0002) + ": " + calibrationQualityAsString /*+ " (" + octagonSizeAsString + "' octagon)"*/);
 
     glDisable(GL_LINE_SMOOTH);
 

@@ -65,7 +65,7 @@
     <IntDir>C:\temp\Fallback Location\Intermediate Directory\$(ProjectName)\$(PlatformToolset)\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>C:\Users\cadie\Dropbox\Documentos\projects\myzone-UfcCalibrator\dev\source\external;C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\include;C:\My Files\Documentos\projects\shared\lib\freeglut\libs\freeglut\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\My Files\Documentos\projects\shared\lib\glew-2.1.0\lib\Release\$(Platform);C:\My Files\Documentos\projects\shared\lib\freeglut\$(Platform);$(LibraryPath)</LibraryPath>
-    <TargetName>$(ProjectName)3</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -101,7 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\source\calibration\OfficeMarkerArray.h" />
+    <ClInclude Include="..\..\..\..\source\calibration\EgymMarkerArray.h" />
     <ClInclude Include="..\..\..\..\source\external\BoundingBox.h" />
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h" />
     <ClInclude Include="..\..\..\..\source\external\Color.h" />
@@ -116,7 +116,7 @@
     <ClInclude Include="..\..\..\..\source\external\Marker.h" />
     <ClInclude Include="..\..\..\..\source\external\MyMath.h" />
     <ClInclude Include="..\..\..\..\source\external\Object.h" />
-    <ClInclude Include="..\..\..\..\source\external\OfficeSceneryLayout.h" />
+    <ClInclude Include="..\..\..\..\source\external\EgymSceneryLayout.h" />
     <ClInclude Include="..\..\..\..\source\external\PinholeCamera2.h" />
     <ClInclude Include="..\..\..\..\source\external\PngWrapper.h" />
     <ClInclude Include="..\..\..\..\source\external\PropertyObject.h" />
@@ -229,7 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp" />
-    <ClCompile Include="..\..\..\..\source\calibration\OfficeMarkerArray.cpp" />
+    <ClCompile Include="..\..\..\..\source\calibration\EgymMarkerArray.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.cpp" />
@@ -246,7 +246,7 @@
     <ClCompile Include="..\..\..\..\source\external\Logger.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Marker.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Object.cpp" />
-    <ClCompile Include="..\..\..\..\source\external\OfficeSceneryLayout.cpp" />
+    <ClCompile Include="..\..\..\..\source\external\EgymSceneryLayout.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PinholeCamera2.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PngWrapper.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PropertyObject.cpp" />

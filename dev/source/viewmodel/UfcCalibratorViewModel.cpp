@@ -517,7 +517,7 @@ bool CUfcCalibratorViewModel::OpenSettings()
 
     if (!OpenCameraSettings())
     {
-        LOG_ERROR();
+        LOG_MESSAGE(UFC_STRING_RESOURCE_0034);
 
         // THE PIPELINE SHOULD NOT BE BROKEN HERE
         //return false;
@@ -927,7 +927,7 @@ bool CUfcCalibratorViewModel::OpenCameraSettings() const
         if (m_messageQueue)
             m_messageQueue->PushMessageDialog(UFC_STRING_RESOURCE_0414);
 
-        LOG_ERROR();
+        LOG_MESSAGE(UFC_STRING_RESOURCE_0033);
 
         return false;
     }
