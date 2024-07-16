@@ -982,7 +982,7 @@ QGroupBox* CExtrinsicCalibrationTab::CreateCameraWidget()
         m_centerOfProjectionZSpinBox->setDisabled(true);
 
         m_fieldOfViewSpinBox = new QDoubleSpinBox;
-        m_fieldOfViewSpinBox->setRange(0, 60);
+        m_fieldOfViewSpinBox->setRange(0, 120);
         m_fieldOfViewSpinBox->setDecimals(3);
         m_fieldOfViewSpinBox->setSingleStep(0.001);
         m_fieldOfViewSpinBox->setAlignment(Qt::AlignRight);
