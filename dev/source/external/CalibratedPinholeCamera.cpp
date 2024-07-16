@@ -108,21 +108,49 @@ bool CCalibratedPinholeCamera::FromOpenCvFile(std::string openCvCameraFileName)
         timestampAsString = timestampHandle.GetString();
     }
 
-    HEALTH_CHECK(!document.HasMember("viewport_width"), false);
+    int viewportWidth = my::Null<int>(),
+        viewportHeight = my::Null<int>();
 
-    const rapidjson::Value& viewportWidthHandle = document["viewport_width"];
+    if (document.HasMember("viewport_width") &&
+        document.HasMember("viewport_height"))
+    {
+        const rapidjson::Value& viewportWidthHandle = document["viewport_width"];
 
-    HEALTH_CHECK(!viewportWidthHandle.IsInt(), false);
+        HEALTH_CHECK(!viewportWidthHandle.IsInt(), false);
 
-    int viewportWidth = viewportWidthHandle.GetInt();
+        viewportWidth = viewportWidthHandle.GetInt();
 
-    HEALTH_CHECK(!document.HasMember("viewport_height"), false);
+        const rapidjson::Value& viewportHeightHandle = document["viewport_height"];
 
-    const rapidjson::Value& viewportHeightHandle = document["viewport_height"];
+        HEALTH_CHECK(!viewportHeightHandle.IsInt(), false);
 
-    HEALTH_CHECK(!viewportHeightHandle.IsInt(), false);
+        viewportHeight = viewportHeightHandle.GetInt();
+    }
+    else if (document.HasMember("viewport"))
+    {
+        const rapidjson::Value& viewportParameterArrayHandle = document["viewport"];
 
-    int viewportHeight = viewportHeightHandle.GetInt();
+        HEALTH_CHECK(!viewportParameterArrayHandle.IsArray(), false);
+        HEALTH_CHECK(viewportParameterArrayHandle.Size() != 4, false);
+
+        const rapidjson::Value& viewportWidthHandle = viewportParameterArrayHandle[2];
+
+        HEALTH_CHECK(!viewportWidthHandle.IsInt(), false);
+
+        viewportWidth = viewportWidthHandle.GetInt();
+
+        const rapidjson::Value& viewportHeightHandle = viewportParameterArrayHandle[3];
+
+        HEALTH_CHECK(!viewportHeightHandle.IsInt(), false);
+
+        viewportHeight = viewportHeightHandle.GetInt();
+    }
+    else
+    {
+        LOG_ERROR();
+
+        return false;
+    }
 
     HEALTH_CHECK(!document.HasMember("camera_matrix"), false);
 
