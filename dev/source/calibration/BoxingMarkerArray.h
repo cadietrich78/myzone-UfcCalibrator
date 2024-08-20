@@ -41,61 +41,40 @@
  * But it's a process. We'll make it less shitty. Just watch!"
  */
 
-#ifndef OFFICE_SCENERY_LAYOUT_INCLUDED
-#define OFFICE_SCENERY_LAYOUT_INCLUDED
+#if !defined(BOXING_MARKER_ARRAY_INCLUDED)
+#define BOXING_MARKER_ARRAY_INCLUDED
 
-#include <boost/utility.hpp>
+#include <vector>
 
-#include <Vector3.h>
+#include <boost/shared_ptr.hpp>
 
-#include <SceneryLayout.h>
+#include <PinholeCamera2.h>
+#include <Marker.h>
+#include <BoxingSceneryLayout.h>
 
-namespace my {
-    namespace sport {
-        class CEgymSceneryLayout
-            : public my::CSceneryLayout,
-            public boost::noncopyable
-        {
-        public:
-            enum OFFICE_ITEM {
-                CUBE_000_VERTEX_ITEM,
-                CUBE_X00_VERTEX_ITEM,
-                CUBE_XY0_VERTEX_ITEM,
-                CUBE_0Y0_VERTEX_ITEM,
-                CUBE_00Z_VERTEX_ITEM,
-                CUBE_X0Z_VERTEX_ITEM,
-                CUBE_XYZ_VERTEX_ITEM,
-                CUBE_0YZ_VERTEX_ITEM,
-                LAST_ITEM
-            };
+#include "MarkerGroup.h"
 
-            CEgymSceneryLayout();
+class CBoxingMarkerArray
+	: public CMarkerGroup,
+	public boost::noncopyable
+{
+public:
+	CBoxingMarkerArray();
 
-            my::CVector3<double> GetItemPosition(my::int64 item, int venueId = my::Null<int>()) const;
+	double GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
-            double GetItemLength(my::int64 item, int venueId = my::Null<int>()) const;
+	void SetError(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
-            double GetDistanceToItem(double x, double y, double z, my::int64 item) const;
-            double GetDistanceToItem(my::CVector3<double> position, my::int64 item) const;
+private:
+	double GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
-            std::string GetItemName(my::int64 item) const;
+	boost::shared_ptr<my::video::CMarker> GetMarker(const std::string& markerName) const;
 
-            // TRICKY: (??-???-????) BOUNDING BOX OF ALL VENUES
-            CBoundingBox GetBoundingBox() const;
+	bool Initialize();
 
-            boost::shared_ptr<CVertexPool> GetLayoutMesh();
+protected:
+	std::vector<boost::shared_ptr<my::video::CMarker> > m_pointMarkerArray;
+};
 
-        protected:
-            boost::shared_ptr<CVertexPool> m_layoutMesh;
-        };
-    }; // sport
-
-    template <>
-    inline sport::CEgymSceneryLayout::OFFICE_ITEM Null()
-    {
-        return sport::CEgymSceneryLayout::OFFICE_ITEM::LAST_ITEM;
-    }
-}; // my
-
-#endif // OFFICE_SCENERY_LAYOUT_INCLUDED
+#endif //#if !defined(BOXING_MARKER_ARRAY_INCLUDED)
 

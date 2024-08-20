@@ -41,14 +41,14 @@
     <Import Project="..\PropertySheet.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Debug.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.9.0.v14.x64.Debug.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.10.0.v14.x64.Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\PropertySheet.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Release.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.9.0.v14.x64.Release.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.10.0.v14.x64.Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -101,7 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\source\calibration\EgymMarkerArray.h" />
+    <ClInclude Include="..\..\..\..\source\calibration\BoxingMarkerArray.h" />
     <ClInclude Include="..\..\..\..\source\external\BoundingBox.h" />
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h" />
     <ClInclude Include="..\..\..\..\source\external\Color.h" />
@@ -112,11 +112,12 @@
     <ClInclude Include="..\..\..\..\source\external\GlHelper.h" />
     <ClInclude Include="..\..\..\..\source\external\Journal.h" />
     <ClInclude Include="..\..\..\..\source\external\JournalObject.h" />
+    <ClInclude Include="..\..\..\..\source\external\LinearInterpolation.h" />
     <ClInclude Include="..\..\..\..\source\external\Logger.h" />
     <ClInclude Include="..\..\..\..\source\external\Marker.h" />
     <ClInclude Include="..\..\..\..\source\external\MyMath.h" />
     <ClInclude Include="..\..\..\..\source\external\Object.h" />
-    <ClInclude Include="..\..\..\..\source\external\EgymSceneryLayout.h" />
+    <ClInclude Include="..\..\..\..\source\external\BoxingSceneryLayout.h" />
     <ClInclude Include="..\..\..\..\source\external\PinholeCamera2.h" />
     <ClInclude Include="..\..\..\..\source\external\PngWrapper.h" />
     <ClInclude Include="..\..\..\..\source\external\PropertyObject.h" />
@@ -229,7 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp" />
-    <ClCompile Include="..\..\..\..\source\calibration\EgymMarkerArray.cpp" />
+    <ClCompile Include="..\..\..\..\source\calibration\BoxingMarkerArray.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.cpp" />
@@ -246,7 +247,7 @@
     <ClCompile Include="..\..\..\..\source\external\Logger.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Marker.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Object.cpp" />
-    <ClCompile Include="..\..\..\..\source\external\EgymSceneryLayout.cpp" />
+    <ClCompile Include="..\..\..\..\source\external\BoxingSceneryLayout.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PinholeCamera2.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PngWrapper.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PropertyObject.cpp" />

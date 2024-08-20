@@ -380,6 +380,16 @@ bool CCalibratedPinholeCamera::ToPinholeCameraFile(std::string pinholeCameraFile
 
     jsonWriter.StartObject();
 
+    // "camera_index"
+
+    jsonWriter.String("camera_index");
+    jsonWriter.Int(m_index);
+
+    // "name"
+
+    jsonWriter.String("name");
+    jsonWriter.String(("Camera " + std::to_string(m_index)).c_str());
+
     // "viewport"
 
     jsonWriter.String("viewport");

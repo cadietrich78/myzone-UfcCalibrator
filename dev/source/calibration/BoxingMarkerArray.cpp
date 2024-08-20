@@ -48,9 +48,9 @@
 #include "../model/Footage.h"
 #include "../StringResource.h"
 
-#include "EgymMarkerArray.h"
+#include "BoxingMarkerArray.h"
 
-CEgymMarkerArray::CEgymMarkerArray()
+CBoxingMarkerArray::CBoxingMarkerArray()
     : CMarkerGroup(),
     m_pointMarkerArray()
 {
@@ -62,7 +62,7 @@ CEgymMarkerArray::CEgymMarkerArray()
     }
 }
 
-double CEgymMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+double CBoxingMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
 	double fitness = 0;
 
@@ -71,7 +71,7 @@ double CEgymMarkerArray::GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeC
 	return fitness;
 }
 
-double CEgymMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+double CBoxingMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
 	const int *viewport = pinholeCamera->GetViewport();
 
@@ -143,12 +143,12 @@ double CEgymMarkerArray::GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pin
 	return fitness;
 }
 
-void CEgymMarkerArray::SetError(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
+void CBoxingMarkerArray::SetError(boost::shared_ptr<CPinholeCamera2>& pinholeCamera)
 {
     GetFitness(pinholeCamera);
 }
 
-boost::shared_ptr<my::video::CMarker> CEgymMarkerArray::GetMarker(const std::string& markerName) const
+boost::shared_ptr<my::video::CMarker> CBoxingMarkerArray::GetMarker(const std::string& markerName) const
 {
 	for (const auto& marker : m_markerArray)
 	{
@@ -159,7 +159,7 @@ boost::shared_ptr<my::video::CMarker> CEgymMarkerArray::GetMarker(const std::str
 	return boost::shared_ptr<my::video::CMarker>();
 }
 
-bool CEgymMarkerArray::Initialize()
+bool CBoxingMarkerArray::Initialize()
 {
     // Helper
 #define ADD_MARKER(MARKER_NAME, MARKER_ICON, WORLD_COORD, SCREEN_COORD, LOCAL_ARRAY, IS_ENABLED) { \
@@ -174,81 +174,125 @@ bool CEgymMarkerArray::Initialize()
 	LOCAL_ARRAY.push_back(marker); \
 }
 
-    my::sport::CEgymSceneryLayout egymSceneryLayout;
+    my::sport::CBoxingSceneryLayout boxingSceneryLayout;
 
     double screenCoord[2] = { 0 };
 
-    my::CVector3<double> _000 = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_000_VERTEX_ITEM),
-        _X00 = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_X00_VERTEX_ITEM),
-        _XY0 = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_XY0_VERTEX_ITEM),
-        _0Y0 = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_0Y0_VERTEX_ITEM),
-        _00Z = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_00Z_VERTEX_ITEM),
-        _X0Z = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_X0Z_VERTEX_ITEM),
-        _XYZ = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_XYZ_VERTEX_ITEM),
-        _0YZ = egymSceneryLayout.GetItemPosition(my::sport::CEgymSceneryLayout::CUBE_0YZ_VERTEX_ITEM);
+    my::CVector3<double> supportingPoleRed = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::SUPPORTING_POLE_RED_VERTEX_ITEM),
+        topPoleRed = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::TOP_POLE_RED_VERTEX_ITEM),
+        bottomPoleRed = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::BOTTOM_POLE_RED_VERTEX_ITEM),
+        supportingPole10 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::SUPPORTING_POLE_10_VERTEX_ITEM),
+        topPole10 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::TOP_POLE_10_VERTEX_ITEM),
+        bottomPole10 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::BOTTOM_POLE_10_VERTEX_ITEM),
+        supportingPoleBlue = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::SUPPORTING_POLE_BLUE_VERTEX_ITEM),
+        topPoleBlue = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::TOP_POLE_BLUE_VERTEX_ITEM),
+        bottomPoleBlue = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::BOTTOM_POLE_BLUE_VERTEX_ITEM),
+        supportingPole01 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::SUPPORTING_POLE_01_VERTEX_ITEM),
+        topPole01 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::TOP_POLE_01_VERTEX_ITEM),
+        bottomPole01 = boxingSceneryLayout.GetItemPosition(my::sport::CBoxingSceneryLayout::BOTTOM_POLE_01_VERTEX_ITEM);
 
-    if (_000.IsValid())
+    // RED POLE
+
+    if (supportingPoleRed.IsValid())
     {
-        screenCoord[0] = -0.4;
+        screenCoord[0] = -0.75;
         screenCoord[1] = 0.5;
 
-        ADD_MARKER("000 (over tape)", "egym_000", _000, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Supporting (red)", "supportingPoleRed", supportingPoleRed, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_X00.IsValid())
+    if (topPoleRed.IsValid())
     {
-        screenCoord[0] = -0.2;
+        screenCoord[0] = -0.25;
         screenCoord[1] = 0.5;
 
-        ADD_MARKER("X00", "egym_X00", _X00, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Pole (red)", "topPoleRed", topPoleRed, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_XY0.IsValid())
+    if (bottomPoleRed.IsValid())
     {
-        screenCoord[0] = 0.2;
+        screenCoord[0] = 0.25;
         screenCoord[1] = 0.5;
 
-        ADD_MARKER("XY0", "egym_XY0", _XY0, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Bottom (red)", "bottomPoleRed", bottomPoleRed, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_0Y0.IsValid())
+    // 10 POLE
+
+    if (supportingPole10.IsValid())
     {
-        screenCoord[0] = 0.4;
+        screenCoord[0] = -0.75;
         screenCoord[1] = 0.5;
 
-        ADD_MARKER("0Y0", "egym_0Y0", _0Y0, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Supporting (10)", "supportingPole10", supportingPole10, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_00Z.IsValid())
+    if (topPole10.IsValid())
     {
-        screenCoord[0] = -0.4;
-        screenCoord[1] = -0.5;
+        screenCoord[0] = -0.75;
+        screenCoord[1] = 0.0;
 
-        ADD_MARKER("00Z (over tape)", "egym_00Z", _00Z, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Pole (10)", "topPole10", topPole10, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_X0Z.IsValid())
+    if (bottomPole10.IsValid())
     {
-        screenCoord[0] = -0.2;
-        screenCoord[1] = -0.5;
+        screenCoord[0] = -0.25;
+        screenCoord[1] = 0.0;
 
-        ADD_MARKER("X0Z", "egym_X0Z", _X0Z, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Bottom (10)", "bottomPole10", bottomPole10, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_XYZ.IsValid())
-    {
-        screenCoord[0] = 0.2;
-        screenCoord[1] = -0.5;
+    // BLUE POLE
 
-        ADD_MARKER("XYZ", "egym_XYZ", _XYZ, screenCoord, m_pointMarkerArray, true);
+    if (supportingPoleBlue.IsValid())
+    {
+        screenCoord[0] = 0.25;
+        screenCoord[1] = 0.0;
+
+        ADD_MARKER("Supporting (blue)", "supportingPoleBlue", supportingPoleBlue, screenCoord, m_pointMarkerArray, true);
     }
 
-    if (_0YZ.IsValid())
+    if (topPoleBlue.IsValid())
     {
-        screenCoord[0] = 0.4;
+        screenCoord[0] = 0.75;
+        screenCoord[1] = 0.0;
+
+        ADD_MARKER("Pole (blue)", "topPoleBlue", topPoleBlue, screenCoord, m_pointMarkerArray, true);
+    }
+
+    if (bottomPoleBlue.IsValid())
+    {
+        screenCoord[0] = -0.75;
         screenCoord[1] = -0.5;
 
-        ADD_MARKER("0YZ", "egym_0YZ", _0YZ, screenCoord, m_pointMarkerArray, true);
+        ADD_MARKER("Bottom (blue)", "bottomPoleBlue", bottomPoleBlue, screenCoord, m_pointMarkerArray, true);
+    }
+
+    // 01 POLE
+
+    if (supportingPole01.IsValid())
+    {
+        screenCoord[0] = -0.25;
+        screenCoord[1] = -0.5;
+
+        ADD_MARKER("Supporting (01)", "supportingPole01", supportingPole01, screenCoord, m_pointMarkerArray, true);
+    }
+
+    if (topPole01.IsValid())
+    {
+        screenCoord[0] = 0.25;
+        screenCoord[1] = -0.5;
+
+        ADD_MARKER("Pole (01)", "topPole01", topPole01, screenCoord, m_pointMarkerArray, true);
+    }
+
+    if (bottomPole01.IsValid())
+    {
+        screenCoord[0] = 0.75;
+        screenCoord[1] = -0.5;
+
+        ADD_MARKER("Bottom (01)", "bottomPole01", bottomPole01, screenCoord, m_pointMarkerArray, true);
     }
 
     return true;

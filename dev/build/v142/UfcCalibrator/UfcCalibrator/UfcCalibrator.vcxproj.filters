@@ -192,13 +192,16 @@
     <ClInclude Include="..\..\..\..\source\external\SelectionMechanism.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\external\EgymSceneryLayout.h">
+    <ClInclude Include="..\..\..\..\source\external\BoxingSceneryLayout.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\calibration\EgymMarkerArray.h">
+    <ClInclude Include="..\..\..\..\source\calibration\BoxingMarkerArray.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h">
+      <Filter>Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\source\external\LinearInterpolation.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
   </ItemGroup>
@@ -356,10 +359,10 @@
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\calibration\EgymMarkerArray.cpp">
+    <ClCompile Include="..\..\..\..\source\calibration\BoxingMarkerArray.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\external\EgymSceneryLayout.cpp">
+    <ClCompile Include="..\..\..\..\source\external\BoxingSceneryLayout.cpp">
       <Filter>Source Files\external</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\external\CalibratedPinholeCamera.cpp">

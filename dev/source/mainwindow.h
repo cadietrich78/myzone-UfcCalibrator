@@ -216,6 +216,7 @@ protected:
     boost::shared_ptr<QSound> m_messageSoundEffect;
 
     std::string m_intrinsicCalibrationFileName;
+    int m_zoomValue;
 };
 
 #endif //#if !defined(MAIN_WINDOW_INCLUDED)

@@ -59,6 +59,7 @@
 #include <FileHelper.h>
 #include <UnitConversion.h>
 #include <CalibratedPinholeCamera.h>
+#include <LinearInterpolation.h>
 
 #include "StringResource.h"
 #include "ObjectType.h"
@@ -307,54 +308,13 @@ void MainWindow::OpenFrameFromDisk()
     statusBar()->showMessage(tr(UFC_STRING_RESOURCE_0148), 9000);
 
     // (BEGIN OF) REMOVE DISTORTION!
-    QFileDialog calibrationFileOpenDialog(this, UFC_STRING_RESOURCE_0554, NULL);
+    // (BEGIN OF) ESTIMATE AN INTRINSIC CALIBRATION FROM PREVIOUS MEASUREMENTS!
+    bool okCLicked;
 
-    calibrationFileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
-
-    QString calibrationNameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
-
-    calibrationFileOpenDialog.setNameFilter(calibrationNameFilter);
-    calibrationFileOpenDialog.setDirectory(GetCurrentDirectory());
-
-    if (!calibrationFileOpenDialog.exec())
+    m_zoomValue = QInputDialog::getInt(this, tr("AXIS M5075-G Zoom Settings"), tr("Zoom:"), 0, 0, 8525, 1, &okCLicked);
+    
+    if (okCLicked)
     {
-        LOG_ERROR();
-
-        return /*false*/;
-    }
-
-    QStringList calibrationFileNameArray = calibrationFileOpenDialog.selectedFiles();
-
-    std::vector<std::string> calibrationFormattedFileNameArray;
-
-    for (int fileNameIndex = 0; fileNameIndex < calibrationFileNameArray.size(); ++fileNameIndex)
-    {
-        if (calibrationFileNameArray.at(fileNameIndex).isEmpty() ||
-            calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
-        {
-            LOG_ERROR();
-
-            return /*false*/;
-        }
-
-        std::string formattedFileName = calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().constData();
-
-        calibrationFormattedFileNameArray.push_back(formattedFileName);
-    }
-
-    if (calibrationFormattedFileNameArray.size() == 1)
-    {
-        m_intrinsicCalibrationFileName = calibrationFormattedFileNameArray.front();
-
-        CCalibratedPinholeCamera calibratedPinholeCamera;
-
-        if (!calibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
-        {
-            LOG_ERROR();
-
-            return /*false*/;
-        }
-
         cv::Mat frame = cv::imread(frameUrl);
 
         if (frame.empty())
@@ -364,9 +324,62 @@ void MainWindow::OpenFrameFromDisk()
             return /*false*/;
         }
 
+        std::vector<double> zoomValueArray = { 0.0, 271.0, 452.0, 721.0, 1016.0, 1350.0, 1790.0, 2366.0, 3106.0, 4198.0, 5734.0, 8525 },
+            fxArray = { 1470.00, 1565.27, 1710.85, 1926.85, 2117.34, 2375.88, 2682.22, 3086.80, 3616.66, 4353.29, 5395.00, 7190.03 },
+            fyArray = { 1470.00, 1555.94, 1700.92, 1902.05, 2112.20, 2366.72, 2680.70, 3094.33, 3617.42, 4354.61, 5350.35, 7158.74 };
+
+        my::LinearInterpolation<double> fxInterpolator,
+            fyInterpolator;
+
+        if (!fxInterpolator.Fit(zoomValueArray, fxArray))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        if (!fyInterpolator.Fit(zoomValueArray, fyArray))
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        cv::Mat cameraMatrix(3, 3, CV_64FC1);
+
+        double defaultCameraMatrixAsArray[] = {
+            // (0,0) focal length (f_x)
+            fxInterpolator.Evaluate((double)m_zoomValue),
+            0.0,
+            // (0,2) optical center expressed in pixel coordinates (c_x)
+            (double)frame.cols / 2.0,
+            0.0,
+            // (1,1) focal length (f_y)
+            fyInterpolator.Evaluate((double)m_zoomValue),
+            // (1,2) optical center expressed in pixel coordinates (c_y)
+            (double)frame.rows / 2.0,
+            0.0,
+            0.0,
+            1.0
+        };
+
+        std::memcpy(cameraMatrix.data, defaultCameraMatrixAsArray, 9 * sizeof(double));
+
+        cv::Mat distortionCoefficientArray(1, 5, CV_64FC1);
+
+        double defaultDistortionCoefficientArray[] = {
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        };
+
+        std::memcpy(distortionCoefficientArray.data, defaultDistortionCoefficientArray, 5 * sizeof(double));
+
         cv::Mat frameToBeDisplayed(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
 
-        cv::undistort(frame, frameToBeDisplayed, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+        cv::undistort(frame, frameToBeDisplayed, cameraMatrix, distortionCoefficientArray);
 
         frameUrl = "data/temporary/" + my::GetFileName(frameUrl) + ".UNDISTORTED.png";
 
@@ -377,6 +390,80 @@ void MainWindow::OpenFrameFromDisk()
             return /*false*/;
         }
     }
+    // (END OF) ESTIMATE AN INTRINSIC CALIBRATION FROM PREVIOUS MEASUREMENTS!
+
+    //// (BEGIN OF) READ AN INTRINSIC CALIBRATION FROM DISK!
+    //QFileDialog calibrationFileOpenDialog(this, UFC_STRING_RESOURCE_0554, NULL);
+
+    //calibrationFileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    //QString calibrationNameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
+
+    //calibrationFileOpenDialog.setNameFilter(calibrationNameFilter);
+    //calibrationFileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    //if (!calibrationFileOpenDialog.exec())
+    //{
+    //    LOG_ERROR();
+
+    //    return /*false*/;
+    //}
+
+    //QStringList calibrationFileNameArray = calibrationFileOpenDialog.selectedFiles();
+
+    //std::vector<std::string> calibrationFormattedFileNameArray;
+
+    //for (int fileNameIndex = 0; fileNameIndex < calibrationFileNameArray.size(); ++fileNameIndex)
+    //{
+    //    if (calibrationFileNameArray.at(fileNameIndex).isEmpty() ||
+    //        calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+    //    {
+    //        LOG_ERROR();
+
+    //        return /*false*/;
+    //    }
+
+    //    std::string formattedFileName = calibrationFileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+    //    calibrationFormattedFileNameArray.push_back(formattedFileName);
+    //}
+
+    //if (calibrationFormattedFileNameArray.size() == 1)
+    //{
+    //    m_intrinsicCalibrationFileName = calibrationFormattedFileNameArray.front();
+
+    //    CCalibratedPinholeCamera calibratedPinholeCamera;
+
+    //    if (!calibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+    //    {
+    //        LOG_ERROR();
+
+    //        return /*false*/;
+    //    }
+
+    //    cv::Mat frame = cv::imread(frameUrl);
+
+    //    if (frame.empty())
+    //    {
+    //        LOG_ERROR();
+
+    //        return /*false*/;
+    //    }
+
+    //    cv::Mat frameToBeDisplayed(frame.size(), frame.type(), cv::Scalar(0, 0, 0));
+
+    //    cv::undistort(frame, frameToBeDisplayed, calibratedPinholeCamera.GetCameraMatrix(), calibratedPinholeCamera.GetDistortionCoefficientArray());
+
+    //    frameUrl = "data/temporary/" + my::GetFileName(frameUrl) + ".UNDISTORTED.png";
+
+    //    if (!cv::imwrite(frameUrl, frameToBeDisplayed))
+    //    {
+    //        LOG_ERROR();
+
+    //        return /*false*/;
+    //    }
+    //}
+    //// (END OF) READ AN INTRINSIC CALIBRATION FROM DISK!
     // (END OF) REMOVE DISTORTION!
 
     bool createPlay = true;
@@ -599,17 +686,88 @@ void MainWindow::SaveFightFlowCalibration()
 
     std::string feedbackMessage = UFC_STRING_RESOURCE_0026;
 
-    // INTERNAL CALIBRAITON ONLY!
-    CCalibratedPinholeCamera partiallyCalibratedPinholeCamera;
+    // (BEGIN OF) ESTIMATE AN INTRINSIC CALIBRATION FROM PREVIOUS MEASUREMENTS!
+    std::vector<double> zoomValueArray = { 0.0, 271.0, 452.0, 721.0, 1016.0, 1350.0, 1790.0, 2366.0, 3106.0, 4198.0, 5734.0, 8525 },
+        fxArray = { 1470.00, 1565.27, 1710.85, 1926.85, 2117.34, 2375.88, 2682.22, 3086.80, 3616.66, 4353.29, 5395.00, 7190.03 },
+        fyArray = { 1470.00, 1555.94, 1700.92, 1902.05, 2112.20, 2366.72, 2680.70, 3094.33, 3617.42, 4354.61, 5350.35, 7158.74 };
 
-    if (!partiallyCalibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+    my::LinearInterpolation<double> fxInterpolator,
+        fyInterpolator;
+
+    if (!fxInterpolator.Fit(zoomValueArray, fxArray))
     {
         LOG_ERROR();
 
         return /*false*/;
     }
 
-    CCalibratedPinholeCamera calibratedPinholeCamera(*pinholeCamera, partiallyCalibratedPinholeCamera.GetCameraMatrix(), partiallyCalibratedPinholeCamera.GetDistortionCoefficientArray());
+    if (!fyInterpolator.Fit(zoomValueArray, fyArray))
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    cv::Mat cameraMatrix(3, 3, CV_64FC1);
+
+    if (m_zoomValue == -1)
+    {
+        LOG_MESSAGE("NO ZOOM VALUE PROVIDED!");
+
+        return /*false*/;
+    }
+
+    double defaultCameraMatrixAsArray[] = {
+        // (0,0) focal length (f_x)
+        fxInterpolator.Evaluate((double)m_zoomValue),
+        0.0,
+        // (0,2) optical center expressed in pixel coordinates (c_x)
+        (double)pinholeCamera->GetViewportWidth() / 2.0,
+        0.0,
+        // (1,1) focal length (f_y)
+        fyInterpolator.Evaluate((double)m_zoomValue),
+        // (1,2) optical center expressed in pixel coordinates (c_y)
+        (double)pinholeCamera->GetViewportHeight() / 2.0,
+        0.0,
+        0.0,
+        1.0
+    };
+
+    std::memcpy(cameraMatrix.data, defaultCameraMatrixAsArray, 9 * sizeof(double));
+
+    cv::Mat distortionCoefficientArray(1, 5, CV_64FC1);
+
+    double defaultDistortionCoefficientArray[] = {
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    };
+
+    std::memcpy(distortionCoefficientArray.data, defaultDistortionCoefficientArray, 5 * sizeof(double));
+
+    CCalibratedPinholeCamera calibratedPinholeCamera(*pinholeCamera, cameraMatrix, distortionCoefficientArray);
+    // (END OF) ESTIMATE AN INTRINSIC CALIBRATION FROM PREVIOUS MEASUREMENTS!
+    //// (BEGIN OF) READ AN INTRINSIC CALIBRATION FROM DISK!
+    //CCalibratedPinholeCamera partiallyCalibratedPinholeCamera;
+
+    //if (!partiallyCalibratedPinholeCamera.FromOpenCvFile(m_intrinsicCalibrationFileName))
+    //{
+    //    LOG_ERROR();
+
+    //    return /*false*/;
+    //}
+
+    //CCalibratedPinholeCamera calibratedPinholeCamera(*pinholeCamera, partiallyCalibratedPinholeCamera.GetCameraMatrix(), partiallyCalibratedPinholeCamera.GetDistortionCoefficientArray());
+    //// (END OF) READ AN INTRINSIC CALIBRATION FROM DISK!
+
+    bool okCLicked;
+
+    int cameraIndex = QInputDialog::getInt(this, tr("Camera Settings"), tr("Index:"), 1, 1, 24, 1, &okCLicked);
+
+    if (okCLicked)
+        calibratedPinholeCamera.SetIndex(cameraIndex);
 
     if (!calibratedPinholeCamera.ToPinholeCameraFile(cameraFileName.toStdString()))
     {
@@ -1473,6 +1631,7 @@ void MainWindow::Create()
     // m_helpScreen
     // m_guiRefreshTimer
     m_intrinsicCalibrationFileName = my::Null<std::string>();
+    m_zoomValue = -1;
 
     // DEPRECATED: (23-Oct-2016) REPLACE BY DEPENDENCY INJECTION
     CUfcCalibratorViewModel::Instance().SetMessageQueue(m_messageQueue);

@@ -97,7 +97,7 @@ bool CUfcCalibratorModel::SetFootage(std::string url)
 
     try
     {
-        m_sceneryLayout.reset(new my::sport::CEgymSceneryLayout());
+        m_sceneryLayout.reset(new my::sport::CBoxingSceneryLayout());
     }
     catch (std::exception& e)
     {
@@ -148,7 +148,7 @@ void CUfcCalibratorModel::Create()
 
     try
     {
-        m_sceneryLayout.reset(new my::sport::CEgymSceneryLayout());
+        m_sceneryLayout.reset(new my::sport::CBoxingSceneryLayout());
     }
     catch (std::exception& e)
     {

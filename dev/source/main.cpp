@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     app.setApplicationVersion(QString(UFC_STRING_RESOURCE_0131));
 
     // TRICKY: (25-Oct-2016) DON'T MAKE IT A RESOURCE, IT'S TOO BIG
-    QPixmap pixmap("./textures/UfcCalibratorSplashScreen.png");
+    QPixmap pixmap("./textures/BoxingCalibratorSplashScreen.png");
 
     QSplashScreen *splashScreen = new QSplashScreen(pixmap.scaled(800, 540, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
 

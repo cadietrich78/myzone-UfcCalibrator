@@ -4,14 +4,18 @@
     <file>images/database.png</file>
     <file>images/door_out.png</file>
     <file>images/important.png</file>
-    <file>images/marker_egym_000.png</file>
-    <file>images/marker_egym_00Z.png</file>
-    <file>images/marker_egym_0Y0.png</file>
-    <file>images/marker_egym_0YZ.png</file>
-    <file>images/marker_egym_X00.png</file>
-    <file>images/marker_egym_X0Z.png</file>
-    <file>images/marker_egym_XY0.png</file>
-    <file>images/marker_egym_XYZ.png</file>
+    <file>images/marker_bottomPole01.png</file>
+    <file>images/marker_bottomPole10.png</file>
+    <file>images/marker_bottomPoleBlue.png</file>
+    <file>images/marker_bottomPoleRed.png</file>
+    <file>images/marker_supportingPole01.png</file>
+    <file>images/marker_supportingPole10.png</file>
+    <file>images/marker_supportingPoleBlue.png</file>
+    <file>images/marker_supportingPoleRed.png</file>
+    <file>images/marker_topPole01.png</file>
+    <file>images/marker_topPole10.png</file>
+    <file>images/marker_topPoleBlue.png</file>
+    <file>images/marker_topPoleRed.png</file>
     <file>images/personal.png</file>
     <file>images/save.png</file>
     <file>images/settings.png</file>
