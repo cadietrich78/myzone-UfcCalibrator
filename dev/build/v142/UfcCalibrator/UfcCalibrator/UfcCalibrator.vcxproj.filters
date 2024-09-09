@@ -192,10 +192,10 @@
     <ClInclude Include="..\..\..\..\source\external\SelectionMechanism.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\external\BoxingSceneryLayout.h">
+    <ClInclude Include="..\..\..\..\source\external\LacrosseSceneryLayout.h">
       <Filter>Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\calibration\BoxingMarkerArray.h">
+    <ClInclude Include="..\..\..\..\source\calibration\LacrosseMarkerArray.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h">
@@ -359,10 +359,10 @@
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\calibration\BoxingMarkerArray.cpp">
+    <ClCompile Include="..\..\..\..\source\calibration\LacrosseMarkerArray.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\source\external\BoxingSceneryLayout.cpp">
+    <ClCompile Include="..\..\..\..\source\external\LacrosseSceneryLayout.cpp">
       <Filter>Source Files\external</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\external\CalibratedPinholeCamera.cpp">

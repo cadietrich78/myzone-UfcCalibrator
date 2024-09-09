@@ -52,28 +52,34 @@
 
 namespace my {
     namespace sport {
-        class CBoxingSceneryLayout
+        class CLacrosseSceneryLayout
             : public my::CSceneryLayout,
             public boost::noncopyable
         {
         public:
-            enum BOXING_ITEM {
-                SUPPORTING_POLE_RED_VERTEX_ITEM,
-                TOP_POLE_RED_VERTEX_ITEM,
-                BOTTOM_POLE_RED_VERTEX_ITEM,
-                SUPPORTING_POLE_10_VERTEX_ITEM,
-                TOP_POLE_10_VERTEX_ITEM,
-                BOTTOM_POLE_10_VERTEX_ITEM,
-                SUPPORTING_POLE_BLUE_VERTEX_ITEM,
-                TOP_POLE_BLUE_VERTEX_ITEM,
-                BOTTOM_POLE_BLUE_VERTEX_ITEM,
-                SUPPORTING_POLE_01_VERTEX_ITEM,
-                TOP_POLE_01_VERTEX_ITEM,
-                BOTTOM_POLE_01_VERTEX_ITEM,
+            enum LACROSSE_ITEM {
+                CENTER_BOTTOM_VERTEX_ITEM,
+                CENTER_TOP_VERTEX_ITEM,
+                CENTER_WING_BOTTOM_VERTEX_ITEM,
+                CENTER_WING_TOP_VERTEX_ITEM,
+                LEFT_BOTTOM_VERTEX_ITEM,
+                LEFT_CREASE_CENTER_VERTEX_ITEM,
+                LEFT_END_AREA_BOTTOM_VERTEX_ITEM,
+                LEFT_END_AREA_TOP_VERTEX_ITEM,
+                LEFT_TOP_VERTEX_ITEM,
+                LEFT_WING_BOTTOM_VERTEX_ITEM,
+                LEFT_WING_TOP_VERTEX_ITEM,
+                RIGHT_BOTTOM_VERTEX_ITEM,
+                RIGHT_CREASE_CENTER_VERTEX_ITEM,
+                RIGHT_END_AREA_BOTTOM_VERTEX_ITEM,
+                RIGHT_END_AREA_TOP_VERTEX_ITEM,
+                RIGHT_TOP_VERTEX_ITEM,
+                RIGHT_WING_BOTTOM_VERTEX_ITEM,
+                RIGHT_WING_TOP_VERTEX_ITEM,
                 LAST_ITEM
             };
 
-            CBoxingSceneryLayout();
+            CLacrosseSceneryLayout();
 
             my::CVector3<double> GetItemPosition(my::int64 item, int venueId = my::Null<int>()) const;
 
@@ -95,9 +101,9 @@ namespace my {
     }; // sport
 
     template <>
-    inline sport::CBoxingSceneryLayout::BOXING_ITEM Null()
+    inline sport::CLacrosseSceneryLayout::LACROSSE_ITEM Null()
     {
-        return sport::CBoxingSceneryLayout::BOXING_ITEM::LAST_ITEM;
+        return sport::CLacrosseSceneryLayout::LACROSSE_ITEM::LAST_ITEM;
     }
 }; // my
 

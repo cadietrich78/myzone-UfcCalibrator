@@ -49,7 +49,7 @@
 
 #include <Texture.h>
 #include <Timestamp.h>
-#include <BoxingSceneryLayout.h>
+#include <LacrosseSceneryLayout.h>
 
 #include "../calibration/PinholeCameraCalibration.h"
 #include "../video/MediaPlayerInterface.h"

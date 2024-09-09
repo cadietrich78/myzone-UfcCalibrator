@@ -101,7 +101,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\source\calibration\BoxingMarkerArray.h" />
+    <ClInclude Include="..\..\..\..\source\calibration\LacrosseMarkerArray.h" />
     <ClInclude Include="..\..\..\..\source\external\BoundingBox.h" />
     <ClInclude Include="..\..\..\..\source\external\CalibratedPinholeCamera.h" />
     <ClInclude Include="..\..\..\..\source\external\Color.h" />
@@ -117,7 +117,7 @@
     <ClInclude Include="..\..\..\..\source\external\Marker.h" />
     <ClInclude Include="..\..\..\..\source\external\MyMath.h" />
     <ClInclude Include="..\..\..\..\source\external\Object.h" />
-    <ClInclude Include="..\..\..\..\source\external\BoxingSceneryLayout.h" />
+    <ClInclude Include="..\..\..\..\source\external\LacrosseSceneryLayout.h" />
     <ClInclude Include="..\..\..\..\source\external\PinholeCamera2.h" />
     <ClInclude Include="..\..\..\..\source\external\PngWrapper.h" />
     <ClInclude Include="..\..\..\..\source\external\PropertyObject.h" />
@@ -230,7 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp" />
-    <ClCompile Include="..\..\..\..\source\calibration\BoxingMarkerArray.cpp" />
+    <ClCompile Include="..\..\..\..\source\calibration\LacrosseMarkerArray.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.cpp" />
@@ -247,7 +247,7 @@
     <ClCompile Include="..\..\..\..\source\external\Logger.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Marker.cpp" />
     <ClCompile Include="..\..\..\..\source\external\Object.cpp" />
-    <ClCompile Include="..\..\..\..\source\external\BoxingSceneryLayout.cpp" />
+    <ClCompile Include="..\..\..\..\source\external\LacrosseSceneryLayout.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PinholeCamera2.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PngWrapper.cpp" />
     <ClCompile Include="..\..\..\..\source\external\PropertyObject.cpp" />

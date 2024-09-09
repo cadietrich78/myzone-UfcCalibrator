@@ -4,18 +4,29 @@
     <file>images/database.png</file>
     <file>images/door_out.png</file>
     <file>images/important.png</file>
-    <file>images/marker_bottomPole01.png</file>
-    <file>images/marker_bottomPole10.png</file>
-    <file>images/marker_bottomPoleBlue.png</file>
-    <file>images/marker_bottomPoleRed.png</file>
-    <file>images/marker_supportingPole01.png</file>
-    <file>images/marker_supportingPole10.png</file>
-    <file>images/marker_supportingPoleBlue.png</file>
-    <file>images/marker_supportingPoleRed.png</file>
-    <file>images/marker_topPole01.png</file>
-    <file>images/marker_topPole10.png</file>
-    <file>images/marker_topPoleBlue.png</file>
-    <file>images/marker_topPoleRed.png</file>
+    <file>images/marker_leftTop.png</file>
+    <file>images/marker_sidelineTop.png</file>
+    <file>images/marker_centerTop.png</file>
+    <file>images/marker_endlineLeft.png</file>
+    <file>images/marker_rightTop.png</file>
+    <file>images/marker_leftEndAreaTop.png</file>
+    <file>images/marker_leftWingTop.png</file>
+    <file>images/marker_rightWingTop.png</file>
+    <file>images/marker_rightEndAreaTop.png</file>
+    <file>images/marker_leftEndAreaBottom.png</file>
+    <file>images/marker_leftWingBottom.png</file>
+    <file>images/marker_rightWingBottom.png</file>
+    <file>images/marker_rightEndAreaBottom.png</file>
+    <file>images/marker_leftBottom.png</file>
+    <file>images/marker_sidelineBottom.png</file>
+    <file>images/marker_centerBottom.png</file>
+    <file>images/marker_rightBottom.png</file>
+    <file>images/marker_leftAreaLine.png</file>
+    <file>images/marker_centerWingBottom.png</file>
+    <file>images/marker_centerWingTop.png</file>
+    <file>images/marker_rightAreaLine.png</file>
+    <file>images/marker_leftCreaseCenter.png</file>
+    <file>images/marker_rightCreaseCenter.png</file>
     <file>images/personal.png</file>
     <file>images/save.png</file>
     <file>images/settings.png</file>

@@ -50,16 +50,16 @@
 
 #include <PinholeCamera2.h>
 #include <Marker.h>
-#include <BoxingSceneryLayout.h>
+#include <LacrosseSceneryLayout.h>
 
 #include "MarkerGroup.h"
 
-class CBoxingMarkerArray
+class CLacrosseMarkerArray
 	: public CMarkerGroup,
 	public boost::noncopyable
 {
 public:
-	CBoxingMarkerArray();
+	CLacrosseMarkerArray();
 
 	double GetFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
@@ -67,6 +67,7 @@ public:
 
 private:
 	double GetPointFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
+	double GetLineFitness(boost::shared_ptr<CPinholeCamera2>& pinholeCamera);
 
 	boost::shared_ptr<my::video::CMarker> GetMarker(const std::string& markerName) const;
 
@@ -74,7 +75,7 @@ private:
 
 protected:
 	std::vector<boost::shared_ptr<my::video::CMarker> > m_pointMarkerArray;
+	std::vector<boost::shared_ptr<my::video::CMarker> > m_lineMarkerArray;
 };
 
 #endif //#if !defined(BOXING_MARKER_ARRAY_INCLUDED)
-

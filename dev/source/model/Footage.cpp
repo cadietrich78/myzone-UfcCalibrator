@@ -75,7 +75,7 @@
 #include <GLHelper.h>
 
 #include "../video/ImageMediaPlayer.h"
-#include "../calibration/BoxingMarkerArray.h"
+#include "../calibration/LacrosseMarkerArray.h"
 
 #include "Footage.h"
 
@@ -545,7 +545,7 @@ void CFootage::Create()
 
     try
     {
-        m_extrinsicCalibrationMarkerGroup.reset(new CBoxingMarkerArray);
+        m_extrinsicCalibrationMarkerGroup.reset(new CLacrosseMarkerArray);
     }
     catch (std::exception& e)
     {
