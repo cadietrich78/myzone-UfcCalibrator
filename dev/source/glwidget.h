@@ -99,6 +99,8 @@ private:
 
     bool IsMarkerSelected() const;
     
+    void DrawString(float x, float y, const std::string& text) const;
+
     void Create();
 
 private:

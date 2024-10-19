@@ -46,7 +46,20 @@
 
 #if !defined(__glee_h_)
 #include <GL/glew.h>
+
+#if defined(_WIN32)
+#include <GL/wglew.h>
+#else // defined(_WIN32)
+#include <GL/glxew.h>
+#endif // defined(_WIN32)
 #endif // !defined(__glee_h_)
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
 #include <boost/thread/scoped_thread.hpp>
 
 #include <SelectableObject.h>
@@ -415,6 +428,42 @@ void GLWidget::paintGL()
     m_extrinsicCalibrationViewer.Draw(0);
     // THE LANDING PAGE OVERRIDES ALL OTHER VIEWS
     m_landingPageViewer.Draw(0);
+
+    // (BEGIN OF) DEBUG ONLY! (09-Sep-2024)
+    boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
+
+    if (!ufcCalibratorModel)
+        return /*true*/;
+
+    boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+
+    if (!footage)
+        return /*true*/;
+
+    boost::shared_ptr<CPinholeCamera2> calibratedPinholeCamera = footage->GetPinholeCamera();
+
+    if (pinholeCamera &&
+        calibratedPinholeCamera)
+    {
+        double s0[3] = { 0 },
+            s1[3] = { 0 },
+            normal[3] = { 0.0, 0.0, 1.0 },
+            point[3] = { 0.0, 0.0, 0.0 },
+            intersection[3] = { 0 },
+            s = 2.0 * ((double)m_mousePosition.x() / pinholeCamera->GetViewportWidth()) - 1.0,
+            t = 2.0 * (1.0 - (double)m_mousePosition.y() / pinholeCamera->GetViewportHeight()) - 1.0,
+            markerScreenCoord[3] = { s, t, 0.0 };
+
+        calibratedPinholeCamera->UnProjectVertex(markerScreenCoord, s0);
+
+        markerScreenCoord[2] = 1.0;
+
+        calibratedPinholeCamera->UnProjectVertex(markerScreenCoord, s1);
+
+        if (MyMath::SegmentPlaneIntersection3(s0, s1, normal, point, intersection) == 1)
+            DrawString(-0.975f, 0.85f, my::NumberToString(intersection[0], 3) + ", " + my::NumberToString(intersection[1], 3));
+    }
+    // (END OF) DEBUG ONLY! (09-Sep-2024)
 }
 
 /**
@@ -936,6 +985,59 @@ bool GLWidget::IsMarkerSelected() const
         return false;
 
     return true;
+}
+
+void GLWidget::DrawString(float x, float y, const std::string& text) const
+{
+    if (text.empty())
+        return /*false*/;
+
+    GlHelper::PUSH_MATRIX_HELPER pushMatrixHelper(true);
+
+    // (BEGIN OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
+    //GLint currentUnpackAlignment = 4;
+
+    //glGetIntegerv(GL_UNPACK_ALIGNMENT, &currentUnpackAlignment);    
+
+    //glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    //int width = ((QGLWidget*)m_renderingContext)->width(),
+    //    height = ((QGLWidget*)m_renderingContext)->height();
+
+    //QFont titleFont;
+
+    //titleFont.setFamily(titleFont.defaultFamily());
+    //titleFont.setWeight(80);
+
+    //double winX = 0.5 * (x + 1.0) * width,
+    //    winY = 0.5 * (y + 1.0) * height;
+
+    //((QGLWidget*)m_renderingContext)->renderText((int)winX, height - (int)winY, text.c_str(), titleFont);
+
+    //glPixelStorei(GL_UNPACK_ALIGNMENT, currentUnpackAlignment);
+
+    //GlHelper::DrawText(x, y, 15, 0.0, GLUT_STROKE_ROMAN, text);
+
+    int guiTextSize = CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_TEXT_SIZE_ITEM);
+
+    void* glutFont = GLUT_BITMAP_HELVETICA_10;
+
+    switch (guiTextSize) {
+    case 10:
+        glutFont = GLUT_BITMAP_HELVETICA_10;
+        break;
+    case 12:
+        glutFont = GLUT_BITMAP_HELVETICA_12;
+        break;
+    case 18:
+        glutFont = GLUT_BITMAP_HELVETICA_18;
+        break;
+    default:
+        LOG_ERROR();
+    }
+
+    GlHelper::DrawString(glutFont, x, y, 0.0, text);
+    // (END OF) BUG: (28-Sep-2022) THE TEXT IS NOT BEING RENDERED ON VM'S!
 }
 
 /**
