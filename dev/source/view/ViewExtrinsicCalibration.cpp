@@ -370,7 +370,7 @@ void CViewExtrinsicCalibration::DrawMarker(boost::shared_ptr<my::video::CMarker>
         //}
         //// (END OF) ERROR IN PIXELS! (WINDOW COORD)
 
-        glColor3d(1.0, 1.0, 1.0);
+        glColor3d(0.0, 0.0, 0.0);
 
         if (marker->GetName() != my::Null<std::string>())
             DrawString(_2dReferenceCoord[0] - 0.9 * ratio * size, _2dReferenceCoord[1] + 1.2 * size, errorAsString);
@@ -400,7 +400,7 @@ void CViewExtrinsicCalibration::DrawMarker(boost::shared_ptr<my::video::CMarker>
 
     // NAME
 
-    glColor3ub(255, 255, 255);
+    glColor3d(0.0, 0.0, 0.0);
 
     if (marker->GetName() != my::Null<std::string>())
         DrawString(_2dReferenceCoord[0] - 0.9 * ratio * size, _2dReferenceCoord[1] - 1.4 * size, marker->GetName());
@@ -494,7 +494,7 @@ void CViewExtrinsicCalibration::DrawFieldLayout()
 
     glLineWidth((float)CUfcCalibratorViewModel::Instance().GetAttribute<int>(GUI_FIELD_LAYOUT_LINE_THICKNESS_ITEM));
 
-    glColor3ub(255, 255, 0);
+    glColor3d(0.0, 0.0, 0.0);
 
     GlHelper::Draw(sceneryLayout->GetLayoutMesh());
 
@@ -561,7 +561,7 @@ void CViewExtrinsicCalibration::DrawCalibrationQuality()
 
     glEnable(GL_LINE_SMOOTH);
 
-    glColor3d(1.0, 1.0, 1.0);
+    glColor3d(0.0, 0.0, 0.0);
 
     DrawString(-0.975f, 0.95f, std::string(UFC_STRING_RESOURCE_0002) + ": " + calibrationQualityAsString /*+ " (" + octagonSizeAsString + "' octagon)"*/);
 

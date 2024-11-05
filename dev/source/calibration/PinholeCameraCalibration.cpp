@@ -553,7 +553,7 @@ void CPinholeCameraCalibration::Create()
 {
     m_pinholeCamera.reset();
     m_markerGroup.reset();
-    m_iterationCount = 64;
+    m_iterationCount = 512;
     m_populationSize = 756;
     m_selectedIndividualsCount = 96;
     // 30%

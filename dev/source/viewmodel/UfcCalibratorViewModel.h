@@ -87,6 +87,10 @@ public:
 
     bool SaveCameraSettings(std::string cameraFileName);
 
+    bool LoadExtrinsicSettings(std::string extrinsicSettingsFileName);
+
+    bool LoadCameraSettings(std::string cameraSettingsFileName);
+
 private:
     bool OpenSettings();
     bool SaveSettings();
@@ -94,7 +98,7 @@ private:
     bool OpenExtrinsicSettings();
     bool SaveExtrinsicSettings();
 
-    bool OpenCameraSettings() const;
+    bool OpenCameraSettings();
     bool SaveCameraSettings();
 
     bool OpenUserSettings();

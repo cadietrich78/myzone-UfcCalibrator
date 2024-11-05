@@ -572,6 +572,142 @@ void MainWindow::OpenFrameFromWebcam()
     QApplication::restoreOverrideCursor();
 }
 
+void MainWindow::LoadExtrinsicSettings()
+{
+    QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
+
+    fileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
+
+    fileOpenDialog.setNameFilter(nameFilter);
+    fileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    if (!fileOpenDialog.exec())
+        return /*false*/;
+
+    QStringList fileNameArray = fileOpenDialog.selectedFiles();
+
+    std::vector<std::string> formattedFileNameArray;
+
+    for (int fileNameIndex = 0; fileNameIndex < fileNameArray.size(); ++fileNameIndex)
+    {
+        if (fileNameArray.at(fileNameIndex).isEmpty() ||
+            fileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        std::string formattedFileName = fileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+        formattedFileNameArray.push_back(formattedFileName);
+    }
+
+    if (formattedFileNameArray.size() != 1)
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    std::string extrinsicCalibrationFileName = formattedFileNameArray.front();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (!CUfcCalibratorViewModel::Instance().LoadExtrinsicSettings(extrinsicCalibrationFileName))
+    {
+        statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
+
+        QApplication::restoreOverrideCursor();
+
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    //UpdatePlaybackWidget();
+
+    //InitializeTabs();
+
+    Repaint();
+
+    statusBar()->showMessage(UFC_STRING_RESOURCE_0149, 9000);
+
+    //UpdateActions();
+
+    QApplication::restoreOverrideCursor();
+}
+
+void MainWindow::LoadCameraSettings()
+{
+    QFileDialog fileOpenDialog(this, UFC_STRING_RESOURCE_0312, NULL);
+
+    fileOpenDialog.setFileMode(QFileDialog::ExistingFiles);
+
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;");
+
+    fileOpenDialog.setNameFilter(nameFilter);
+    fileOpenDialog.setDirectory(GetCurrentDirectory());
+
+    if (!fileOpenDialog.exec())
+        return /*false*/;
+
+    QStringList fileNameArray = fileOpenDialog.selectedFiles();
+
+    std::vector<std::string> formattedFileNameArray;
+
+    for (int fileNameIndex = 0; fileNameIndex < fileNameArray.size(); ++fileNameIndex)
+    {
+        if (fileNameArray.at(fileNameIndex).isEmpty() ||
+            fileNameArray.at(fileNameIndex).toLocal8Bit().isEmpty())
+        {
+            LOG_ERROR();
+
+            return /*false*/;
+        }
+
+        std::string formattedFileName = fileNameArray.at(fileNameIndex).toLocal8Bit().constData();
+
+        formattedFileNameArray.push_back(formattedFileName);
+    }
+
+    if (formattedFileNameArray.size() != 1)
+    {
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    std::string cameraSettingsFileName = formattedFileNameArray.front();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (!CUfcCalibratorViewModel::Instance().LoadCameraSettings(cameraSettingsFileName))
+    {
+        statusBar()->showMessage(UFC_STRING_RESOURCE_0313, 9000);
+
+        QApplication::restoreOverrideCursor();
+
+        LOG_ERROR();
+
+        return /*false*/;
+    }
+
+    //UpdatePlaybackWidget();
+
+    //InitializeTabs();
+
+    Repaint();
+
+    statusBar()->showMessage(UFC_STRING_RESOURCE_0149, 9000);
+
+    //UpdateActions();
+
+    QApplication::restoreOverrideCursor();
+}
+
 void MainWindow::SaveFightFlowCalibration()
 {
     boost::shared_ptr<CUfcCalibratorModel> ufcCalibratorModel = CUfcCalibratorViewModel::Instance().GetUfcCalibratorModel();
@@ -591,7 +727,7 @@ void MainWindow::SaveFightFlowCalibration()
 
     QFileDialog fileExportDialog;
 
-    QString nameFilter = tr(UFC_STRING_RESOURCE_0032) + tr(";;"),
+    QString nameFilter = tr(UFC_STRING_RESOURCE_0031) + tr(";;"),
         cameraFileName = fileExportDialog.getSaveFileName(this, UFC_STRING_RESOURCE_0020, (my::AddTrailingSlash(GetCurrentDirectory().toStdString()) + UFC_STRING_RESOURCE_0022).c_str(), nameFilter);
 
     if (cameraFileName.isEmpty())
@@ -611,6 +747,13 @@ void MainWindow::SaveFightFlowCalibration()
 
     CCalibratedPinholeCamera calibratedPinholeCamera(*pinholeCamera, partiallyCalibratedPinholeCamera.GetCameraMatrix(), partiallyCalibratedPinholeCamera.GetDistortionCoefficientArray());
 
+    bool okCLicked;
+
+    int cameraIndex = QInputDialog::getInt(this, tr("Camera Settings"), tr("Index:"), 1, 1, 24, 1, &okCLicked);
+
+    if (okCLicked)
+        calibratedPinholeCamera.SetIndex(cameraIndex);
+
     if (!calibratedPinholeCamera.ToPinholeCameraFile(cameraFileName.toStdString()))
     {
         LOG_ERROR();
@@ -618,7 +761,7 @@ void MainWindow::SaveFightFlowCalibration()
         return /*false*/;
     }
 
-    m_glWidget->SaveFrame(my::GetDirectory(cameraFileName.toStdString()) + "calibrator_view.png");
+    //m_glWidget->SaveFrame(my::GetDirectory(cameraFileName.toStdString()) + "calibrator_view.png");
 
     statusBar()->showMessage(feedbackMessage.c_str(), 9000);
 }
@@ -1005,6 +1148,32 @@ void MainWindow::CreateActions()
 
     try
     {
+        m_loadExtrinsicSettingsAction = new QAction(tr("Extrinsic settings..."), this);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return /*false*/;
+    }
+
+    connect(m_loadExtrinsicSettingsAction, SIGNAL(triggered()), this, SLOT(LoadExtrinsicSettings()));
+
+    try
+    {
+        m_loadCameraSettingsAction = new QAction(tr("Camera settings..."), this);
+    }
+    catch (std::exception& e)
+    {
+        LOG_MESSAGE(e.what());
+
+        return /*false*/;
+    }
+
+    connect(m_loadCameraSettingsAction, SIGNAL(triggered()), this, SLOT(LoadCameraSettings()));
+
+    try
+    {
         m_saveFightFlowCalibrationAction = new QAction(tr(UFC_STRING_RESOURCE_0004), this);
     }
     catch (std::exception& e)
@@ -1060,6 +1229,11 @@ void MainWindow::CreateMenus()
 
     fileOpenMenu->addAction(m_openFrameFromDiskAction);
     fileOpenMenu->addAction(m_openFrameFromWebcamAction);
+
+    fileOpenMenu->addSeparator();
+
+    fileOpenMenu->addAction(m_loadExtrinsicSettingsAction);
+    fileOpenMenu->addAction(m_loadCameraSettingsAction);
 
     m_fileMenu->addSeparator();
 
@@ -1433,7 +1607,16 @@ void MainWindow::UpdateActions() const
     if (!ufcCalibratorModel)
         return /*true*/;
 
-    boost::shared_ptr<CFootage> footage = ufcCalibratorModel->GetFootage();
+    if (!my::IsNull(ufcCalibratorModel->GetAuditingId()))
+    {
+        m_loadExtrinsicSettingsAction->setEnabled(true);
+        m_loadCameraSettingsAction->setEnabled(true);
+    }
+    else
+    {
+        m_loadExtrinsicSettingsAction->setDisabled(true);
+        m_loadCameraSettingsAction->setDisabled(true);
+    }
 }
 
 void MainWindow::Create()
@@ -1448,6 +1631,8 @@ void MainWindow::Create()
     m_fileToolBar = 0;
     m_openFrameFromDiskAction = 0;
     m_openFrameFromWebcamAction = 0;
+    m_loadExtrinsicSettingsAction = 0;
+    m_loadCameraSettingsAction = 0;
     m_saveFightFlowCalibrationAction = 0;
     m_clearCalibrationAction = 0;
     m_exitAction = 0;

@@ -41,14 +41,14 @@
     <Import Project="..\PropertySheet.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Debug.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.9.0.v14.x64.Debug.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.10.0.v14.x64.Debug.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\PropertySheet.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.Release.props" />
     <Import Project="..\..\..\..\..\..\shared\Qt5.v140.x64.All.props" />
-    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.9.0.v14.x64.Release.props" />
+    <Import Project="..\..\..\..\..\..\shared\OpenCV-4.10.0.v14.x64.Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

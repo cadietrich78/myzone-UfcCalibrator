@@ -67,7 +67,7 @@
 #define UFC_STRING_RESOURCE_0019 "Zoom"
 #define UFC_STRING_RESOURCE_0020 "Export Cyclops calibration"
 #define UFC_STRING_RESOURCE_0021 "Camera"
-#define UFC_STRING_RESOURCE_0022 "calibration.pinholeCamera"
+#define UFC_STRING_RESOURCE_0022 "calibration_results.json"
 #define UFC_STRING_RESOURCE_0023 "Optimization settings"
 #define UFC_STRING_RESOURCE_0024 "Camera settings"
 #define UFC_STRING_RESOURCE_0025 "Please inform the camera index:"

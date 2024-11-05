@@ -192,15 +192,15 @@ bool CCalibratedPinholeCamera::FromOpenCvFile(std::string openCvCameraFileName)
     const rapidjson::Value& distortionCoefficientsDataHandle = distortionCoefficientsHandle["data"];
 
     HEALTH_CHECK(!distortionCoefficientsDataHandle.IsArray(), false);
-    HEALTH_CHECK(distortionCoefficientsDataHandle.Size() != 5, false);
+    HEALTH_CHECK(distortionCoefficientsDataHandle.Size() < 5, false);
 
-    cv::Mat distortionCoefficientArray(1, 5, CV_64FC1);
+    cv::Mat distortionCoefficientArray(1, distortionCoefficientsDataHandle.Size(), CV_64FC1);
 
     try
     {
         std::vector<double> distortionCoefficientsAsArray;
 
-        for (int i = 0; i < 5; ++i)
+        for (int i = 0; i < distortionCoefficientsDataHandle.Size(); ++i)
             distortionCoefficientsAsArray.push_back(distortionCoefficientsDataHandle[i].GetDouble());
 
         std::memcpy(distortionCoefficientArray.data, distortionCoefficientsAsArray.data(), distortionCoefficientsAsArray.size() * sizeof(distortionCoefficientsAsArray[0]));
@@ -364,7 +364,8 @@ bool CCalibratedPinholeCamera::ToPinholeCameraFile(std::string pinholeCameraFile
     HEALTH_CHECK(m_cameraMatrix.empty(), false);
     HEALTH_CHECK(m_cameraMatrix.size() != cv::Size(3, 3), false);
     HEALTH_CHECK(m_distortionCoefficientArray.empty(), false);
-    HEALTH_CHECK(m_distortionCoefficientArray.size() != cv::Size(5, 1), false);
+    // BUG: (24-Oct-2024) THERE MAY BE MORE THAN 5 DISTORTION COEFFICIENTS!
+    HEALTH_CHECK(m_distortionCoefficientArray.cols < 5, false);
 
     my::CVector3<double> opticalCenter = GetOpticalCenter(),
         opticalAxis = GetOpticalAxis(),
@@ -379,6 +380,21 @@ bool CCalibratedPinholeCamera::ToPinholeCameraFile(std::string pinholeCameraFile
     rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonString);
 
     jsonWriter.StartObject();
+
+    if (!my::IsNull(GetIndex()))
+    {
+        jsonWriter.String("version");
+        jsonWriter.String("my_zone_camera_calibration_4");
+
+        jsonWriter.String("timestamp");
+        jsonWriter.String(my::CTimestamp::Now().ToString().c_str());
+
+        jsonWriter.String("camera_index");
+        jsonWriter.Int(GetIndex());
+
+        jsonWriter.String("name");
+        jsonWriter.String(std::to_string(GetIndex()).c_str());
+    }
 
     // "viewport"
 
@@ -491,7 +507,7 @@ bool CCalibratedPinholeCamera::ToPinholeCameraFile(std::string pinholeCameraFile
     jsonWriter.String("opencv-matrix");
 
     jsonWriter.String("rows");
-    jsonWriter.Int(5);
+    jsonWriter.Int(m_distortionCoefficientArray.cols);
 
     jsonWriter.String("cols");
     jsonWriter.Int(1);
@@ -503,7 +519,7 @@ bool CCalibratedPinholeCamera::ToPinholeCameraFile(std::string pinholeCameraFile
 
     jsonWriter.StartArray(); // distortion_coefficients.data
 
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < m_distortionCoefficientArray.cols; ++i)
         jsonWriter.Double(m_distortionCoefficientArray.at<double>(0, i));
 
     jsonWriter.EndArray(); // distortion_coefficients.data

@@ -117,6 +117,9 @@ private slots:
     void OpenFrameFromDisk();
     void OpenFrameFromWebcam();
 
+    void LoadExtrinsicSettings();
+    void LoadCameraSettings();
+
     void SaveFightFlowCalibration();
 
     void CloseGameCallback();
@@ -183,6 +186,9 @@ protected:
 
     QAction* m_openFrameFromDiskAction;
     QAction* m_openFrameFromWebcamAction;
+
+    QAction* m_loadExtrinsicSettingsAction;
+    QAction* m_loadCameraSettingsAction;
 
     QAction* m_saveFightFlowCalibrationAction;
 

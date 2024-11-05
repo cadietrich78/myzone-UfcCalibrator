@@ -57,30 +57,39 @@ my::CVector3<double> my::sport::CEgymSceneryLayout::GetItemPosition(my::int64 it
 {
     my::CVector3<double> position;
 
+    //// 15-Oct-2024 SETTINGS
+    //double xAxisLength = UnitConversion::Inch2Feet(20.0),
+    //    yAxisLength = UnitConversion::Inch2Feet(30.0),
+    //    zAxisLength = UnitConversion::Inch2Feet(24.0);
+    // 01-Nov-2024 SETTINGS
+    double xAxisLength = UnitConversion::Inch2Feet(24.0),
+        yAxisLength = UnitConversion::Inch2Feet(30.0),
+        zAxisLength = UnitConversion::Inch2Feet(20.0);
+
     switch (item) {
     case CUBE_000_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(0.5));
+        position.Set(0.0, 0.0, 0.0);
         break;
     case CUBE_X00_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(0.5));
+        position.Set(xAxisLength, 0.0, 0.0);
         break;
     case CUBE_XY0_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(0.5));
+        position.Set(xAxisLength, yAxisLength, 0.0);
         break;
     case CUBE_0Y0_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(0.5));
+        position.Set(0.0, yAxisLength, 0.0);
         break;
     case CUBE_00Z_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(1.0));
+        position.Set(0.0, 0.0, zAxisLength);
         break;
     case CUBE_X0Z_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(1.0));
+        position.Set(xAxisLength, 0.0, zAxisLength);
         break;
     case CUBE_XYZ_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(1.0));
+        position.Set(xAxisLength, yAxisLength, zAxisLength);
         break;
     case CUBE_0YZ_VERTEX_ITEM:
-        position.Set(UnitConversion::Meter2Feet(0.0), UnitConversion::Meter2Feet(1.0), UnitConversion::Meter2Feet(1.0));
+        position.Set(0.0, yAxisLength, zAxisLength);
         break;
     }
 

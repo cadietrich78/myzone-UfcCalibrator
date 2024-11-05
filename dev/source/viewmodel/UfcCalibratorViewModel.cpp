@@ -498,117 +498,9 @@ bool CUfcCalibratorViewModel::SaveCameraSettings(std::string cameraFileName)
     return true;
 }
 
-/**
-*/
-bool CUfcCalibratorViewModel::OpenSettings()
+bool CUfcCalibratorViewModel::LoadExtrinsicSettings(std::string extrinsicSettingsFileName)
 {
-#if defined(TIMER_INCLUDED)
-    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
-    CTimer timer;
-#endif // #if defined(TIMER_INCLUDED)
-
-    if (!OpenExtrinsicSettings())
-    {
-        LOG_ERROR();
-
-        // THE PIPELINE SHOULD NOT BE BROKEN HERE
-        //return false;
-    }
-
-    if (!OpenCameraSettings())
-    {
-        LOG_MESSAGE(UFC_STRING_RESOURCE_0034);
-
-        // THE PIPELINE SHOULD NOT BE BROKEN HERE
-        //return false;
-    }
-
-    //// DEBUG ONLY! (17-Feb-2017) DISABLED ON PRODUCTION ENVIRONMENT
-    //if (!OpenTrackingDataSettings())
-    //{
-    //    LOG_ERROR();
-
-    //    // THE PIPELINE SHOULD NOT BE BROKEN HERE
-    //    //return false;
-    //}
-
-#if defined(TIMER_INCLUDED)
-    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
-    m_stepNameAndTimeArray.push_back(std::make_pair(__FUNCTION__, timer.GetElapsed()));
-#endif // #if defined(TIMER_INCLUDED)
-
-    return true;
-}
-
-/**
-*/
-bool CUfcCalibratorViewModel::SaveSettings()
-{
-#if defined(TIMER_INCLUDED)
-    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
-    CTimer timer;
-#endif // #if defined(TIMER_INCLUDED)
-
-    if (!SaveExtrinsicSettings())
-    {
-        LOG_ERROR();
-
-        // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
-        //return false;
-    }
-
-    if (!SaveCameraSettings())
-    {
-        LOG_ERROR();
-
-        // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
-        //return false;
-    }
-
-    //// DEBUG ONLY! (17-Feb-2017) DISABLED ON PRODUCTION ENVIRONMENT
-    //if (!SaveTrackingDataSettings())
-    //{
-    //    LOG_ERROR();
-
-    //    // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
-    //    //return false;
-    //}
-
-#if defined(TIMER_INCLUDED)
-    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
-    m_stepNameAndTimeArray.push_back(std::make_pair(__FUNCTION__, timer.GetElapsed()));
-#endif // #if defined(TIMER_INCLUDED)
-
-    return true;
-}
-
-// HELPER FOR INTRINSIC / EXTRINSIC MARKER SETTINGS IO
-template <typename T>
-bool ArrayFromJson(const rapidjson::Value& valueArrayHandle, T *valueArray, rapidjson::SizeType valueCount)
-{
-    HEALTH_CHECK(!valueArrayHandle.IsArray(), false);
-    HEALTH_CHECK(!valueArray, false);
-    HEALTH_CHECK(valueArrayHandle.Size() < valueCount, false);
-
-    for (rapidjson::SizeType valueIndex = 0; valueIndex < valueCount; ++valueIndex)
-    {
-        const rapidjson::Value& valueHandle = valueArrayHandle[valueIndex];
-
-        HEALTH_CHECK(!valueHandle.IsNumber(), false);
-
-        valueArray[valueIndex] = valueHandle.GetDouble();
-    }
-
-    return true;
-}
-
-bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
-{
-    HEALTH_CHECK(!m_ufcCalibratorModel, false);
-
-    std::string auditingId = m_ufcCalibratorModel->GetAuditingId(),
-        extrinsicSettingsFileName = my::ReplaceKeyword(UFC_STRING_RESOURCE_0433, "CAMERA_ID", auditingId),
-        jsonString;
+    std::string jsonString;
 
     my::file::GetFileAsString(extrinsicSettingsFileName, jsonString);
 
@@ -654,11 +546,15 @@ bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
 
                 double worldCoord[3] = { 0 };
 
-                if (!ArrayFromJson(worldCoordHandle, worldCoord, 3))
-                {
-                    LOG_ERROR();
+                HEALTH_CHECK(worldCoordHandle.Size() != 3, false);
 
-                    return false;
+                for (rapidjson::SizeType valueIndex = 0; valueIndex < worldCoordHandle.Size(); ++valueIndex)
+                {
+                    const rapidjson::Value& valueHandle = worldCoordHandle[valueIndex];
+
+                    HEALTH_CHECK(!valueHandle.IsNumber(), false);
+
+                    worldCoord[valueIndex] = valueHandle.GetDouble();
                 }
 
                 marker->SetWorldCoord(worldCoord);
@@ -670,11 +566,15 @@ bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
 
                 double worldCoordError[3] = { 0 };
 
-                if (!ArrayFromJson(worldCoordErrorHandle, worldCoordError, 3))
-                {
-                    LOG_ERROR();
+                HEALTH_CHECK(worldCoordErrorHandle.Size() != 3, false);
 
-                    return false;
+                for (rapidjson::SizeType valueIndex = 0; valueIndex < worldCoordErrorHandle.Size(); ++valueIndex)
+                {
+                    const rapidjson::Value& valueHandle = worldCoordErrorHandle[valueIndex];
+
+                    HEALTH_CHECK(!valueHandle.IsNumber(), false);
+
+                    worldCoordError[valueIndex] = valueHandle.GetDouble();
                 }
 
                 marker->SetWorldCoordError(worldCoordError);
@@ -684,13 +584,17 @@ bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
             {
                 const rapidjson::Value& windowCoordErrorHandle = markerIterator["window_coord_error"];
 
-                double windowCoordError[2] = { 0 };
+                double windowCoordError[3] = { 0 };
 
-                if (!ArrayFromJson(windowCoordErrorHandle, windowCoordError, 2))
+                HEALTH_CHECK(windowCoordErrorHandle.Size() != 3, false);
+
+                for (rapidjson::SizeType valueIndex = 0; valueIndex < windowCoordErrorHandle.Size(); ++valueIndex)
                 {
-                    LOG_ERROR();
+                    const rapidjson::Value& valueHandle = windowCoordErrorHandle[valueIndex];
 
-                    return false;
+                    HEALTH_CHECK(!valueHandle.IsNumber(), false);
+
+                    windowCoordError[valueIndex] = valueHandle.GetDouble();
                 }
 
                 marker->SetWindowCoordError(windowCoordError[0], windowCoordError[1]);
@@ -700,11 +604,15 @@ bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
 
             double screenCoord[2] = { 0 };
 
-            if (!ArrayFromJson(screenCoordHandle, screenCoord, 2))
-            {
-                LOG_ERROR();
+            HEALTH_CHECK(screenCoordHandle.Size() != 2, false);
 
-                return false;
+            for (rapidjson::SizeType valueIndex = 0; valueIndex < screenCoordHandle.Size(); ++valueIndex)
+            {
+                const rapidjson::Value& valueHandle = screenCoordHandle[valueIndex];
+
+                HEALTH_CHECK(!valueHandle.IsNumber(), false);
+
+                screenCoord[valueIndex] = valueHandle.GetDouble();
             }
 
             marker->SetScreenCoord(screenCoord);
@@ -745,181 +653,11 @@ bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
     return true;
 }
 
-bool CUfcCalibratorViewModel::SaveExtrinsicSettings()
+bool CUfcCalibratorViewModel::LoadCameraSettings(std::string cameraSettingsFileName)
 {
-    HEALTH_CHECK(!m_ufcCalibratorModel, false);
-
-    boost::shared_ptr<CFootage> footage = m_ufcCalibratorModel->GetFootage();
-
-    // BUG: (15-Sep-2016) THERE ARE VALID SITUATIONS, LIKE INITIALIZATION, WHERE THERE IS NO VALID FOOTAGE SET.
-    if (!footage ||
-        !footage->IsValid())
-    {
-        return true;
-    }
-
-    std::string auditingId = m_ufcCalibratorModel->GetAuditingId(),
-        extrinsicSettingsFileName = UFC_STRING_RESOURCE_0422 + auditingId + ".json";
-
-    rapidjson::StringBuffer jsonString;
-    rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonString);
-
-    jsonWriter.StartArray();
-
-    for (const auto& marker : footage->GetExtrinsicCalibrationMarkerArray())
-    {
-        jsonWriter.StartObject();
-
-        if (!marker->GetName().empty())
-        {
-            jsonWriter.String("name");
-            jsonWriter.String(marker->GetName().c_str());
-        }
-
-        if (!marker->GetIcon().empty())
-        {
-            jsonWriter.String("icon");
-            jsonWriter.String(marker->GetIcon().c_str());
-        }
-
-        const double* worldCoord = marker->GetWorldCoord();
-
-        if (MyMath::IsValid(worldCoord[0]) ||
-            MyMath::IsValid(worldCoord[1]) ||
-            MyMath::IsValid(worldCoord[2]))
-        {
-            jsonWriter.String("world_coord");
-
-            jsonWriter.StartArray();
-
-            jsonWriter.Double(worldCoord[0]);
-            jsonWriter.Double(worldCoord[1]);
-            jsonWriter.Double(worldCoord[2]);
-
-            jsonWriter.EndArray(); // world_coord
-        }
-
-        const double* worldCoordError = marker->GetWorldCoordError();
-
-        if (MyMath::IsValid(worldCoordError[0]) ||
-            MyMath::IsValid(worldCoordError[1]) ||
-            MyMath::IsValid(worldCoordError[2]))
-        {
-            jsonWriter.String("world_coord_error");
-
-            jsonWriter.StartArray();
-
-            jsonWriter.Double(worldCoordError[0]);
-            jsonWriter.Double(worldCoordError[1]);
-            jsonWriter.Double(worldCoordError[2]);
-
-            jsonWriter.EndArray(); // world_coord_error
-        }
-
-        const double* screenCoord = marker->GetScreenCoord();
-
-        if (MyMath::IsValid(screenCoord[0]) ||
-            MyMath::IsValid(screenCoord[1]))
-        {
-            jsonWriter.String("screen_coord");
-
-            jsonWriter.StartArray();
-
-            jsonWriter.Double(screenCoord[0]);
-            jsonWriter.Double(screenCoord[1]);
-
-            jsonWriter.EndArray(); // screen_coord
-        }
-
-        const double* screenCoordError = marker->GetScreenCoordError();
-
-        if (MyMath::IsValid(screenCoordError[0]) ||
-            MyMath::IsValid(screenCoordError[1]))
-        {
-            jsonWriter.String("screen_coord_error");
-
-            jsonWriter.StartArray();
-
-            jsonWriter.Double(screenCoordError[0]);
-            jsonWriter.Double(screenCoordError[1]);
-
-            jsonWriter.EndArray(); // screen_coord
-        }
-
-        my::CVector3<double> windowCoordError = marker->GetWindowCoordError();
-
-        if (windowCoordError.IsValid())
-        {
-            jsonWriter.String("window_coord_error");
-
-            jsonWriter.StartArray();
-
-            jsonWriter.Double(windowCoordError.x());
-            jsonWriter.Double(windowCoordError.y());
-            jsonWriter.Double(windowCoordError.z());
-
-            jsonWriter.EndArray(); // window_coord_error
-        }
-
-        jsonWriter.String("screen_size");
-        jsonWriter.Double(marker->GetScreenSize());
-
-        jsonWriter.String("zoom_factor");
-        jsonWriter.Double(marker->GetZoomFactor());
-
-        jsonWriter.String("constraint");
-        jsonWriter.Double(marker->GetConstraint());
-
-        jsonWriter.String("enabled");
-        jsonWriter.Bool(marker->IsEnabled());
-
-        jsonWriter.EndObject();
-    }
-
-    jsonWriter.EndArray();
-
-    std::ofstream extrinsicSettingsFileStream(extrinsicSettingsFileName);
-
-    HEALTH_CHECK(!extrinsicSettingsFileStream.is_open(), false);
-
-    extrinsicSettingsFileStream << jsonString.GetString();
-
-    extrinsicSettingsFileStream.close();
-
-    return true;
-}
-
-/**
-*/
-bool CUfcCalibratorViewModel::OpenCameraSettings() const
-{
-    HEALTH_CHECK(!m_ufcCalibratorModel, false);
-
-    // (BEGIN OF) BUG: (21-Mar-2017) EACH VIDEO, PLAY OR VIDEO/PLAY PAIR SHOULD HAVE AN AUDITING ID. THE AUDITING ID WAS DESIGNED TO BE A CUSTOMIZABLE STRING COMPOSED OF GAME_PRIMARY_KEY AND PLAY_ID, AT LEAST. THE AUDITING ID WILL SET THE NAME OF THE FILE THAT WILL HOLD THE PLAY SETTINGS. HOWEVER, THE CHANGES ON THE TOOL THAT WOULD BE NECESSARY TO SUPPORT A CUSTOMIZABLE STRING FOUND NO TIME TO BE IMPLEMENTED, AND, FOR NOW ON, THE AUDITING ID WILL BE GIVEN IN THE FORMAT GAME_PRIMARY_KEY-PLAY_ID.
-    std::string auditingIdFormat = GetAttribute<std::string>(DATABASE_SETTINGS_CAMERA_ID_FORMAT);
-
-    // TRICKY: (18-Feb-2017) SANITY CHECK - EXPECTED AUDITING ID FORMAT
-    if (auditingIdFormat != "GAME_PRIMARY_KEY-PLAY_ID")
-    {
-        LOG_ERROR();
-
-        return false;
-    }
-    // (END OF) BUG: (21-Mar-2017) EACH VIDEO, PLAY OR VIDEO/PLAY PAIR SHOULD HAVE AN AUDITING ID. THE AUDITING ID WAS DESIGNED TO BE A CUSTOMIZABLE STRING COMPOSED OF GAME_PRIMARY_KEY AND PLAY_ID, AT LEAST. THE AUDITING ID WILL SET THE NAME OF THE FILE THAT WILL HOLD THE PLAY SETTINGS. HOWEVER, THE CHANGES ON THE TOOL THAT WOULD BE NECESSARY TO SUPPORT A CUSTOMIZABLE STRING FOUND NO TIME TO BE IMPLEMENTED, AND, FOR NOW ON, THE AUDITING ID WILL BE GIVEN IN THE FORMAT GAME_PRIMARY_KEY-PLAY_ID.
-
-    std::string playAuditingId = m_ufcCalibratorModel->GetAuditingId();
-
-    // THE FOLLOWING IS AN ATTEMPT TO LOCATE THE CAMERA SETTINGS FOR THIS PLAY
-
     std::string jsonString;
 
-    // LOCAL SETTINGS DATABASE - (1) LOCAL FILE, (2) PRELOADED FILE AND (3) PREVIOUS SETTINGS FOR THIS VENUE (USER OR REFERENCE SETTINGS)
-
-    // (1) LOOK FOR A LOCAL FILE THAT CONTAINS THE SETTINGS FOR THIS PLAY
-
-    std::string localFileName = my::ReplaceKeyword(UFC_STRING_RESOURCE_0431, "CAMERA_ID", playAuditingId);
-
-    if (!my::file::GetFileAsString(localFileName, jsonString))
+    if (!my::file::GetFileAsString(cameraSettingsFileName, jsonString))
         jsonString.clear();
 
     if (jsonString.empty())
@@ -1080,6 +818,289 @@ bool CUfcCalibratorViewModel::OpenCameraSettings() const
     }
 
     footage->SetPinholeCamera(pinholeCamera);
+
+    return true;
+}
+
+/**
+*/
+bool CUfcCalibratorViewModel::OpenSettings()
+{
+#if defined(TIMER_INCLUDED)
+    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
+    CTimer timer;
+#endif // #if defined(TIMER_INCLUDED)
+
+    if (!OpenExtrinsicSettings())
+    {
+        LOG_ERROR();
+
+        // THE PIPELINE SHOULD NOT BE BROKEN HERE
+        //return false;
+    }
+
+    if (!OpenCameraSettings())
+    {
+        LOG_MESSAGE(UFC_STRING_RESOURCE_0034);
+
+        // THE PIPELINE SHOULD NOT BE BROKEN HERE
+        //return false;
+    }
+
+    //// DEBUG ONLY! (17-Feb-2017) DISABLED ON PRODUCTION ENVIRONMENT
+    //if (!OpenTrackingDataSettings())
+    //{
+    //    LOG_ERROR();
+
+    //    // THE PIPELINE SHOULD NOT BE BROKEN HERE
+    //    //return false;
+    //}
+
+#if defined(TIMER_INCLUDED)
+    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
+    m_stepNameAndTimeArray.push_back(std::make_pair(__FUNCTION__, timer.GetElapsed()));
+#endif // #if defined(TIMER_INCLUDED)
+
+    return true;
+}
+
+/**
+*/
+bool CUfcCalibratorViewModel::SaveSettings()
+{
+#if defined(TIMER_INCLUDED)
+    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
+    CTimer timer;
+#endif // #if defined(TIMER_INCLUDED)
+
+    if (!SaveExtrinsicSettings())
+    {
+        LOG_ERROR();
+
+        // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
+        //return false;
+    }
+
+    if (!SaveCameraSettings())
+    {
+        LOG_ERROR();
+
+        // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
+        //return false;
+    }
+
+    //// DEBUG ONLY! (17-Feb-2017) DISABLED ON PRODUCTION ENVIRONMENT
+    //if (!SaveTrackingDataSettings())
+    //{
+    //    LOG_ERROR();
+
+    //    // BUG: (??-???-2016) OTHER SETTINGS MAY STILL BE SAVED, THE PIPELINE SHOULD NOT BE BROKEN HERE
+    //    //return false;
+    //}
+
+#if defined(TIMER_INCLUDED)
+    // DEBUG ONLY! (01-Nov-2016) PERFORMANCE MEASUREMENT
+    m_stepNameAndTimeArray.push_back(std::make_pair(__FUNCTION__, timer.GetElapsed()));
+#endif // #if defined(TIMER_INCLUDED)
+
+    return true;
+}
+
+bool CUfcCalibratorViewModel::OpenExtrinsicSettings()
+{
+    HEALTH_CHECK(!m_ufcCalibratorModel, false);
+
+    std::string auditingId = m_ufcCalibratorModel->GetAuditingId(),
+        extrinsicSettingsFileName = my::ReplaceKeyword(UFC_STRING_RESOURCE_0433, "CAMERA_ID", auditingId);
+
+    if (!LoadExtrinsicSettings(extrinsicSettingsFileName))
+    {
+        LOG_ERROR();
+
+        return false;
+    }
+
+    return true;
+}
+
+bool CUfcCalibratorViewModel::SaveExtrinsicSettings()
+{
+    HEALTH_CHECK(!m_ufcCalibratorModel, false);
+
+    boost::shared_ptr<CFootage> footage = m_ufcCalibratorModel->GetFootage();
+
+    // BUG: (15-Sep-2016) THERE ARE VALID SITUATIONS, LIKE INITIALIZATION, WHERE THERE IS NO VALID FOOTAGE SET.
+    if (!footage ||
+        !footage->IsValid())
+    {
+        return true;
+    }
+
+    std::string auditingId = m_ufcCalibratorModel->GetAuditingId(),
+        extrinsicSettingsFileName = UFC_STRING_RESOURCE_0422 + auditingId + ".json";
+
+    rapidjson::StringBuffer jsonString;
+    rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonString);
+
+    jsonWriter.StartArray();
+
+    for (const auto& marker : footage->GetExtrinsicCalibrationMarkerArray())
+    {
+        jsonWriter.StartObject();
+
+        if (!marker->GetName().empty())
+        {
+            jsonWriter.String("name");
+            jsonWriter.String(marker->GetName().c_str());
+        }
+
+        if (!marker->GetIcon().empty())
+        {
+            jsonWriter.String("icon");
+            jsonWriter.String(marker->GetIcon().c_str());
+        }
+
+        const double* worldCoord = marker->GetWorldCoord();
+
+        if (MyMath::IsValid(worldCoord[0]) ||
+            MyMath::IsValid(worldCoord[1]) ||
+            MyMath::IsValid(worldCoord[2]))
+        {
+            jsonWriter.String("world_coord");
+
+            jsonWriter.StartArray();
+
+            jsonWriter.Double(worldCoord[0]);
+            jsonWriter.Double(worldCoord[1]);
+            jsonWriter.Double(worldCoord[2]);
+
+            jsonWriter.EndArray(); // world_coord
+        }
+
+        const double* worldCoordError = marker->GetWorldCoordError();
+
+        if (MyMath::IsValid(worldCoordError[0]) ||
+            MyMath::IsValid(worldCoordError[1]) ||
+            MyMath::IsValid(worldCoordError[2]))
+        {
+            jsonWriter.String("world_coord_error");
+
+            jsonWriter.StartArray();
+
+            jsonWriter.Double(worldCoordError[0]);
+            jsonWriter.Double(worldCoordError[1]);
+            jsonWriter.Double(worldCoordError[2]);
+
+            jsonWriter.EndArray(); // world_coord_error
+        }
+
+        const double* screenCoord = marker->GetScreenCoord();
+
+        if (MyMath::IsValid(screenCoord[0]) ||
+            MyMath::IsValid(screenCoord[1]))
+        {
+            jsonWriter.String("screen_coord");
+
+            jsonWriter.StartArray();
+
+            jsonWriter.Double(screenCoord[0]);
+            jsonWriter.Double(screenCoord[1]);
+
+            jsonWriter.EndArray(); // screen_coord
+        }
+
+        const double* screenCoordError = marker->GetScreenCoordError();
+
+        if (MyMath::IsValid(screenCoordError[0]) ||
+            MyMath::IsValid(screenCoordError[1]))
+        {
+            jsonWriter.String("screen_coord_error");
+
+            jsonWriter.StartArray();
+
+            jsonWriter.Double(screenCoordError[0]);
+            jsonWriter.Double(screenCoordError[1]);
+
+            jsonWriter.EndArray(); // screen_coord
+        }
+
+        my::CVector3<double> windowCoordError = marker->GetWindowCoordError();
+
+        if (windowCoordError.IsValid())
+        {
+            jsonWriter.String("window_coord_error");
+
+            jsonWriter.StartArray();
+
+            jsonWriter.Double(windowCoordError.x());
+            jsonWriter.Double(windowCoordError.y());
+            jsonWriter.Double(windowCoordError.z());
+
+            jsonWriter.EndArray(); // window_coord_error
+        }
+
+        jsonWriter.String("screen_size");
+        jsonWriter.Double(marker->GetScreenSize());
+
+        jsonWriter.String("zoom_factor");
+        jsonWriter.Double(marker->GetZoomFactor());
+
+        jsonWriter.String("constraint");
+        jsonWriter.Double(marker->GetConstraint());
+
+        jsonWriter.String("enabled");
+        jsonWriter.Bool(marker->IsEnabled());
+
+        jsonWriter.EndObject();
+    }
+
+    jsonWriter.EndArray();
+
+    std::ofstream extrinsicSettingsFileStream(extrinsicSettingsFileName);
+
+    HEALTH_CHECK(!extrinsicSettingsFileStream.is_open(), false);
+
+    extrinsicSettingsFileStream << jsonString.GetString();
+
+    extrinsicSettingsFileStream.close();
+
+    return true;
+}
+
+/**
+*/
+bool CUfcCalibratorViewModel::OpenCameraSettings()
+{
+    HEALTH_CHECK(!m_ufcCalibratorModel, false);
+
+    // (BEGIN OF) BUG: (21-Mar-2017) EACH VIDEO, PLAY OR VIDEO/PLAY PAIR SHOULD HAVE AN AUDITING ID. THE AUDITING ID WAS DESIGNED TO BE A CUSTOMIZABLE STRING COMPOSED OF GAME_PRIMARY_KEY AND PLAY_ID, AT LEAST. THE AUDITING ID WILL SET THE NAME OF THE FILE THAT WILL HOLD THE PLAY SETTINGS. HOWEVER, THE CHANGES ON THE TOOL THAT WOULD BE NECESSARY TO SUPPORT A CUSTOMIZABLE STRING FOUND NO TIME TO BE IMPLEMENTED, AND, FOR NOW ON, THE AUDITING ID WILL BE GIVEN IN THE FORMAT GAME_PRIMARY_KEY-PLAY_ID.
+    std::string auditingIdFormat = GetAttribute<std::string>(DATABASE_SETTINGS_CAMERA_ID_FORMAT);
+
+    // TRICKY: (18-Feb-2017) SANITY CHECK - EXPECTED AUDITING ID FORMAT
+    if (auditingIdFormat != "GAME_PRIMARY_KEY-PLAY_ID")
+    {
+        LOG_ERROR();
+
+        return false;
+    }
+    // (END OF) BUG: (21-Mar-2017) EACH VIDEO, PLAY OR VIDEO/PLAY PAIR SHOULD HAVE AN AUDITING ID. THE AUDITING ID WAS DESIGNED TO BE A CUSTOMIZABLE STRING COMPOSED OF GAME_PRIMARY_KEY AND PLAY_ID, AT LEAST. THE AUDITING ID WILL SET THE NAME OF THE FILE THAT WILL HOLD THE PLAY SETTINGS. HOWEVER, THE CHANGES ON THE TOOL THAT WOULD BE NECESSARY TO SUPPORT A CUSTOMIZABLE STRING FOUND NO TIME TO BE IMPLEMENTED, AND, FOR NOW ON, THE AUDITING ID WILL BE GIVEN IN THE FORMAT GAME_PRIMARY_KEY-PLAY_ID.
+
+    std::string playAuditingId = m_ufcCalibratorModel->GetAuditingId();
+
+    // THE FOLLOWING IS AN ATTEMPT TO LOCATE THE CAMERA SETTINGS FOR THIS PLAY
+
+    // LOCAL SETTINGS DATABASE - (1) LOCAL FILE, (2) PRELOADED FILE AND (3) PREVIOUS SETTINGS FOR THIS VENUE (USER OR REFERENCE SETTINGS)
+
+    // (1) LOOK FOR A LOCAL FILE THAT CONTAINS THE SETTINGS FOR THIS PLAY
+
+    std::string cameraSettingsFileName = my::ReplaceKeyword(UFC_STRING_RESOURCE_0431, "CAMERA_ID", playAuditingId);
+
+    if (!LoadCameraSettings(cameraSettingsFileName))
+    {
+        LOG_ERROR();
+
+        return false;
+    }
 
     return true;
 }
