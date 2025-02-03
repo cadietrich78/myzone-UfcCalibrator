@@ -1,8 +1,6 @@
 # UfcCalibrator
 A PoC of a calibration tool for the FightFlow project.
 
-![Splash screen](./dev/bin/textures/UfcCalibratorSplashScreen.png)
-
 ## API Dependencies
 All built on Microsoft Visual Studio 2019, version 16.9.5 (platform toolset **v142**, platform **x64**).
 
@@ -113,7 +111,3 @@ The files listed below should be precompiled by Qt, and the resulting cpp's shou
  - MyQTimer.h 
  - TabInterface.h 
  - application.qrc
-
-The call for the Qt compiler goes as (from Visual Studio):
-
-\$(QtDir)/bin/moc.exe  -DUNICODE -DWIN64 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I"\$(QtDir)/include/QtCore" -I"\$(QtDir)/include/QtGui" -I"\$(QtDir)/include/QtOpenGL" -I"\$(QtDir)/include" -I"../shared" -I"\$(QtDir)/include/ActiveQt" -I"debug" -I"." -I$(QtMakeSpecs) -D_MSC_VER=1800 -DWIN64 %(Identity) -o qt/moc_%(Filename).cpp
