@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\..\..\source\calibration\MarkerGroup.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\source\calibration\PointMarker.h">
-      <Filter>Header Files\calibration</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\source\calibration\PinholeCameraCalibration.h">
       <Filter>Header Files\calibration</Filter>
     </ClInclude>
@@ -216,9 +213,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp">
-      <Filter>Source Files\calibration</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp">
       <Filter>Source Files\calibration</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\source\dialog\AppSettingsGroupDialog.cpp">

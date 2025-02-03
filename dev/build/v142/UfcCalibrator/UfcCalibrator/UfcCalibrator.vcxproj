@@ -133,7 +133,6 @@
     <ClInclude Include="..\..\..\..\source\UfcCalibratorConfig.h" />
     <ClInclude Include="..\..\..\..\source\calibration\MarkerGroup.h" />
     <ClInclude Include="..\..\..\..\source\calibration\PinholeCameraCalibration.h" />
-    <ClInclude Include="..\..\..\..\source\calibration\PointMarker.h" />
     <CustomBuild Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QtDir)\bin\moc.exe  -DUNICODE -DWIN64 -DQT_LARGEFILE_SUPPORT -DQT_DLL -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_THREAD_SUPPORT -I"$(QtDir)\include\QtCore" -I"$(QtDir)\include\QtGui" -I"$(QtDir)\include\QtOpenGL" -I"$(QtDir)\include" -I"..\shared" -I"$(QtDir)\include\ActiveQt" -I"debug" -I"." -I$(QtMakeSpecs) -D_MSC_VER=1800 -DWIN64 %(Identity) -o qt\moc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Running MOC on %(Identity)</Message>
@@ -231,7 +230,6 @@
     <ClCompile Include="..\..\..\..\source\calibration\MarkerGroup.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\EgymMarkerArray.cpp" />
     <ClCompile Include="..\..\..\..\source\calibration\PinholeCameraCalibration.cpp" />
-    <ClCompile Include="..\..\..\..\source\calibration\PointMarker.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppGuiSettingsGroupDialog.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppSettingsDialog.cpp" />
     <ClCompile Include="..\..\..\..\source\dialog\AppSettingsGroupDialog.cpp" />
